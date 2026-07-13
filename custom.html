@@ -163,6 +163,40 @@
   .toast .tx-close{position:absolute;top:9px;right:11px;background:none;border:0;color:#b6b3c7;cursor:pointer;font-size:16px;line-height:1}
 
   @media(max-width:1080px){.stats-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+
+  /* ===== custom chat placeholder (web) ===== */
+  .custom-launcher{position:fixed;right:22px;bottom:22px;z-index:80;width:60px;height:60px;border-radius:50%;
+                   background:linear-gradient(135deg,var(--brand-2),var(--brand));border:0;cursor:pointer;
+                   display:flex;align-items:center;justify-content:center;color:#fff;
+                   box-shadow:0 10px 26px rgba(91,44,224,.5);transition:transform .15s,opacity .2s}
+  .custom-launcher:hover{transform:translateY(-2px)}
+  .custom-launcher.hidden{opacity:0;pointer-events:none;transform:scale(.6)}
+  .custom-launcher svg{width:26px;height:26px}
+
+  .custom-chat{position:fixed;right:22px;bottom:22px;z-index:81;width:380px;max-width:calc(100vw - 44px);
+               height:560px;max-height:calc(100vh - 44px);
+               background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;
+               display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(30,15,70,.34);
+               transform:translateY(20px) scale(.98);opacity:0;pointer-events:none;transform-origin:bottom right;
+               transition:transform .28s cubic-bezier(.32,1.02,.4,1),opacity .22s}
+  .custom-chat.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+  .cc-head{background:var(--brand-navy);padding:15px 16px;display:flex;align-items:center;gap:11px;flex:0 0 auto}
+  .cc-head .cc-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:16px}
+  .cc-head .cc-t{flex:1;color:#fff}
+  .cc-head .cc-t .n1{font-size:14px;font-weight:700}
+  .cc-head .cc-t .n2{font-size:11.5px;color:rgba(255,255,255,.62);display:flex;align-items:center;gap:5px;margin-top:1px}
+  .cc-head .cc-t .n2 i{width:7px;height:7px;border-radius:50%;background:#f5a623;display:inline-block}
+  .cc-head .cc-x{background:rgba(255,255,255,.14);border:0;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1;flex:0 0 auto}
+  .cc-head .cc-x:hover{background:rgba(255,255,255,.26)}
+  .cc-body{flex:1;overflow-y:auto;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;background:var(--bg)}
+  .cc-body .ph-ic{width:60px;height:60px;border-radius:16px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;font-size:28px}
+  .cc-body .ph-t{font-size:15px;font-weight:700;color:var(--brand-navy)}
+  .cc-body .ph-d{font-size:13px;color:var(--muted);line-height:1.5;max-width:255px}
+  .cc-body .ph-badge{font-size:11px;font-weight:700;color:var(--brand);background:#EFE9FF;border-radius:999px;padding:4px 11px}
+  .cc-input{display:flex;gap:8px;padding:11px 12px;border-top:1px solid var(--line);flex:0 0 auto;background:#fff}
+  .cc-input input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:13.5px;outline:none;background:#faf8fe;color:#9a97ad}
+  .cc-input button{background:var(--brand);border:0;color:#fff;border-radius:50%;width:40px;height:40px;cursor:not-allowed;opacity:.55;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .cc-foot{text-align:center;font-size:10.5px;color:var(--muted);padding:7px;background:#FBFAFE;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -182,7 +216,7 @@
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Messages <span class="notif-badge">1</span>
     </button>
-    <button class="ada-nav-btn" id="adaNavBtn" onclick="openAdaChat()">
+    <button class="ada-nav-btn" id="adaNavBtn" onclick="openCustomChat()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="12" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>
       Ask Ada
       <span class="ada-nav-badge" id="adaNavBadge">1</span>
@@ -229,7 +263,7 @@
       Insights
     </div>
     <div class="sidebar-label" style="margin-top:8px">Support</div>
-    <div class="sidebar-item" onclick="openAdaChat()">
+    <div class="sidebar-item" onclick="openCustomChat()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       Ada Assistant
       <span class="sidebar-badge violet">1</span>
@@ -254,7 +288,7 @@
     <div class="proactive-banner">
       <div class="pb-mark">a</div>
       <div class="pb-text"><strong>Ada spotted something:</strong> your <strong>StreamFlix</strong> subscription rose 40% this month (£12.99 → £17.99). Want me to review your recurring payments and flag anything unusual?</div>
-      <button class="pb-cta" onclick="openAdaChat()">Review with Ada</button>
+      <button class="pb-cta" onclick="openCustomChat()">Review with Ada</button>
     </div>
 
     <!-- STAT CARDS -->
@@ -301,7 +335,7 @@
                 <td><div class="tx-merchant"><div class="tx-ic">🎬</div><div><div class="tx-name">StreamFlix</div><div class="tx-meta">Subscription · Today, 08:12</div></div></div></td>
                 <td><span class="pill pill-violet">Flagged by Ada</span></td>
                 <td class="amt-out">−£17.99</td>
-                <td><button class="btn-sm" onclick="openAdaChat()">Ask ›</button></td>
+                <td><button class="btn-sm" onclick="openCustomChat()">Ask ›</button></td>
               </tr>
               <tr>
                 <td><div class="tx-merchant"><div class="tx-ic">☕</div><div><div class="tx-name">Blackbird Coffee</div><div class="tx-meta">Card · Today, 07:48</div></div></div></td>
@@ -334,26 +368,24 @@
         <!-- DEV / FRONTEND API CALLOUT -->
         <div class="dev-callout" id="devCallout">
           <div class="dev-head" onclick="document.getElementById('devCallout').classList.toggle('open')">
-            <div class="dt"><span class="tag">SE</span> How this page uses the Ada Frontend API</div>
+            <div class="dt"><span class="tag">SE</span> Custom chat experience (no Ada Web SDK) — placeholder</div>
             <div class="chev">▾</div>
           </div>
           <div class="dev-body">
-<pre><span class="cmt">// 1 · Embed the live agent (lazy = we control when it opens)</span>
-&lt;script id="__ada" data-handle=<span class="str">"demo-rkirk-fintech"</span> data-lazy
-        src="https://static.ada.support/embed2.js"&gt;&lt;/script&gt;
+<pre><span class="cmt">// This page does NOT load static.ada.support/embed2.js.</span>
+<span class="cmt">// Instead we render our own chat UI and (later) drive it</span>
+<span class="cmt">// through a custom backend / the Ada Conversations API.</span>
 
-<span class="cmt">// 2 · start() once, passing customer context to personalise</span>
-<span class="kw">await</span> window.adaEmbed.<span class="kw">start</span>({
-  handle: <span class="str">"demo-rkirk-fintech"</span>, lazy: <span class="kw">true</span>,
-  metaFields: { name: <span class="str">"Richard Kirk"</span>, segment: <span class="str">"Retail"</span>,
-                channel: <span class="str">"Ada Banking Web"</span> }
-});
+<span class="cmt">// 1 · Open our custom panel from any UI element</span>
+button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
 
-<span class="cmt">// 3 · Open chat from any UI element — nav, banner, row…</span>
-button.onclick = () =&gt; window.adaEmbed.<span class="kw">toggle</span>();
+<span class="cmt">// 2 · TODO — wire the panel to a conversation backend:</span>
+<span class="cmt">//     • POST message  → get bot reply</span>
+<span class="cmt">//     • stream/poll responses, render bubbles</span>
+<span class="cmt">//     • pass customer context (name, segment, …)</span>
+<span class="cmt">//     • trigger proactive messages on events</span>
 
-<span class="cmt">// 4 · Proactive: a notification event opens chat with intent</span>
-window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired from the proactive toast &rarr;</span></pre>
+<span class="cmt">// For now the panel is a visual placeholder only.</span></pre>
           </div>
         </div>
       </div>
@@ -389,7 +421,7 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
           <div class="alert-item">
             <div class="alert-dot dot-violet"></div>
             <div><div class="alert-text"><strong>Subscription increase:</strong> StreamFlix went up 40% this month.</div>
-            <div class="alert-time">Today · 08:14 — <span class="ask-ada" onclick="openAdaChat()">Ask Ada ›</span></div></div>
+            <div class="alert-time">Today · 08:14 — <span class="ask-ada" onclick="openCustomChat()">Ask Ada ›</span></div></div>
           </div>
           <div class="alert-item">
             <div class="alert-dot dot-amber"></div>
@@ -399,7 +431,7 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
           <div class="alert-item">
             <div class="alert-dot dot-red"></div>
             <div><div class="alert-text"><strong>Low balance forecast:</strong> your rent may leave the Current account below £200 next week.</div>
-            <div class="alert-time">Today · 07:30 — <span class="ask-ada" onclick="openAdaChat()">Plan with Ada ›</span></div></div>
+            <div class="alert-time">Today · 07:30 — <span class="ask-ada" onclick="openCustomChat()">Plan with Ada ›</span></div></div>
           </div>
           <div class="alert-item">
             <div class="alert-dot dot-violet"></div>
@@ -419,14 +451,42 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
   <div class="tt">
     <div class="tn">Ada · now</div>
     <div class="tm">Hi Richard — I noticed a payment that may need attention. Want me to take a look?</div>
-    <button class="tcta" onclick="openAdaChat()">Chat with Ada</button>
+    <button class="tcta" onclick="openCustomChat()">Chat with Ada</button>
   </div>
 </div>
 
+<!-- ===== custom chat placeholder (web) ===== -->
+<button class="custom-launcher" id="customLauncher" onclick="openCustomChat()" aria-label="Open chat">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+<div class="custom-chat" id="customChat">
+  <div class="cc-head">
+    <div class="cc-av">a</div>
+    <div class="cc-t">
+      <div class="n1">Ada Banking — Custom Chat</div>
+      <div class="n2"><i></i> Placeholder · not yet connected</div>
+    </div>
+    <button class="cc-x" onclick="closeCustomChat()" aria-label="Close">&times;</button>
+  </div>
+  <div class="cc-body">
+    <div class="ph-ic">&#128736;&#65039;</div>
+    <div class="ph-t">Custom chat experience</div>
+    <div class="ph-d">A placeholder for a fully custom chat UI &mdash; this page loads <b>no</b> Ada Web SDK. We'll build it out and connect it to a chat backend next.</div>
+    <div class="ph-badge">Coming soon</div>
+  </div>
+  <div class="cc-input">
+    <input type="text" placeholder="Chat coming soon&hellip;" disabled>
+    <button type="button" aria-label="Send" disabled>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="cc-foot">Custom experience &middot; Ada Banking</div>
+</div>
+
 <div class="viewswitch">
-  <a class="on" href="index.html">Web</a>
+  <a href="index.html">Web</a>
   <a href="app.html">Mobile</a>
-  <a href="custom.html">Custom</a>
+  <a class="on" href="custom.html">Custom</a>
 </div>
 
 <script>
@@ -434,51 +494,19 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
   var toastTimer = setTimeout(function(){ document.getElementById('toast').classList.add('show'); }, 3800);
   function dismissToast(){ document.getElementById('toast').classList.remove('show'); clearTimeout(toastTimer); }
 
-  // ---- Ada Frontend API: open the LIVE demo-rkirk-fintech agent ----
-  // Lazy embed: start() once (passing customer context), then toggle() to open.
-  var adaStarted = false;
-  function ensureAdaStarted(){
-    return new Promise(function(resolve){
-      if (adaStarted){ resolve(); return; }
-      (function wait(n){
-        if (window.adaEmbed && typeof window.adaEmbed.start === 'function'){
-          window.adaEmbed.start({
-            handle: "demo-rkirk-fintech",
-            lazy: true,
-            metaFields: { name: "Richard Kirk", segment: "Retail", channel: "Ada Banking Web" }
-          }).then(function(){ adaStarted = true; resolve(); })
-            .catch(function(){ adaStarted = true; resolve(); });
-        } else if (n < 40){ setTimeout(function(){ wait(n+1); }, 150); }
-        else { resolve(); }
-      })(0);
-    });
-  }
-  function openAdaChat(){
+  // ---- Custom chat experience (PLACEHOLDER) ----
+  // This page deliberately does NOT load the Ada Web SDK. Instead it opens a
+  // custom-built chat panel that we'll wire to a custom backend later.
+  function openCustomChat(){
     dismissToast();
     var b = document.getElementById('adaNavBadge'); if(b) b.style.display='none';
-    ensureAdaStarted().then(function(){
-      if (window.adaEmbed && typeof window.adaEmbed.toggle === 'function') window.adaEmbed.toggle();
-    });
+    document.getElementById('customChat').classList.add('open');
+    document.getElementById('customLauncher').classList.add('hidden');
   }
-
-  // Start the embed on load so the standard Ada web SDK launcher shows bottom-right.
-  // (Our "Ask Ada" / proactive buttons still open it via toggle.)
-  // Then fire the Ada proactive campaign once the widget is ready.
-  ensureAdaStarted().then(function(){
-    setTimeout(function(){
-      if (window.adaEmbed && typeof window.adaEmbed.triggerProactive === 'function'){
-        window.adaEmbed.triggerProactive({ messageKey: "your_money_could_be_working_harder" })
-          .catch(function(){ /* proactive not published for this bot yet */ });
-      }
-    }, 1500);
-  });
+  function closeCustomChat(){
+    document.getElementById('customChat').classList.remove('open');
+    document.getElementById('customLauncher').classList.remove('hidden');
+  }
 </script>
-
-<!-- Default Ada web SDK launcher is shown (bottom-right). Custom buttons open it too. -->
-
-<!-- ============================================================ -->
-<!-- REAL Ada AI Agent widget — demo-rkirk-fintech (live)         -->
-<!-- ============================================================ -->
-<script id="__ada" data-handle="demo-rkirk-fintech" data-lazy src="https://static.ada.support/embed2.js"></script>
 </body>
 </html>

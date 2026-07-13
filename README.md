@@ -6,8 +6,11 @@ agent** `demo-rkirk-fintech` via the Ada Frontend Chat API (`embed2.js`).
 
 | Page | What it is |
 |------|------------|
-| [`index.html`](index.html) | **Web app** — retail online-banking dashboard (accounts, balances, transactions, notifications). Demonstrates **proactive notifications** and **Ada Frontend API** usage (`toggle`, `setMetaFields`). |
-| [`app.html`](app.html) | **Mobile app** — single-screen banking app in an iPhone frame. Accounts + balances, a bottom menu with a **Support** icon (bottom-right), and a **proactive card** that launches the live Ada chat. |
+| [`index.html`](index.html) | **Web app** — retail online-banking dashboard. Uses the live Ada Web SDK: standard launcher bottom-right, `toggle`/`setMetaFields`, and fires the `triggerProactive({ messageKey: "your_money_could_be_working_harder" })` campaign on load. |
+| [`app.html`](app.html) | **Mobile app** — single-screen banking app in an iPhone frame. Self-contained: a **Support** icon (bottom-right of the menu) and a **proactive card** open a custom in-app chat sheet (¾ height, translucent backdrop). No external Ada window. |
+| [`custom.html`](custom.html) | **Custom** — a copy of the web app that loads **no** Ada Web SDK. All chat entry points open a custom chat panel (currently a placeholder to be built out later). |
+
+The view switcher (Web / Mobile / Custom) links the three pages.
 
 ## How the Ada agent is wired
 
