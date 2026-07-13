@@ -188,7 +188,7 @@
     <a class="on" href="app.html">Mobile</a>
     <a href="custom.html">Custom</a>
   </div>
-  <div class="hint">Tap <b>Support</b> (bottom-right) or the proactive card to open the in-app chat &rarr;</div>
+  <div class="hint">A live Ada proactive fires on load · tap <b>Support</b> (bottom-right) for the in-app chat &rarr;</div>
 
   <div class="phone">
     <div class="island"></div>
@@ -241,13 +241,13 @@
 
         <div class="acct">
           <div class="ic ic-cur">&#128179;</div>
-          <div class="nm"><div class="n1">Everyday Current</div><div class="n2">•••• 4471 · Available £3,056.19</div></div>
-          <div class="bal"><div class="b1">£3,241.19</div></div>
+          <div class="nm"><div class="n1">Everyday Current</div><div class="n2">•••• 4471 · Available £18,566.53</div></div>
+          <div class="bal"><div class="b1">£18,751.53</div></div>
         </div>
         <div class="acct">
           <div class="ic ic-sav">&#127793;</div>
           <div class="nm"><div class="n1">Savings Pot</div><div class="n2">Holiday fund · 4.10% AER</div></div>
-          <div class="bal"><div class="b1">£18,750.00</div></div>
+          <div class="bal"><div class="b1">£3,241.19</div></div>
         </div>
         <div class="acct">
           <div class="ic ic-cc">&#128142;</div>
@@ -285,17 +285,6 @@
         </div>
 
         <div class="footnote">Ada Banking is a demonstration app · Powered by Ada</div>
-      </div>
-
-      <!-- ===== proactive card ===== -->
-      <div class="proactive" id="proactive">
-        <button class="px" onclick="dismissProactive()">&times;</button>
-        <div class="pav">a</div>
-        <div class="pt">
-          <div class="pn">Ada</div>
-          <div class="pm">Hi Richard — I can help with payments, transactions, settlements or your account. Anything I can look into?</div>
-          <button class="pcta" onclick="openChat()">Chat with Ada</button>
-        </div>
       </div>
 
       <!-- bottom tab bar (menu) -->
@@ -336,21 +325,39 @@
   </div>
 
 <script>
-  // Show the proactive nudge shortly after load
-  var proTimer = setTimeout(function(){
-    document.getElementById('proactive').classList.add('show');
-  }, 2600);
-
-  function dismissProactive(){
-    document.getElementById('proactive').classList.remove('show');
-    clearTimeout(proTimer);
+  // ===== Real Ada proactive (Ada Web SDK, backend-configured campaign) =====
+  // Loads embed2.js below, starts it lazily, then fires the proactive on load.
+  var adaStarted = false;
+  function ensureAdaStarted(){
+    return new Promise(function(resolve){
+      if (adaStarted){ resolve(); return; }
+      (function wait(n){
+        if (window.adaEmbed && typeof window.adaEmbed.start === 'function'){
+          window.adaEmbed.start({
+            handle: "demo-rkirk-fintech",
+            lazy: true,
+            metaFields: { name: "Richard Kirk", segment: "Retail", channel: "Ada Banking Mobile" }
+          }).then(function(){ adaStarted = true; resolve(); })
+            .catch(function(){ adaStarted = true; resolve(); });
+        } else if (n < 40){ setTimeout(function(){ wait(n+1); }, 150); }
+        else { resolve(); }
+      })(0);
+    });
   }
+  // Fire the backend-configured proactive campaign once the widget is ready.
+  ensureAdaStarted().then(function(){
+    setTimeout(function(){
+      if (window.adaEmbed && typeof window.adaEmbed.triggerProactive === 'function'){
+        window.adaEmbed.triggerProactive({ messageKey: "your_money_could_be_working_harder" })
+          .catch(function(){ /* campaign not published for this bot yet */ });
+      }
+    }, 1500);
+  });
 
   // ===== In-app chat (self-contained mockup — renders inside the phone) =====
   var body, chipsBar, greeted = false;
 
   function openChat(){
-    dismissProactive();
     var dot = document.getElementById('supportDot'); if(dot) dot.style.display='none';
     document.getElementById('chatScrim').classList.add('open');
     document.getElementById('chatSheet').classList.add('open');
@@ -407,7 +414,7 @@
   }
   function confirmTransfer(){
     addUser("Confirm"); chipsBar.innerHTML='';
-    botAfter(1000,"&#9989; Done &mdash; <b>£500.00</b> moved from Everyday Current to your Savings Pot. Your new Savings balance is <b>£19,250.00</b>, and you're now <b>£250</b> closer to your Holiday fund goal.",function(){ appToast("£500 moved to Savings Pot"); botAfter(700,"Anything else?",defaultChips); });
+    botAfter(1000,"&#9989; Done &mdash; <b>£500.00</b> moved from Everyday Current to your Savings Pot. Your new Savings balance is <b>£3,741.19</b>, and you're now <b>£500</b> closer to your Holiday fund goal.",function(){ appToast("£500 moved to Savings Pot"); botAfter(700,"Anything else?",defaultChips); });
   }
 
   function flowFreeze(){
@@ -437,5 +444,14 @@
     botAfter(1000,"Good question &mdash; I can help with payments, transfers, cards, subscriptions and your accounts. Could you tell me a little more about what you need?",defaultChips);
   }
 </script>
+
+<!-- Hide the default Ada launcher; the real proactive appears on its own, Support opens the in-app sheet -->
+<style>#ada-button-frame, iframe#ada-button-frame{ display:none !important; }</style>
+
+<!-- ============================================================ -->
+<!-- Ada Web SDK — demo-rkirk-fintech — used ONLY to fire the real -->
+<!-- backend-configured proactive campaign on this page.           -->
+<!-- ============================================================ -->
+<script id="__ada" data-handle="demo-rkirk-fintech" data-lazy src="https://static.ada.support/embed2.js"></script>
 </body>
 </html>
