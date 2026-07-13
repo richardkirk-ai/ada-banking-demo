@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ada Banking · Mobile app</title>
+<style>
+  :root{
+    --brand:#5B2CE0; --brand-2:#7B4DFF; --brand-dk:#2E1A6B;
+    --ink:#14121F; --muted:#8b88a0; --line:#242235;
+    --appbg:#0c0b14; --card:#16141f; --card-2:#1c1a28;
+    --text:#f5f4fb; --pos:#22c58b; --neg:#ff6b6b; --warn:#f5a623;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+       background:radial-gradient(1200px 700px at 50% -12%, #2b1666 0%, #120b2b 48%, #060510 100%);
+       display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;color:var(--text)}
+
+  .viewswitch{position:fixed;top:16px;left:16px;z-index:95;display:flex;gap:2px;background:#171525;border:1px solid #2c2a3d;border-radius:999px;padding:3px}
+  .viewswitch a{font-size:12px;color:#b7b4c9;text-decoration:none;padding:6px 13px;border-radius:999px}
+  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
+  .hint{position:fixed;bottom:18px;right:18px;z-index:90;color:#67637f;font-size:12px;max-width:220px;text-align:right}
+  .hint b{color:#a99bff}
+
+  /* ===== phone frame ===== */
+  .phone{position:relative;width:390px;height:min(844px,94vh);background:#000;border-radius:54px;padding:13px;
+         box-shadow:0 0 0 3px #201d33, 0 0 0 5px #0c0b14, 0 40px 90px rgba(0,0,0,.7)}
+  .screen{position:relative;width:100%;height:100%;background:var(--appbg);border-radius:42px;overflow:hidden;display:flex;flex-direction:column}
+  .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:33px;background:#000;border-radius:20px;z-index:60}
+
+  .statusbar{display:flex;align-items:center;justify-content:space-between;padding:15px 28px 6px;font-size:14px;font-weight:600;flex:0 0 auto}
+  .statusbar .r{display:flex;align-items:center;gap:7px;font-size:12px}
+  .bat{display:inline-block;width:24px;height:12px;border:1px solid #cfcbe0;border-radius:3px;position:relative}
+  .bat::after{content:"";position:absolute;left:1px;top:1px;bottom:1px;width:78%;background:#fff;border-radius:1px}
+  .bat::before{content:"";position:absolute;right:-3px;top:3px;width:2px;height:4px;background:#cfcbe0;border-radius:0 1px 1px 0}
+
+  .appscroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .appscroll::-webkit-scrollbar{display:none}
+
+  /* app header */
+  .appbar{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 10px}
+  .brand{display:flex;align-items:center;gap:9px}
+  .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand-2),var(--brand));
+        display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff;box-shadow:0 4px 12px rgba(91,44,224,.5)}
+  .brandtxt{font-size:16px;font-weight:700;letter-spacing:-.2px}
+  .brandtxt span{font-weight:400;color:var(--muted)}
+  .appbar .r{display:flex;align-items:center;gap:14px}
+  .iconbtn{position:relative;color:#cdcae0;cursor:pointer;display:flex}
+  .iconbtn .badge{position:absolute;top:-5px;right:-6px;background:var(--neg);color:#fff;font-size:9px;font-weight:700;border-radius:10px;padding:1px 5px;border:2px solid var(--appbg)}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3ad0b0,#22a58b);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#04211a}
+
+  .hello{padding:8px 20px 4px}
+  .hello .sm{color:var(--muted);font-size:13px}
+  .hello .lg{font-size:22px;font-weight:700;margin-top:1px}
+
+  /* total balance hero */
+  .hero{margin:12px 20px 4px;border-radius:20px;padding:20px;position:relative;overflow:hidden;
+        background:linear-gradient(135deg,#6a3bff 0%,#5b2ce0 55%,#3e1fae 100%);box-shadow:0 16px 34px rgba(76,36,180,.5)}
+  .hero::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.10)}
+  .hero .lab{font-size:12.5px;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:7px}
+  .hero .amt{font-size:34px;font-weight:800;letter-spacing:-.5px;margin:6px 0 2px}
+  .hero .sub{font-size:12.5px;color:rgba(255,255,255,.85)}
+  .hero .chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.18);border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:600;margin-top:12px}
+
+  /* quick actions */
+  .quick{display:flex;justify-content:space-between;padding:16px 22px 6px}
+  .qa{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11.5px;color:#d7d4e8;cursor:pointer}
+  .qa .qc{width:46px;height:46px;border-radius:15px;background:var(--card-2);display:flex;align-items:center;justify-content:center;color:#b9aaff;border:1px solid #262338}
+  .qa:hover .qc{background:#241f3a}
+
+  .sec{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px}
+  .sec .t{font-size:15px;font-weight:700}
+  .sec .a{font-size:12.5px;color:#a99bff;font-weight:600;cursor:pointer}
+
+  .acct{display:flex;align-items:center;gap:13px;padding:12px 20px;cursor:pointer}
+  .acct:hover{background:#131120}
+  .acct .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:19px}
+  .ic-cur{background:rgba(91,44,224,.16);color:#b9aaff}
+  .ic-sav{background:rgba(34,197,139,.16);color:#4ee0ac}
+  .ic-cc{background:rgba(255,107,107,.14);color:#ff9a9a}
+  .ic-joint{background:rgba(245,166,35,.16);color:#ffcf7a}
+  .acct .nm{flex:1}
+  .acct .nm .n1{font-size:14px;font-weight:600}
+  .acct .nm .n2{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .acct .bal{text-align:right}
+  .acct .bal .b1{font-size:15px;font-weight:700}
+  .acct .bal .b2{font-size:11px;color:var(--muted);margin-top:2px}
+  .neg{color:var(--neg)}
+
+  .divide{height:1px;background:var(--line);margin:4px 20px}
+
+  .tx{display:flex;align-items:center;gap:13px;padding:11px 20px}
+  .tx .tc{width:38px;height:38px;border-radius:11px;background:var(--card-2);display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
+  .tx .td{flex:1}
+  .tx .td .t1{font-size:13.5px;font-weight:600}
+  .tx .td .t2{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .tx .tv{font-size:14px;font-weight:700;white-space:nowrap}
+  .tv.out{color:var(--text)}
+  .tv.in{color:var(--pos)}
+
+  .footnote{text-align:center;color:#54506b;font-size:11px;padding:14px 0 22px}
+
+  /* ===== proactive bubble ===== */
+  .proactive{position:absolute;left:14px;right:14px;bottom:92px;z-index:75;
+             background:#fff;color:#1a1830;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;
+             box-shadow:0 14px 34px rgba(0,0,0,.5);border:1px solid #eceafc;
+             transform:translateY(20px);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.34,1.3,.5,1),opacity .3s}
+  .proactive.show{transform:translateY(0);opacity:1;pointer-events:auto}
+  .proactive .pav{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));flex:0 0 auto;
+                  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+  .proactive .pt{flex:1}
+  .proactive .pt .pn{font-size:12px;font-weight:700;color:var(--brand-dk);display:flex;align-items:center;gap:6px}
+  .proactive .pt .pn::after{content:"Ada · now";font-weight:500;color:#9a97ad;font-size:10.5px}
+  .proactive .pt .pm{font-size:13px;line-height:1.4;margin-top:3px;color:#33314a}
+  .proactive .pt .pcta{margin-top:9px;background:var(--brand);color:#fff;border:0;border-radius:9px;padding:8px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .proactive .pt .pcta:hover{background:var(--brand-dk)}
+  .proactive .px{position:absolute;top:9px;right:11px;color:#b6b3c7;cursor:pointer;font-size:16px;line-height:1;background:none;border:0}
+
+  /* bottom tab bar */
+  .tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:flex-start;padding:11px 8px 24px;border-top:1px solid var(--line);background:#0a0912;position:relative;z-index:50}
+  .tb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:#7a7690;cursor:pointer;position:relative}
+  .tb.on{color:#b9aaff}
+  .tb svg{width:22px;height:22px}
+  .tb .dot{position:absolute;top:-3px;right:-8px;width:9px;height:9px;border-radius:50%;background:var(--neg);border:2px solid #0a0912}
+</style>
+</head>
+<body>
+  <div class="viewswitch">
+    <a href="index.html">Web</a>
+    <a class="on" href="app.html">Mobile</a>
+  </div>
+  <div class="hint">Tap <b>Support</b> (bottom-right) or the proactive card to open the live Ada agent &rarr;</div>
+
+  <div class="phone">
+    <div class="island"></div>
+    <div class="screen">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="r">&#9679;&#9679;&#9679;&nbsp; &#128246; &nbsp;<span class="bat"></span></span>
+      </div>
+
+      <div class="appscroll">
+        <div class="appbar">
+          <div class="brand">
+            <div class="mark">a</div>
+            <div class="brandtxt">ada<span> banking</span></div>
+          </div>
+          <div class="r">
+            <div class="iconbtn" title="Notifications">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="badge">2</span>
+            </div>
+            <div class="avatar">RK</div>
+          </div>
+        </div>
+
+        <div class="hello">
+          <div class="sm">Good morning</div>
+          <div class="lg">Richard Kirk</div>
+        </div>
+
+        <div class="hero">
+          <div class="lab">Total balance
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="amt">£24,183.52</div>
+          <div class="sub">across 4 accounts</div>
+          <div class="chip">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="18 15 12 9 6 15"/></svg>
+            +£420.18 this month
+          </div>
+        </div>
+
+        <div class="quick">
+          <div class="qa"><div class="qc"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>Send</div>
+          <div class="qa"><div class="qc"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>Request</div>
+          <div class="qa"><div class="qc"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="1" y="4" width="22" height="16" rx="3"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>Pay</div>
+          <div class="qa"><div class="qc"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>Top up</div>
+        </div>
+
+        <div class="sec"><div class="t">Accounts</div><div class="a">See all</div></div>
+
+        <div class="acct">
+          <div class="ic ic-cur">&#128179;</div>
+          <div class="nm"><div class="n1">Everyday Current</div><div class="n2">•••• 4471 · Available £3,056.19</div></div>
+          <div class="bal"><div class="b1">£3,241.19</div></div>
+        </div>
+        <div class="acct">
+          <div class="ic ic-sav">&#127793;</div>
+          <div class="nm"><div class="n1">Savings Pot</div><div class="n2">Holiday fund · 4.10% AER</div></div>
+          <div class="bal"><div class="b1">£18,750.00</div></div>
+        </div>
+        <div class="acct">
+          <div class="ic ic-cc">&#128142;</div>
+          <div class="nm"><div class="n1">Ada Credit Card</div><div class="n2">•••• 8820 · Due 28 Jul</div></div>
+          <div class="bal"><div class="b1 neg">−£1,807.67</div><div class="b2">Limit £5,000</div></div>
+        </div>
+        <div class="acct">
+          <div class="ic ic-joint">&#128101;</div>
+          <div class="nm"><div class="n1">Joint Account</div><div class="n2">•••• 2093 · with A. Kirk</div></div>
+          <div class="bal"><div class="b1">£4,000.00</div></div>
+        </div>
+
+        <div class="divide"></div>
+        <div class="sec"><div class="t">Recent activity</div><div class="a">History</div></div>
+
+        <div class="tx">
+          <div class="tc">&#127909;</div>
+          <div class="td"><div class="t1">StreamFlix</div><div class="t2">Subscription · Today, 08:12</div></div>
+          <div class="tv out">−£17.99</div>
+        </div>
+        <div class="tx">
+          <div class="tc">&#9749;</div>
+          <div class="td"><div class="t1">Blackbird Coffee</div><div class="t2">Card · Today, 07:48</div></div>
+          <div class="tv out">−£4.20</div>
+        </div>
+        <div class="tx">
+          <div class="tc">&#128176;</div>
+          <div class="td"><div class="t1">Salary — Acme Ltd</div><div class="t2">Faster Payment · Yesterday</div></div>
+          <div class="tv in">+£3,120.00</div>
+        </div>
+        <div class="tx">
+          <div class="tc">&#128722;</div>
+          <div class="td"><div class="t1">Waitrose</div><div class="t2">Card · Yesterday, 18:03</div></div>
+          <div class="tv out">−£62.41</div>
+        </div>
+
+        <div class="footnote">Ada Banking is a demonstration app · Powered by Ada</div>
+      </div>
+
+      <!-- ===== proactive card ===== -->
+      <div class="proactive" id="proactive">
+        <button class="px" onclick="dismissProactive()">&times;</button>
+        <div class="pav">a</div>
+        <div class="pt">
+          <div class="pn">Ada</div>
+          <div class="pm">Hi Richard — I can help with payments, transactions, settlements or your account. Anything I can look into?</div>
+          <button class="pcta" onclick="openAdaChat()">Chat with Ada</button>
+        </div>
+      </div>
+
+      <!-- bottom tab bar (menu) -->
+      <div class="tabbar">
+        <div class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</div>
+        <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payments</div>
+        <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="1" y="4" width="22" height="16" rx="3"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Cards</div>
+        <div class="tb" id="supportTab" onclick="openAdaChat()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          Support
+          <span class="dot" id="supportDot"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Show the proactive nudge shortly after load
+  var proTimer = setTimeout(function(){
+    document.getElementById('proactive').classList.add('show');
+  }, 2600);
+
+  function dismissProactive(){
+    document.getElementById('proactive').classList.remove('show');
+    clearTimeout(proTimer);
+  }
+
+  // Open the LIVE Ada agent (demo-rkirk-fintech) via the Ada Frontend API.
+  // Lazy embed: start() once (passing customer context), then toggle() to open.
+  var adaStarted = false;
+  function ensureAdaStarted(){
+    return new Promise(function(resolve){
+      if (adaStarted){ resolve(); return; }
+      (function wait(n){
+        if (window.adaEmbed && typeof window.adaEmbed.start === 'function'){
+          window.adaEmbed.start({
+            handle: "demo-rkirk-fintech",
+            lazy: true,
+            metaFields: { name: "Richard Kirk", segment: "Retail", channel: "Ada Banking Mobile" }
+          }).then(function(){ adaStarted = true; resolve(); })
+            .catch(function(){ adaStarted = true; resolve(); });
+        } else if (n < 40){ setTimeout(function(){ wait(n+1); }, 150); }
+        else { resolve(); }
+      })(0);
+    });
+  }
+  function openAdaChat(){
+    dismissProactive();
+    var dot = document.getElementById('supportDot'); if(dot) dot.style.display='none';
+    ensureAdaStarted().then(function(){
+      if (window.adaEmbed && typeof window.adaEmbed.toggle === 'function') window.adaEmbed.toggle();
+    });
+  }
+</script>
+<!-- Hide the default Ada launcher so only our in-app entry points open chat -->
+<style>#ada-button-frame, iframe#ada-button-frame { display:none !important; }</style>
+
+<!-- ============================================================ -->
+<!-- REAL Ada AI Agent widget — demo-rkirk-fintech                -->
+<!-- Live bot. Opens over the app when Support / proactive tapped. -->
+<!-- ============================================================ -->
+<script id="__ada" data-handle="demo-rkirk-fintech" data-lazy src="https://static.ada.support/embed2.js"></script>
+</body>
+</html>
