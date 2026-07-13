@@ -459,10 +459,13 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
       if (window.adaEmbed && typeof window.adaEmbed.toggle === 'function') window.adaEmbed.toggle();
     });
   }
+
+  // Start the embed on load so the standard Ada web SDK launcher shows bottom-right.
+  // (Our "Ask Ada" / proactive buttons still open it via toggle.)
+  ensureAdaStarted();
 </script>
 
-<!-- Hide the default Ada launcher — the app's own UI opens chat -->
-<style>#ada-button-frame, iframe#ada-button-frame{ display:none !important; }</style>
+<!-- Default Ada web SDK launcher is shown (bottom-right). Custom buttons open it too. -->
 
 <!-- ============================================================ -->
 <!-- REAL Ada AI Agent widget — demo-rkirk-fintech (live)         -->
