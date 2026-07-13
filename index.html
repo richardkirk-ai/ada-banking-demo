@@ -412,17 +412,6 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
   </main>
 </div>
 
-<!-- proactive toast -->
-<div class="toast" id="toast">
-  <button class="tx-close" onclick="dismissToast()">&times;</button>
-  <div class="tav">a</div>
-  <div class="tt">
-    <div class="tn">Ada · now</div>
-    <div class="tm">Hi Richard — I noticed a payment that may need attention. Want me to take a look?</div>
-    <button class="tcta" onclick="openAdaChat()">Chat with Ada</button>
-  </div>
-</div>
-
 <div class="viewswitch">
   <a class="on" href="index.html">Web</a>
   <a href="app.html">Mobile</a>
@@ -430,10 +419,6 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
 </div>
 
 <script>
-  // ---- Proactive notification: show a toast a few seconds after load ----
-  var toastTimer = setTimeout(function(){ document.getElementById('toast').classList.add('show'); }, 3800);
-  function dismissToast(){ document.getElementById('toast').classList.remove('show'); clearTimeout(toastTimer); }
-
   // ---- Ada Frontend API: open the LIVE demo-rkirk-fintech agent ----
   // Lazy embed: start() once (passing customer context), then toggle() to open.
   var adaStarted = false;
@@ -454,7 +439,6 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
     });
   }
   function openAdaChat(){
-    dismissToast();
     var b = document.getElementById('adaNavBadge'); if(b) b.style.display='none';
     ensureAdaStarted().then(function(){
       if (window.adaEmbed && typeof window.adaEmbed.toggle === 'function') window.adaEmbed.toggle();
