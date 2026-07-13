@@ -123,6 +123,63 @@
   .tb.on{color:#b9aaff}
   .tb svg{width:22px;height:22px}
   .tb .dot{position:absolute;top:-3px;right:-8px;width:9px;height:9px;border-radius:50%;background:var(--neg);border:2px solid #0a0912}
+
+  /* ===== in-app chat sheet (renders inside the phone) ===== */
+  .chat-scrim{position:absolute;inset:0;z-index:70;background:rgba(6,5,16,.45);
+              backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+              opacity:0;pointer-events:none;transition:opacity .3s}
+  .chat-scrim.open{opacity:1;pointer-events:auto}
+
+  .chat-sheet{position:absolute;left:0;right:0;bottom:0;height:75%;z-index:72;
+              display:flex;flex-direction:column;
+              background:rgba(23,21,35,.80);
+              backdrop-filter:blur(24px) saturate(1.35);-webkit-backdrop-filter:blur(24px) saturate(1.35);
+              border-top:1px solid rgba(255,255,255,.12);border-radius:28px 28px 0 0;
+              box-shadow:0 -18px 55px rgba(0,0,0,.55);
+              transform:translateY(106%);transition:transform .40s cubic-bezier(.32,1.02,.4,1)}
+  .chat-sheet.open{transform:translateY(0)}
+  .grabber{width:38px;height:5px;border-radius:3px;background:rgba(255,255,255,.30);margin:9px auto 2px;flex:0 0 auto}
+
+  .chat-head{display:flex;align-items:center;gap:11px;padding:6px 16px 12px;flex:0 0 auto;border-bottom:1px solid rgba(255,255,255,.08)}
+  .chat-head .cav{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:17px;flex:0 0 auto}
+  .chat-head .ct{flex:1}
+  .chat-head .ct .t1{font-size:15px;font-weight:700}
+  .chat-head .ct .t2{font-size:11.5px;color:#a9a5c0;display:flex;align-items:center;gap:5px;margin-top:1px}
+  .chat-head .ct .t2 i{width:7px;height:7px;border-radius:50%;background:#22c58b;display:inline-block}
+  .chat-head .cx{background:rgba(255,255,255,.09);border:0;color:#d7d4e8;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;line-height:1;flex:0 0 auto}
+  .chat-head .cx:hover{background:rgba(255,255,255,.18)}
+
+  .chat-body{flex:1;overflow-y:auto;padding:12px 15px 4px;display:flex;flex-direction:column;gap:9px}
+  .chat-body::-webkit-scrollbar{display:none}
+  .cmsg{max-width:86%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.45}
+  .cbot{align-self:flex-start;background:rgba(255,255,255,.13);color:#f2f0fb;border-bottom-left-radius:5px}
+  .cuser{align-self:flex-end;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-bottom-right-radius:5px}
+  .ctyping{align-self:flex-start;background:rgba(255,255,255,.13);border-radius:16px;padding:12px 14px;display:flex;gap:4px}
+  .ctyping span{width:7px;height:7px;border-radius:50%;background:#b9aaff;animation:cblink 1.2s infinite}
+  .ctyping span:nth-child(2){animation-delay:.2s}.ctyping span:nth-child(3){animation-delay:.4s}
+  @keyframes cblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+  .cconfirm{align-self:flex-start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:12px 13px;max-width:90%}
+  .cconfirm .cc-t{font-size:11px;color:#a9a5c0;text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+  .cconfirm .cc-r{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:13px;color:#d7d4e8}
+  .cconfirm .cc-r b{color:#f2f0fb}
+  .cconfirm .cc-amt{font-size:20px;font-weight:800;margin:8px 0 2px}
+  .cconfirm .cc-btn{width:100%;margin-top:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border:0;border-radius:9px;padding:9px;font-size:13px;font-weight:700;cursor:pointer}
+
+  .chat-chips{display:flex;flex-wrap:wrap;gap:7px;padding:8px 15px 2px;flex:0 0 auto}
+  .chat-chip{background:rgba(123,77,255,.15);border:1px solid rgba(150,120,255,.5);color:#c9b8ff;border-radius:999px;padding:8px 12px;font-size:12.5px;cursor:pointer}
+  .chat-chip:hover{background:rgba(123,77,255,.30)}
+
+  .chat-input{display:flex;gap:8px;padding:12px 13px 18px;flex:0 0 auto}
+  .chat-input input{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:11px 15px;font-size:14px;color:#fff;outline:none}
+  .chat-input input::placeholder{color:#8b88a0}
+  .chat-input input:focus{border-color:var(--brand-2)}
+  .chat-input button{background:linear-gradient(135deg,var(--brand-2),var(--brand));border:0;color:#fff;border-radius:50%;width:42px;height:42px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+
+  .app-toast{position:absolute;left:50%;top:62px;transform:translate(-50%,-12px);z-index:85;background:#12b76a;color:#fff;
+             padding:10px 16px;border-radius:11px;font-size:13.5px;font-weight:600;box-shadow:0 10px 26px rgba(0,0,0,.45);
+             opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
+  .app-toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
@@ -130,7 +187,7 @@
     <a href="index.html">Web</a>
     <a class="on" href="app.html">Mobile</a>
   </div>
-  <div class="hint">Tap <b>Support</b> (bottom-right) or the proactive card to open the live Ada agent &rarr;</div>
+  <div class="hint">Tap <b>Support</b> (bottom-right) or the proactive card to open the in-app chat &rarr;</div>
 
   <div class="phone">
     <div class="island"></div>
@@ -236,7 +293,7 @@
         <div class="pt">
           <div class="pn">Ada</div>
           <div class="pm">Hi Richard — I can help with payments, transactions, settlements or your account. Anything I can look into?</div>
-          <button class="pcta" onclick="openAdaChat()">Chat with Ada</button>
+          <button class="pcta" onclick="openChat()">Chat with Ada</button>
         </div>
       </div>
 
@@ -245,11 +302,34 @@
         <div class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</div>
         <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payments</div>
         <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="1" y="4" width="22" height="16" rx="3"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Cards</div>
-        <div class="tb" id="supportTab" onclick="openAdaChat()">
+        <div class="tb" id="supportTab" onclick="openChat()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           Support
           <span class="dot" id="supportDot"></span>
         </div>
+      </div>
+
+      <!-- ===== in-app chat (renders inside the phone) ===== -->
+      <div class="app-toast" id="appToast">&#10003; Done</div>
+      <div class="chat-scrim" id="chatScrim" onclick="closeChat()"></div>
+      <div class="chat-sheet" id="chatSheet">
+        <div class="grabber"></div>
+        <div class="chat-head">
+          <div class="cav">a</div>
+          <div class="ct">
+            <div class="t1">Ada Banking Assistant</div>
+            <div class="t2"><i></i> Online &middot; replies instantly</div>
+          </div>
+          <button class="cx" onclick="closeChat()">&times;</button>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-chips" id="chatChips"></div>
+        <form class="chat-input" onsubmit="onSend(event)">
+          <input id="chatText" placeholder="Message Ada&hellip;" autocomplete="off">
+          <button type="submit" aria-label="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -265,40 +345,96 @@
     clearTimeout(proTimer);
   }
 
-  // Open the LIVE Ada agent (demo-rkirk-fintech) via the Ada Frontend API.
-  // Lazy embed: start() once (passing customer context), then toggle() to open.
-  var adaStarted = false;
-  function ensureAdaStarted(){
-    return new Promise(function(resolve){
-      if (adaStarted){ resolve(); return; }
-      (function wait(n){
-        if (window.adaEmbed && typeof window.adaEmbed.start === 'function'){
-          window.adaEmbed.start({
-            handle: "demo-rkirk-fintech",
-            lazy: true,
-            metaFields: { name: "Richard Kirk", segment: "Retail", channel: "Ada Banking Mobile" }
-          }).then(function(){ adaStarted = true; resolve(); })
-            .catch(function(){ adaStarted = true; resolve(); });
-        } else if (n < 40){ setTimeout(function(){ wait(n+1); }, 150); }
-        else { resolve(); }
-      })(0);
-    });
-  }
-  function openAdaChat(){
+  // ===== In-app chat (self-contained mockup — renders inside the phone) =====
+  var body, chipsBar, greeted = false;
+
+  function openChat(){
     dismissProactive();
     var dot = document.getElementById('supportDot'); if(dot) dot.style.display='none';
-    ensureAdaStarted().then(function(){
-      if (window.adaEmbed && typeof window.adaEmbed.toggle === 'function') window.adaEmbed.toggle();
+    document.getElementById('chatScrim').classList.add('open');
+    document.getElementById('chatSheet').classList.add('open');
+    body = document.getElementById('chatBody');
+    chipsBar = document.getElementById('chatChips');
+    if(!greeted){ greeted = true; setTimeout(greet, 300); }
+  }
+  function closeChat(){
+    document.getElementById('chatScrim').classList.remove('open');
+    document.getElementById('chatSheet').classList.remove('open');
+  }
+
+  function scrollDown(){ body.scrollTop = body.scrollHeight; }
+  function addUser(t){ var d=document.createElement('div'); d.className='cmsg cuser'; d.textContent=t; body.appendChild(d); scrollDown(); }
+  function addBot(html){ var d=document.createElement('div'); d.className='cmsg cbot'; d.innerHTML=html; body.appendChild(d); scrollDown(); return d; }
+  function typing(){ var d=document.createElement('div'); d.className='ctyping'; d.innerHTML='<span></span><span></span><span></span>'; body.appendChild(d); scrollDown(); return d; }
+  function botAfter(delay,html,cb){ var t=typing(); setTimeout(function(){ t.remove(); addBot(html); if(cb)cb(); }, delay); }
+  function setChips(list){ chipsBar.innerHTML=''; list.forEach(function(c){ var b=document.createElement('button'); b.className='chat-chip'; b.textContent=c.label; b.onclick=c.fn; chipsBar.appendChild(b); }); }
+  function appToast(msg){ var t=document.getElementById('appToast'); t.innerHTML='&#10003; '+msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3000); }
+
+  function greet(){
+    addBot("Hi Richard &#128075; I'm your Ada Banking assistant. I can help with payments, cards, transactions and your accounts. What can I do for you?");
+    defaultChips();
+  }
+  function defaultChips(){
+    setChips([
+      {label:"Why did StreamFlix cost more?", fn:flowStreamflix},
+      {label:"Move £500 to Savings", fn:flowTransfer},
+      {label:"Freeze my card", fn:flowFreeze},
+      {label:"Talk to someone", fn:flowAgent}
+    ]);
+  }
+
+  function flowStreamflix(){
+    addUser("Why did StreamFlix cost more this month?"); chipsBar.innerHTML='';
+    botAfter(1100,"I checked your recent card payments. Your <b>StreamFlix</b> subscription went from <b>£12.99</b> to <b>£17.99</b> on 1 July &mdash; this matches StreamFlix's published price increase, so it isn't a duplicate or an error on your account.",function(){
+      botAfter(1000,"Want me to set a heads-up alert for future subscription price rises, or help you cancel StreamFlix?",function(){
+        setChips([
+          {label:"Set price-rise alerts", fn:function(){ addUser("Set price-rise alerts"); chipsBar.innerHTML=''; botAfter(900,"Done &mdash; I'll now notify you whenever a recurring payment rises by more than 10%. &#128276;",function(){ appToast("Price-rise alerts on"); botAfter(700,"Anything else I can help with?",defaultChips); }); }},
+          {label:"No, that's all", fn:function(){ addUser("No, that's all"); chipsBar.innerHTML=''; botAfter(700,"Great &mdash; glad I could clear that up. I'm here whenever you need me.",defaultChips); }}
+        ]);
+      });
     });
   }
-</script>
-<!-- Hide the default Ada launcher so only our in-app entry points open chat -->
-<style>#ada-button-frame, iframe#ada-button-frame { display:none !important; }</style>
 
-<!-- ============================================================ -->
-<!-- REAL Ada AI Agent widget — demo-rkirk-fintech                -->
-<!-- Live bot. Opens over the app when Support / proactive tapped. -->
-<!-- ============================================================ -->
-<script id="__ada" data-handle="demo-rkirk-fintech" data-lazy src="https://static.ada.support/embed2.js"></script>
+  function flowTransfer(){
+    addUser("Move £500 to my Savings Pot"); chipsBar.innerHTML='';
+    botAfter(1100,"Sure &mdash; here's the transfer I'll set up. Just confirm and it's done:"+
+      "<div class='cconfirm'><div class='cc-t'>Transfer</div>"+
+      "<div class='cc-r'><span>From</span><b>Everyday Current &bull;&bull;&bull;&bull; 4471</b></div>"+
+      "<div class='cc-r'><span>To</span><b>Savings Pot</b></div>"+
+      "<div class='cc-amt'>£500.00</div>"+
+      "<button class='cc-btn' onclick='confirmTransfer()'>Confirm transfer</button></div>");
+  }
+  function confirmTransfer(){
+    addUser("Confirm"); chipsBar.innerHTML='';
+    botAfter(1000,"&#9989; Done &mdash; <b>£500.00</b> moved from Everyday Current to your Savings Pot. Your new Savings balance is <b>£19,250.00</b>, and you're now <b>£250</b> closer to your Holiday fund goal.",function(){ appToast("£500 moved to Savings Pot"); botAfter(700,"Anything else?",defaultChips); });
+  }
+
+  function flowFreeze(){
+    addUser("Freeze my card"); chipsBar.innerHTML='';
+    botAfter(1100,"For your security I've frozen your <b>Ada Credit Card &bull;&bull;&bull;&bull; 8820</b> &#128274; &mdash; no new payments will be authorised. Existing subscriptions and refunds still work. You can unfreeze it anytime from <b>Cards</b>, or just ask me.",function(){ appToast("Card &bull;&bull;&bull;&bull; 8820 frozen"); botAfter(800,"Would you like to report it lost, or is this just a precaution?",function(){
+      setChips([
+        {label:"Just a precaution", fn:function(){ addUser("Just a precaution"); chipsBar.innerHTML=''; botAfter(800,"No problem &mdash; it'll stay frozen until you unfreeze it. Stay safe! &#128077;",defaultChips); }},
+        {label:"Report it lost", fn:flowAgent}
+      ]);
+    }); });
+  }
+
+  function flowAgent(){
+    addUser("Talk to someone"); chipsBar.innerHTML='';
+    botAfter(1100,"Of course. I'll connect you with a member of our support team. I'll pass along this conversation and your account context, so you won't need to repeat anything.",function(){ botAfter(900,"A specialist will be with you shortly &mdash; the typical wait is under 2 minutes.",defaultChips); });
+  }
+
+  function onSend(e){
+    e.preventDefault();
+    var input=document.getElementById('chatText'); var t=input.value.trim(); if(!t) return;
+    input.value=''; addUser(t); chipsBar.innerHTML='';
+    var s=t.toLowerCase();
+    if(/(streamflix|subscription|charged|more|price|increase)/.test(s)){ botAfter(1000,"I checked &mdash; your StreamFlix subscription rose from £12.99 to £17.99 on 1 July, matching their published price change. Want me to set alerts for future increases?",defaultChips); return; }
+    if(/(move|transfer|savings|save|top up|pot)/.test(s)){ flowTransfer(); return; }
+    if(/(freeze|lost|stolen|block|card)/.test(s)){ flowFreeze(); return; }
+    if(/(agent|human|someone|advisor|call|speak|talk)/.test(s)){ flowAgent(); return; }
+    botAfter(1000,"Good question &mdash; I can help with payments, transfers, cards, subscriptions and your accounts. Could you tell me a little more about what you need?",defaultChips);
+  }
+</script>
 </body>
 </html>
