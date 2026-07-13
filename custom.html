@@ -185,17 +185,40 @@
   .cc-head .cc-t{flex:1;color:#fff}
   .cc-head .cc-t .n1{font-size:14px;font-weight:700}
   .cc-head .cc-t .n2{font-size:11.5px;color:rgba(255,255,255,.62);display:flex;align-items:center;gap:5px;margin-top:1px}
-  .cc-head .cc-t .n2 i{width:7px;height:7px;border-radius:50%;background:#f5a623;display:inline-block}
+  .cc-head .cc-t .n2 i{width:7px;height:7px;border-radius:50%;background:#12B76A;display:inline-block}
   .cc-head .cc-x{background:rgba(255,255,255,.14);border:0;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1;flex:0 0 auto}
   .cc-head .cc-x:hover{background:rgba(255,255,255,.26)}
-  .cc-body{flex:1;overflow-y:auto;padding:22px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;background:var(--bg)}
-  .cc-body .ph-ic{width:60px;height:60px;border-radius:16px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;font-size:28px}
-  .cc-body .ph-t{font-size:15px;font-weight:700;color:var(--brand-navy)}
-  .cc-body .ph-d{font-size:13px;color:var(--muted);line-height:1.5;max-width:255px}
-  .cc-body .ph-badge{font-size:11px;font-weight:700;color:var(--brand);background:#EFE9FF;border-radius:999px;padding:4px 11px}
+  .cc-body{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
+  .cc-body::-webkit-scrollbar{width:0}
+  .ccmsg{max-width:86%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.45}
+  .ccbot{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
+  .ccuser{align-self:flex-end;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-bottom-right-radius:4px}
+  .cctyping{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;gap:4px}
+  .cctyping span{width:6px;height:6px;border-radius:50%;background:#b9aaff;animation:ccblink 1.2s infinite}
+  .cctyping span:nth-child(2){animation-delay:.2s}.cctyping span:nth-child(3){animation-delay:.4s}
+  @keyframes ccblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  .ccblock{align-self:stretch;margin:2px 0}
+  .cccards{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .cccards::-webkit-scrollbar{height:0}
+  .cccard{flex:0 0 166px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(40,20,90,.05)}
+  .cccard .sc-term{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px}
+  .cccard .sc-name{font-size:13px;font-weight:700;color:var(--brand-navy);margin-top:1px}
+  .cccard .sc-rate{font-size:25px;font-weight:800;color:var(--brand-navy);margin:8px 0 0;line-height:1}
+  .cccard .sc-rate span{font-size:11px;font-weight:600;color:var(--muted);margin-left:4px}
+  .cccard .sc-sub{font-size:11px;color:var(--muted);margin-top:3px}
+  .cccard ul{list-style:none;margin:10px 0 12px;padding:0;flex:1}
+  .cccard li{font-size:10.5px;color:#4a4760;padding:2px 0 2px 15px;position:relative;line-height:1.35}
+  .cccard li::before{content:"\2713";position:absolute;left:0;color:var(--pos);font-weight:700}
+  .cccard .sc-btn{background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border:0;border-radius:9px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;width:100%}
+  .cccard .sc-btn:hover{filter:brightness(1.06)}
+  .cc-chips{display:flex;flex-wrap:wrap;gap:7px;padding:6px 14px 2px;flex:0 0 auto;background:var(--bg)}
+  .cc-chip{background:#fff;border:1.5px solid var(--brand);color:var(--brand);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}
+  .cc-chip:hover{background:#f1eefb}
   .cc-input{display:flex;gap:8px;padding:11px 12px;border-top:1px solid var(--line);flex:0 0 auto;background:#fff}
-  .cc-input input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:13.5px;outline:none;background:#faf8fe;color:#9a97ad}
-  .cc-input button{background:var(--brand);border:0;color:#fff;border-radius:50%;width:40px;height:40px;cursor:not-allowed;opacity:.55;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .cc-input input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:13.5px;outline:none;background:#faf8fe;color:var(--ink)}
+  .cc-input input:focus{border-color:var(--brand)}
+  .cc-input button{background:var(--brand);border:0;color:#fff;border-radius:50%;width:40px;height:40px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .cc-input button:hover{background:var(--brand-dk)}
   .cc-foot{text-align:center;font-size:10.5px;color:var(--muted);padding:7px;background:#FBFAFE;border-top:1px solid var(--line)}
 </style>
 </head>
@@ -368,24 +391,24 @@
         <!-- DEV / FRONTEND API CALLOUT -->
         <div class="dev-callout" id="devCallout">
           <div class="dev-head" onclick="document.getElementById('devCallout').classList.toggle('open')">
-            <div class="dt"><span class="tag">SE</span> Custom chat experience (no Ada Web SDK) — placeholder</div>
+            <div class="dt"><span class="tag">SE</span> Custom chat frontend — no Ada Web SDK (scripted)</div>
             <div class="chev">▾</div>
           </div>
           <div class="dev-body">
-<pre><span class="cmt">// This page does NOT load static.ada.support/embed2.js.</span>
-<span class="cmt">// Instead we render our own chat UI and (later) drive it</span>
-<span class="cmt">// through a custom backend / the Ada Conversations API.</span>
+<pre><span class="cmt">// This page loads NO static.ada.support/embed2.js — it's a</span>
+<span class="cmt">// fully custom chat UI with a scripted conversation engine.</span>
 
 <span class="cmt">// 1 · Open our custom panel from any UI element</span>
 button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
 
-<span class="cmt">// 2 · TODO — wire the panel to a conversation backend:</span>
-<span class="cmt">//     • POST message  → get bot reply</span>
-<span class="cmt">//     • stream/poll responses, render bubbles</span>
-<span class="cmt">//     • pass customer context (name, segment, …)</span>
-<span class="cmt">//     • trigger proactive messages on events</span>
+<span class="cmt">// 2 · Scripted replies drive the demo today:</span>
+<span class="kw">ccAfter</span>(delay, <span class="str">"bot message"</span>, next);   <span class="cmt">// typing + reply</span>
+<span class="kw">ccOpen</span>(bond, amount);              <span class="cmt">// live savings calc vs 1%</span>
 
-<span class="cmt">// For now the panel is a visual placeholder only.</span></pre>
+<span class="cmt">// 3 · Going LIVE with the Ada Conversations API needs a</span>
+<span class="cmt">//     backend relay (server-to-server API + webhook replies;</span>
+<span class="cmt">//     no browser CORS). Swap ccAfter()'s scripted text for a</span>
+<span class="cmt">//     fetch() to that relay — the UI layer stays identical.</span></pre>
           </div>
         </div>
       </div>
@@ -463,24 +486,20 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
   <div class="cc-head">
     <div class="cc-av">a</div>
     <div class="cc-t">
-      <div class="n1">Ada Banking — Custom Chat</div>
-      <div class="n2"><i></i> Placeholder · not yet connected</div>
+      <div class="n1">Ada Banking Assistant</div>
+      <div class="n2"><i></i> Online &middot; custom chat</div>
     </div>
     <button class="cc-x" onclick="closeCustomChat()" aria-label="Close">&times;</button>
   </div>
-  <div class="cc-body">
-    <div class="ph-ic">&#128736;&#65039;</div>
-    <div class="ph-t">Custom chat experience</div>
-    <div class="ph-d">A placeholder for a fully custom chat UI &mdash; this page loads <b>no</b> Ada Web SDK. We'll build it out and connect it to a chat backend next.</div>
-    <div class="ph-badge">Coming soon</div>
-  </div>
-  <div class="cc-input">
-    <input type="text" placeholder="Chat coming soon&hellip;" disabled>
-    <button type="button" aria-label="Send" disabled>
+  <div class="cc-body" id="ccMsgs"></div>
+  <div class="cc-chips" id="ccChips"></div>
+  <form class="cc-input" onsubmit="ccSend(event)">
+    <input id="ccText" type="text" placeholder="Message Ada&hellip;" autocomplete="off">
+    <button type="submit" aria-label="Send">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
-  </div>
-  <div class="cc-foot">Custom experience &middot; Ada Banking</div>
+  </form>
+  <div class="cc-foot">Custom frontend &middot; scripted demo</div>
 </div>
 
 <div class="viewswitch">
@@ -494,18 +513,113 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
   var toastTimer = setTimeout(function(){ document.getElementById('toast').classList.add('show'); }, 3800);
   function dismissToast(){ document.getElementById('toast').classList.remove('show'); clearTimeout(toastTimer); }
 
-  // ---- Custom chat experience (PLACEHOLDER) ----
-  // This page deliberately does NOT load the Ada Web SDK. Instead it opens a
-  // custom-built chat panel that we'll wire to a custom backend later.
+  // ---- Custom chat experience ----
+  // This page loads NO Ada Web SDK. It's a fully custom frontend with a
+  // scripted conversation engine (a live build would swap ccAfter()/scripted
+  // replies for a backend relay to the Ada Conversations API).
   function openCustomChat(){
     dismissToast();
     var b = document.getElementById('adaNavBadge'); if(b) b.style.display='none';
     document.getElementById('customChat').classList.add('open');
     document.getElementById('customLauncher').classList.add('hidden');
+    ccInit();
   }
   function closeCustomChat(){
     document.getElementById('customChat').classList.remove('open');
     document.getElementById('customLauncher').classList.remove('hidden');
+  }
+
+  // ===== Custom scripted chat engine =====
+  var ccBody, ccChips, ccGreeted = false, ccPending = null;
+  // Ada Fixed Rate Bond rates from KB: "Ada Fixed Rate Bond — savings rates, terms and features"
+  var CC_BONDS = [
+    { id:1, years:1, term:"12 months", rate:4.40 },
+    { id:2, years:2, term:"24 months", rate:4.25 },
+    { id:3, years:3, term:"36 months", rate:4.15 }
+  ];
+  var CC_CURRENT = 1.0; // assumed Everyday Current interest rate (%)
+
+  function ccInit(){
+    ccBody = document.getElementById('ccMsgs');
+    ccChips = document.getElementById('ccChips');
+    if(!ccGreeted){ ccGreeted = true; setTimeout(ccGreet, 300); }
+  }
+  function ccScroll(){ ccBody.scrollTop = ccBody.scrollHeight; }
+  function ccUser(t){ var d=document.createElement('div'); d.className='ccmsg ccuser'; d.textContent=t; ccBody.appendChild(d); ccScroll(); }
+  function ccBot(html){ var d=document.createElement('div'); d.className='ccmsg ccbot'; d.innerHTML=html; ccBody.appendChild(d); ccScroll(); return d; }
+  function ccBlock(html){ var d=document.createElement('div'); d.className='ccblock'; d.innerHTML=html; ccBody.appendChild(d); ccScroll(); return d; }
+  function ccTyping(){ var d=document.createElement('div'); d.className='cctyping'; d.innerHTML='<span></span><span></span><span></span>'; ccBody.appendChild(d); ccScroll(); return d; }
+  function ccAfter(delay,html,cb){ var t=ccTyping(); setTimeout(function(){ t.remove(); ccBot(html); if(cb)cb(); }, delay); }
+  function ccSetChips(list){ ccChips.innerHTML=''; list.forEach(function(c){ var b=document.createElement('button'); b.className='cc-chip'; b.textContent=c.label; b.onclick=c.fn; ccChips.appendChild(b); }); }
+  function ccFmt(n){ return "£" + n.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  function ccGreet(){
+    ccBot("Hi Richard &#128075; I'm your Ada Banking assistant. How can I help today?");
+    ccDefault();
+  }
+  function ccDefault(){
+    ccSetChips([
+      {label:"Explore savings options", fn:ccStartBonds},
+      {label:"Why did StreamFlix cost more?", fn:ccStreamflix},
+      {label:"Freeze my card", fn:ccFreeze},
+      {label:"Talk to someone", fn:ccAgent}
+    ]);
+  }
+  function ccDecline(){ ccUser("No thanks"); ccChips.innerHTML=''; ccAfter(700,"No problem. Is there anything else I can help you with?",ccDefault); }
+
+  function ccCard(b){
+    return "<div class='cccard'>"+
+      "<div class='sc-term'>"+b.years+"-Year</div><div class='sc-name'>Fixed Rate Bond</div>"+
+      "<div class='sc-rate'>"+b.rate.toFixed(2)+"%<span>AER</span></div>"+
+      "<div class='sc-sub'>Fixed for "+b.term+"</div>"+
+      "<ul><li>Rate guaranteed for the full term</li><li>Interest paid monthly or annually</li><li>Minimum deposit £1,000</li><li>FSCS protected to £85,000</li></ul>"+
+      "<button class='sc-btn' onclick='ccApply("+b.id+")'>Apply now</button></div>";
+  }
+  function ccStartBonds(){
+    ccUser("Explore savings options"); ccChips.innerHTML='';
+    ccAfter(1000,"You could earn a higher rate of interest by moving some of your Everyday Current balance into a fixed-rate savings account. Here are our current <b>Ada Fixed Rate Bonds</b> &mdash; a longer term locks in today's rate for longer. Tap <b>Apply now</b> on the one that suits you:",function(){
+      ccBlock("<div class='cccards'>"+CC_BONDS.map(ccCard).join('')+"</div>");
+    });
+  }
+  function ccApply(id){
+    var b=null; for(var i=0;i<CC_BONDS.length;i++){ if(CC_BONDS[i].id===id) b=CC_BONDS[i]; }
+    if(!b) return;
+    ccPending = b;
+    ccUser("Apply now &mdash; "+b.years+"-Year Fixed Rate Bond"); ccChips.innerHTML='';
+    ccAfter(1000,"Great choice &mdash; the <b>"+b.years+"-Year Fixed Rate Bond at "+b.rate.toFixed(2)+"% AER</b>. How much would you like to open it with? Type an amount to start your application (minimum £1,000).");
+  }
+  function ccOpen(b, amount){
+    var y1 = amount * b.rate/100, c1 = amount * CC_CURRENT/100, e1 = y1 - c1;
+    var bt = amount * (Math.pow(1 + b.rate/100, b.years) - 1);
+    var ct = amount * (Math.pow(1 + CC_CURRENT/100, b.years) - 1);
+    var et = bt - ct;
+    ccAfter(1100,"&#9989; All set &mdash; your new <b>"+b.years+"-Year Fixed Rate Bond</b> has been opened with <b>"+ccFmt(amount)+"</b>, fixed at <b>"+b.rate.toFixed(2)+"% AER</b> for "+b.term+".",function(){
+      ccAfter(1300,"Here's what that's worth: in the first year you'll earn about <b>"+ccFmt(y1)+"</b> in interest &mdash; versus roughly <b>"+ccFmt(c1)+"</b> at your current "+CC_CURRENT+"% rate, so about <b>"+ccFmt(e1)+"</b> more this year. Over the full "+b.years+" year"+(b.years>1?"s":"")+", that's around <b>"+ccFmt(bt)+"</b> in interest &mdash; roughly <b>"+ccFmt(et)+"</b> more than leaving it in your Everyday Current account.",function(){
+        ccAfter(700,"Anything else I can help you with?",ccDefault);
+      });
+    });
+  }
+  function ccStreamflix(){ ccUser("Why did StreamFlix cost more?"); ccChips.innerHTML=''; ccAfter(1000,"Your <b>StreamFlix</b> subscription rose from <b>£12.99</b> to <b>£17.99</b> on 1 July &mdash; this matches their published price increase, not an error on your account. Want me to set alerts for future subscription price rises?",ccDefault); }
+  function ccFreeze(){ ccUser("Freeze my card"); ccChips.innerHTML=''; ccAfter(1000,"Your <b>Ada Credit Card &bull;&bull;&bull;&bull; 8820</b> is now frozen &#128274; &mdash; no new payments will be authorised. You can unfreeze it anytime from Cards, or just ask me.",ccDefault); }
+  function ccAgent(){ ccUser("Talk to someone"); ccChips.innerHTML=''; ccAfter(1000,"Of course &mdash; I'll connect you with our support team and pass along this conversation so you won't need to repeat anything. Typical wait is under 2 minutes.",ccDefault); }
+
+  function ccSend(e){
+    e.preventDefault();
+    var inp=document.getElementById('ccText'); var t=inp.value.trim(); if(!t) return;
+    inp.value=''; ccUser(t); ccChips.innerHTML='';
+    if(ccPending){
+      var amt = parseFloat(t.replace(/[^0-9.]/g,''));
+      if(isNaN(amt) || amt < 1000){ ccAfter(700,"The minimum opening deposit is <b>£1,000</b>. How much would you like to open it with?"); return; }
+      var b = ccPending; ccPending = null; ccOpen(b, amt); return;
+    }
+    var s=t.toLowerCase();
+    if(/(bond|save|saving|interest|rate|invest)/.test(s)){ ccStartBonds(); return; }
+    if(/(streamflix|subscription|charged|price)/.test(s)){ ccStreamflix(); return; }
+    if(/(freeze|lost|stolen|block|card)/.test(s)){ ccFreeze(); return; }
+    if(/(agent|human|someone|advisor|speak|talk)/.test(s)){ ccAgent(); return; }
+    ccAfter(900,"I can help with savings, subscriptions, cards and more. Would you like to see how to earn more on your balance?",function(){
+      ccSetChips([{label:"Show savings options", fn:ccStartBonds},{label:"No thanks", fn:ccDecline}]);
+    });
   }
 </script>
 </body>
