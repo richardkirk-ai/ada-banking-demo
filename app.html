@@ -176,6 +176,22 @@
   .chat-input input:focus{border-color:var(--brand-2)}
   .chat-input button{background:linear-gradient(135deg,var(--brand-2),var(--brand));border:0;color:#fff;border-radius:50%;width:42px;height:42px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
 
+  /* scrollable fixed-rate bond cards */
+  .cblock{align-self:stretch;margin:2px 0}
+  .savecards{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .savecards::-webkit-scrollbar{height:0}
+  .savecard{flex:0 0 168px;scroll-snap-align:start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:15px;padding:13px 13px 14px;display:flex;flex-direction:column}
+  .savecard .sc-term{font-size:11px;font-weight:700;color:#c9b8ff;text-transform:uppercase;letter-spacing:.6px}
+  .savecard .sc-name{font-size:13px;font-weight:700;color:#f2f0fb;margin-top:1px}
+  .savecard .sc-rate{font-size:27px;font-weight:800;color:#fff;margin:9px 0 0;line-height:1}
+  .savecard .sc-rate span{font-size:11px;font-weight:600;color:#a9a5c0;margin-left:4px}
+  .savecard .sc-sub{font-size:11px;color:#a9a5c0;margin-top:3px}
+  .savecard .sc-feat{list-style:none;margin:11px 0 13px;padding:0;flex:1}
+  .savecard .sc-feat li{font-size:10.5px;color:#d7d4e8;padding:2px 0 2px 15px;position:relative;line-height:1.35}
+  .savecard .sc-feat li::before{content:"\2713";position:absolute;left:0;color:#4ee0ac;font-weight:700}
+  .savecard .sc-btn{background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border:0;border-radius:9px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;width:100%}
+  .savecard .sc-btn:hover{filter:brightness(1.08)}
+
   .app-toast{position:absolute;left:50%;top:62px;transform:translate(-50%,-12px);z-index:85;background:#12b76a;color:#fff;
              padding:10px 16px;border-radius:11px;font-size:13.5px;font-weight:600;box-shadow:0 10px 26px rgba(0,0,0,.45);
              opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
@@ -188,7 +204,7 @@
     <a class="on" href="app.html">Mobile</a>
     <a href="custom.html">Custom</a>
   </div>
-  <div class="hint">A live Ada proactive fires on load · tap <b>Support</b> (bottom-right) for the in-app chat &rarr;</div>
+  <div class="hint">A proactive appears after 8s · tap it or <b>Support</b> (bottom-right) to open the in-app chat &rarr;</div>
 
   <div class="phone">
     <div class="island"></div>
@@ -287,6 +303,17 @@
         <div class="footnote">Ada Banking is a demonstration app · Powered by Ada</div>
       </div>
 
+      <!-- ===== proactive nudge (scripted, appears after 8s) ===== -->
+      <div class="proactive" id="proactive">
+        <button class="px" onclick="dismissProactive()">&times;</button>
+        <div class="pav">a</div>
+        <div class="pt">
+          <div class="pn">Ada</div>
+          <div class="pm">Your money could be working harder.</div>
+          <button class="pcta" onclick="openChat()">See how</button>
+        </div>
+      </div>
+
       <!-- bottom tab bar (menu) -->
       <div class="tabbar">
         <div class="tb on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</div>
@@ -295,7 +322,7 @@
         <div class="tb" id="supportTab" onclick="openChat()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
           Support
-          <span class="dot" id="supportDot"></span>
+          <span class="dot" id="supportDot" style="display:none"></span>
         </div>
       </div>
 
@@ -325,39 +352,31 @@
   </div>
 
 <script>
-  // ===== Real Ada proactive (Ada Web SDK, backend-configured campaign) =====
-  // Loads embed2.js below, starts it lazily, then fires the proactive on load.
-  var adaStarted = false;
-  function ensureAdaStarted(){
-    return new Promise(function(resolve){
-      if (adaStarted){ resolve(); return; }
-      (function wait(n){
-        if (window.adaEmbed && typeof window.adaEmbed.start === 'function'){
-          window.adaEmbed.start({
-            handle: "demo-rkirk-fintech",
-            lazy: true,
-            metaFields: { name: "Richard Kirk", segment: "Retail", channel: "Ada Banking Mobile" }
-          }).then(function(){ adaStarted = true; resolve(); })
-            .catch(function(){ adaStarted = true; resolve(); });
-        } else if (n < 40){ setTimeout(function(){ wait(n+1); }, 150); }
-        else { resolve(); }
-      })(0);
-    });
+  // ===== Scripted proactive nudge (self-contained) =====
+  // After 8s, reveal a proactive message from the Support icon + a red dot.
+  var proTimer = setTimeout(function(){
+    document.getElementById('proactive').classList.add('show');
+    var dot = document.getElementById('supportDot'); if(dot) dot.style.display='block';
+  }, 8000);
+  function dismissProactive(){
+    document.getElementById('proactive').classList.remove('show');
+    clearTimeout(proTimer);
   }
-  // Fire the backend-configured proactive campaign once the widget is ready.
-  ensureAdaStarted().then(function(){
-    setTimeout(function(){
-      if (window.adaEmbed && typeof window.adaEmbed.triggerProactive === 'function'){
-        window.adaEmbed.triggerProactive({ messageKey: "your_money_could_be_working_harder" })
-          .catch(function(){ /* campaign not published for this bot yet */ });
-      }
-    }, 1500);
-  });
 
   // ===== In-app chat (self-contained mockup — renders inside the phone) =====
-  var body, chipsBar, greeted = false;
+  var body, chipsBar, greeted = false, pendingApply = null;
+
+  // Ada Fixed Rate Bond products — rates from KB article
+  // "Ada Fixed Rate Bond — savings rates, terms and features (1, 2 and 3 years)"
+  var BONDS = [
+    { id:1, years:1, term:"12 months", rate:4.40 },
+    { id:2, years:2, term:"24 months", rate:4.25 },
+    { id:3, years:3, term:"36 months", rate:4.15 }
+  ];
+  var CURRENT_RATE = 1.0; // assumed Everyday Current interest rate (%)
 
   function openChat(){
+    dismissProactive();
     var dot = document.getElementById('supportDot'); if(dot) dot.style.display='none';
     document.getElementById('chatScrim').classList.add('open');
     document.getElementById('chatSheet').classList.add('open');
@@ -373,85 +392,93 @@
   function scrollDown(){ body.scrollTop = body.scrollHeight; }
   function addUser(t){ var d=document.createElement('div'); d.className='cmsg cuser'; d.textContent=t; body.appendChild(d); scrollDown(); }
   function addBot(html){ var d=document.createElement('div'); d.className='cmsg cbot'; d.innerHTML=html; body.appendChild(d); scrollDown(); return d; }
+  function addBlock(html){ var d=document.createElement('div'); d.className='cblock'; d.innerHTML=html; body.appendChild(d); scrollDown(); return d; }
   function typing(){ var d=document.createElement('div'); d.className='ctyping'; d.innerHTML='<span></span><span></span><span></span>'; body.appendChild(d); scrollDown(); return d; }
   function botAfter(delay,html,cb){ var t=typing(); setTimeout(function(){ t.remove(); addBot(html); if(cb)cb(); }, delay); }
   function setChips(list){ chipsBar.innerHTML=''; list.forEach(function(c){ var b=document.createElement('button'); b.className='chat-chip'; b.textContent=c.label; b.onclick=c.fn; chipsBar.appendChild(b); }); }
   function appToast(msg){ var t=document.getElementById('appToast'); t.innerHTML='&#10003; '+msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3000); }
 
+  function fmt(n){ return "£" + n.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  // ---- Proactive savings journey ----
   function greet(){
-    addBot("Hi Richard &#128075; I'm your Ada Banking assistant. I can help with payments, cards, transactions and your accounts. What can I do for you?");
-    defaultChips();
+    botAfter(700,"Hi Richard &#128075; you could earn a higher rate of interest by transferring some of your Everyday Current balance to one of our fixed-rate savings accounts. Would you like to learn more?",function(){
+      setChips([
+        {label:"Yes, tell me more", fn:startBonds},
+        {label:"No thanks", fn:declineBonds}
+      ]);
+    });
   }
-  function defaultChips(){
-    setChips([
-      {label:"Why did StreamFlix cost more?", fn:flowStreamflix},
-      {label:"Move £500 to Savings", fn:flowTransfer},
-      {label:"Freeze my card", fn:flowFreeze},
-      {label:"Talk to someone", fn:flowAgent}
-    ]);
+  function declineBonds(){
+    addUser("No thanks"); chipsBar.innerHTML='';
+    botAfter(700,"No problem. Is there anything else I can help you with?");
   }
 
-  function flowStreamflix(){
-    addUser("Why did StreamFlix cost more this month?"); chipsBar.innerHTML='';
-    botAfter(1100,"I checked your recent card payments. Your <b>StreamFlix</b> subscription went from <b>£12.99</b> to <b>£17.99</b> on 1 July &mdash; this matches StreamFlix's published price increase, so it isn't a duplicate or an error on your account.",function(){
-      botAfter(1000,"Want me to set a heads-up alert for future subscription price rises, or help you cancel StreamFlix?",function(){
-        setChips([
-          {label:"Set price-rise alerts", fn:function(){ addUser("Set price-rise alerts"); chipsBar.innerHTML=''; botAfter(900,"Done &mdash; I'll now notify you whenever a recurring payment rises by more than 10%. &#128276;",function(){ appToast("Price-rise alerts on"); botAfter(700,"Anything else I can help with?",defaultChips); }); }},
-          {label:"No, that's all", fn:function(){ addUser("No, that's all"); chipsBar.innerHTML=''; botAfter(700,"Great &mdash; glad I could clear that up. I'm here whenever you need me.",defaultChips); }}
-        ]);
-      });
+  function bondCard(b){
+    return "<div class='savecard'>"+
+      "<div class='sc-term'>"+b.years+"-Year</div>"+
+      "<div class='sc-name'>Fixed Rate Bond</div>"+
+      "<div class='sc-rate'>"+b.rate.toFixed(2)+"%<span>AER</span></div>"+
+      "<div class='sc-sub'>Fixed for "+b.term+"</div>"+
+      "<ul class='sc-feat'>"+
+        "<li>Rate guaranteed for the full term</li>"+
+        "<li>Interest paid monthly or annually</li>"+
+        "<li>Minimum deposit £1,000</li>"+
+        "<li>FSCS protected to £85,000</li>"+
+      "</ul>"+
+      "<button class='sc-btn' onclick='applyBond("+b.id+")'>Apply now</button>"+
+    "</div>";
+  }
+  function startBonds(){
+    addUser("Yes, tell me more"); chipsBar.innerHTML='';
+    botAfter(1200,"Great choice. Here are our current <b>Ada Fixed Rate Bonds</b> &mdash; a longer term locks in today's rate for longer. Swipe across and tap <b>Apply now</b> on the one that suits you:",function(){
+      addBlock("<div class='savecards'>"+BONDS.map(bondCard).join('')+"</div>");
     });
   }
 
-  function flowTransfer(){
-    addUser("Move £500 to my Savings Pot"); chipsBar.innerHTML='';
-    botAfter(1100,"Sure &mdash; here's the transfer I'll set up. Just confirm and it's done:"+
-      "<div class='cconfirm'><div class='cc-t'>Transfer</div>"+
-      "<div class='cc-r'><span>From</span><b>Everyday Current &bull;&bull;&bull;&bull; 4471</b></div>"+
-      "<div class='cc-r'><span>To</span><b>Savings Pot</b></div>"+
-      "<div class='cc-amt'>£500.00</div>"+
-      "<button class='cc-btn' onclick='confirmTransfer()'>Confirm transfer</button></div>");
-  }
-  function confirmTransfer(){
-    addUser("Confirm"); chipsBar.innerHTML='';
-    botAfter(1000,"&#9989; Done &mdash; <b>£500.00</b> moved from Everyday Current to your Savings Pot. Your new Savings balance is <b>£3,741.19</b>, and you're now <b>£500</b> closer to your Holiday fund goal.",function(){ appToast("£500 moved to Savings Pot"); botAfter(700,"Anything else?",defaultChips); });
+  function applyBond(id){
+    var b=null; for(var i=0;i<BONDS.length;i++){ if(BONDS[i].id===id) b=BONDS[i]; }
+    if(!b) return;
+    pendingApply = b;
+    addUser("Apply now &mdash; "+b.years+"-Year Fixed Rate Bond"); chipsBar.innerHTML='';
+    botAfter(1000,"Great &mdash; the <b>"+b.years+"-Year Fixed Rate Bond at "+b.rate.toFixed(2)+"% AER</b>. How much would you like to open it with? Type an amount to start your application (minimum £1,000).");
   }
 
-  function flowFreeze(){
-    addUser("Freeze my card"); chipsBar.innerHTML='';
-    botAfter(1100,"For your security I've frozen your <b>Ada Credit Card &bull;&bull;&bull;&bull; 8820</b> &#128274; &mdash; no new payments will be authorised. Existing subscriptions and refunds still work. You can unfreeze it anytime from <b>Cards</b>, or just ask me.",function(){ appToast("Card &bull;&bull;&bull;&bull; 8820 frozen"); botAfter(800,"Would you like to report it lost, or is this just a precaution?",function(){
-      setChips([
-        {label:"Just a precaution", fn:function(){ addUser("Just a precaution"); chipsBar.innerHTML=''; botAfter(800,"No problem &mdash; it'll stay frozen until you unfreeze it. Stay safe! &#128077;",defaultChips); }},
-        {label:"Report it lost", fn:flowAgent}
-      ]);
-    }); });
-  }
-
-  function flowAgent(){
-    addUser("Talk to someone"); chipsBar.innerHTML='';
-    botAfter(1100,"Of course. I'll connect you with a member of our support team. I'll pass along this conversation and your account context, so you won't need to repeat anything.",function(){ botAfter(900,"A specialist will be with you shortly &mdash; the typical wait is under 2 minutes.",defaultChips); });
+  function openBond(b, amount){
+    var yr1Bond  = amount * b.rate/100;
+    var yr1Curr  = amount * CURRENT_RATE/100;
+    var yr1Extra = yr1Bond - yr1Curr;
+    var bondTotal = amount * (Math.pow(1 + b.rate/100, b.years) - 1);
+    var currTotal = amount * (Math.pow(1 + CURRENT_RATE/100, b.years) - 1);
+    var extraTotal = bondTotal - currTotal;
+    botAfter(1100,"&#9989; All set &mdash; your new <b>"+b.years+"-Year Fixed Rate Bond</b> has been opened with <b>"+fmt(amount)+"</b>. Your <b>"+b.rate.toFixed(2)+"% AER</b> rate is fixed for the full "+b.term+".",function(){
+      appToast(b.years+"-Year Bond opened &middot; "+fmt(amount));
+      botAfter(1400,"Here's what that's worth &#128200;<br><br>In the first year you'll earn about <b>"+fmt(yr1Bond)+"</b> in interest &mdash; versus roughly <b>"+fmt(yr1Curr)+"</b> at your current "+CURRENT_RATE+"% rate. That's about <b>"+fmt(yr1Extra)+"</b> more this year alone.<br><br>Over the full "+b.years+" year"+(b.years>1?"s":"")+", that's around <b>"+fmt(bondTotal)+"</b> in interest &mdash; roughly <b>"+fmt(extraTotal)+"</b> more than leaving it in your Everyday Current account.",function(){
+        botAfter(800,"Anything else I can help you with?");
+      });
+    });
   }
 
   function onSend(e){
     e.preventDefault();
     var input=document.getElementById('chatText'); var t=input.value.trim(); if(!t) return;
     input.value=''; addUser(t); chipsBar.innerHTML='';
+    if(pendingApply){
+      var amt = parseFloat(t.replace(/[^0-9.]/g,''));
+      if(isNaN(amt) || amt < 1000){
+        botAfter(700,"The minimum opening deposit for a Fixed Rate Bond is <b>£1,000</b>. How much would you like to open it with?");
+        return;
+      }
+      var b = pendingApply; pendingApply = null;
+      openBond(b, amt);
+      return;
+    }
     var s=t.toLowerCase();
-    if(/(streamflix|subscription|charged|more|price|increase)/.test(s)){ botAfter(1000,"I checked &mdash; your StreamFlix subscription rose from £12.99 to £17.99 on 1 July, matching their published price change. Want me to set alerts for future increases?",defaultChips); return; }
-    if(/(move|transfer|savings|save|top up|pot)/.test(s)){ flowTransfer(); return; }
-    if(/(freeze|lost|stolen|block|card)/.test(s)){ flowFreeze(); return; }
-    if(/(agent|human|someone|advisor|call|speak|talk)/.test(s)){ flowAgent(); return; }
-    botAfter(1000,"Good question &mdash; I can help with payments, transfers, cards, subscriptions and your accounts. Could you tell me a little more about what you need?",defaultChips);
+    if(/(bond|save|saving|interest|rate|invest|more)/.test(s)){ startBonds(); return; }
+    botAfter(900,"I can help you open a fixed-rate savings account to earn more on your balance. Would you like to see the options?",function(){
+      setChips([{label:"Show me the options", fn:startBonds},{label:"No thanks", fn:declineBonds}]);
+    });
   }
 </script>
-
-<!-- Hide the default Ada launcher; the real proactive appears on its own, Support opens the in-app sheet -->
-<style>#ada-button-frame, iframe#ada-button-frame{ display:none !important; }</style>
-
-<!-- ============================================================ -->
-<!-- Ada Web SDK — demo-rkirk-fintech — used ONLY to fire the real -->
-<!-- backend-configured proactive campaign on this page.           -->
-<!-- ============================================================ -->
-<script id="__ada" data-handle="demo-rkirk-fintech" data-lazy src="https://static.ada.support/embed2.js"></script>
 </body>
 </html>
