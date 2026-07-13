@@ -446,16 +446,8 @@ window.adaEmbed.<span class="kw">toggle</span>();  <span class="cmt">// fired fr
   }
 
   // Start the embed on load so the standard Ada web SDK launcher shows bottom-right.
-  // (Our "Ask Ada" / proactive buttons still open it via toggle.)
-  // Then fire the Ada proactive campaign once the widget is ready.
-  ensureAdaStarted().then(function(){
-    setTimeout(function(){
-      if (window.adaEmbed && typeof window.adaEmbed.triggerProactive === 'function'){
-        window.adaEmbed.triggerProactive({ messageKey: "your_money_could_be_working_harder" })
-          .catch(function(){ /* proactive not published for this bot yet */ });
-      }
-    }, 1500);
-  });
+  // (Our "Ask Ada" buttons still open it via toggle.)
+  ensureAdaStarted();
 </script>
 
 <!-- Default Ada web SDK launcher is shown (bottom-right). Custom buttons open it too. -->
