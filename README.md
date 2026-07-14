@@ -8,7 +8,9 @@ agent** `demo-rkirk-fintech` via the Ada Frontend Chat API (`embed2.js`).
 |------|------------|
 | [`index.html`](index.html) | **Web app** — retail online-banking dashboard. Uses the live Ada Web SDK: standard launcher bottom-right, `toggle`/`setMetaFields`, and fires the `triggerProactive({ messageKey: "your_money_could_be_working_harder" })` campaign on load. |
 | [`app.html`](app.html) | **Mobile app** — single-screen banking app in an iPhone frame. Self-contained: a **Support** icon (bottom-right of the menu) and a **proactive card** open a custom in-app chat sheet (¾ height, translucent backdrop). No external Ada window. |
-| [`custom.html`](custom.html) | **Custom** — a copy of the web app that loads **no** Ada Web SDK. All chat entry points open a custom chat panel (currently a placeholder to be built out later). |
+| [`custom.html`](custom.html) | **Custom** — BBK-branded showcase of four distinct front-end chat concepts (onboarding, Arabic RTL widget, embedded Hub insight, dark FX) over the dimmed dashboard. |
+| [`messaging.html`](messaging.html) | **Messaging** — omni-channel showcase (email, SMS, WhatsApp, Messenger, X, Instagram) with per-channel mock interactions. |
+| [`voice.html`](voice.html) | **Voice** — synced visual over a pre-treated recorded Ada Bank voice call (Fixed-Rate Savings). Playbook execution, knowledge retrieval, and API/system calls animate in time with `voice-call.wav`. Defaults to 1.2× with a skip-to-end build-out. |
 
 The view switcher (Web / Mobile / Custom) links the three pages.
 
