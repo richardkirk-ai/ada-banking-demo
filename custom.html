@@ -164,75 +164,108 @@
 
   @media(max-width:1080px){.stats-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
 
-  /* ===== BBK front-end chat concepts ===== */
-  :root{--bbk:#E4002B;--bbk-dk:#A4001C;--gold:#C9A24B}
+  /* ===== BBK front-end chat concepts (navy + orange) ===== */
+  :root{--navy:#0A2A6B;--navy2:#0E4C9A;--blue:#1560BD;--orange:#F5A623;--orange2:#F7941D;--yellow:#FDB913}
   .viewswitch{z-index:300}
   .bx-overlay{position:fixed;inset:0;z-index:200;overflow:auto;
-    background:radial-gradient(1100px 560px at 50% -12%, rgba(228,0,43,.30), transparent 60%), rgba(13,8,22,.74);
+    background:radial-gradient(1100px 560px at 50% -14%, rgba(21,96,189,.42), transparent 60%), rgba(6,14,36,.84);
     backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-    display:flex;flex-direction:column;align-items:center;padding:20px 24px 54px}
-  .bx-intro{text-align:center;color:#fff;max-width:760px;margin-bottom:16px}
-  .bx-brand{font-size:26px;font-weight:800;letter-spacing:3px;display:inline-flex;align-items:center;gap:9px}
-  .bx-brand .bx-star{color:var(--bbk);font-size:22px}
-  .bx-ar{font-size:14px;color:rgba(255,255,255,.72);margin-top:2px;direction:rtl}
-  .bx-intro h1{font-size:20px;font-weight:800;margin:9px 0 5px}
-  .bx-intro p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5}
+    display:flex;flex-direction:column;align-items:center;padding:18px 24px 52px}
+  .bx-intro{text-align:center;color:#fff;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+  .bx-logo{display:flex;align-items:center;gap:11px}
+  .bx-logo .fl{width:44px;height:44px}
+  .bx-logo .wm{font-size:30px;font-weight:800;letter-spacing:2px;color:#fff}
+  .bx-ar{font-size:14px;color:rgba(255,255,255,.8);margin-top:4px;direction:rtl}
+  .bx-intro h1{font-size:20px;font-weight:800;margin:11px 0 5px}
+  .bx-intro p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5;max-width:720px}
   .bx-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%;max-width:1240px}
   .bx-slot{margin:0;display:flex;flex-direction:column;align-items:center;gap:11px}
   .bx-slot figcaption{color:#fff;font-size:12px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);padding:6px 13px;border-radius:999px;text-align:center}
+  .fl use{}
 
-  .bxc{width:286px;height:452px;background:#fff;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 28px 64px rgba(0,0,0,.5)}
-  .bxc.dark{background:#141017}
-  .bxc-head{padding:14px 15px;display:flex;align-items:center;gap:11px;flex:0 0 auto}
-  .bxc-head.red{background:linear-gradient(135deg,var(--bbk),var(--bbk-dk));color:#fff}
-  .bxc-head.dk{background:#1c1620;color:#fff;border-bottom:1px solid #2a2230}
-  .bxc-av{width:38px;height:38px;border-radius:11px;background:#fff;color:var(--bbk);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex:0 0 auto;letter-spacing:.5px}
-  .bxc-av.gold{background:var(--gold);color:#1a1a1a}
-  .bxc-ht .n{font-size:14px;font-weight:700}
-  .bxc-ht .s{font-size:11px;opacity:.9;display:flex;align-items:center;gap:5px;margin-top:1px}
-  .bxc-ht .s i{width:7px;height:7px;border-radius:50%;background:#38d39f;display:inline-block}
-  .bxc-body{flex:1;overflow:hidden;padding:14px 13px;display:flex;flex-direction:column;gap:8px;background:#f6f5f8}
-  .bxc.dark .bxc-body{background:#141017}
-  .bb{max-width:84%;padding:9px 12px;font-size:12.8px;line-height:1.45;border-radius:14px}
-  .bb.pad{padding:0;background:transparent!important;max-width:94%;align-self:flex-start}
-  .bb.bot{align-self:flex-start;background:#fff;color:#1a1a1a;border:1px solid #ececf0;border-bottom-left-radius:4px}
-  .bb.user{align-self:flex-end;background:linear-gradient(135deg,var(--bbk),var(--bbk-dk));color:#fff;border-bottom-right-radius:4px}
-  .bxc.dark .bb.bot{background:#221b28;color:#efeaf2;border-color:#2f2637}
-  .bxc.dark .bb.user{background:#3a2230;color:#fff}
-  .bb.ok{background:#0e2a1e!important;color:#8ff0c4!important;border-color:#1c4634!important}
+  .card{width:286px;height:470px;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fff;font-size:12.8px;box-shadow:0 28px 64px rgba(0,0,0,.5)}
 
-  .bx-chips{display:flex;flex-wrap:wrap;gap:6px}
-  .bx-chips span{font-size:11.5px;font-weight:600;color:var(--bbk);background:#fff;border:1.4px solid var(--bbk);border-radius:999px;padding:5px 11px}
+  /* Concept 1 · AI-guided onboarding (blue gradient hero + white sheet) */
+  .c1-hero{position:relative;padding:20px 18px 24px;color:#fff;text-align:center;flex:0 0 auto;
+    background:linear-gradient(160deg,#1560BD 0%,#0E3C8C 45%,#0A2158 100%)}
+  .c1-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(118deg,transparent 42%,rgba(255,255,255,.10) 43% 47%,transparent 48%),linear-gradient(118deg,transparent 62%,rgba(255,255,255,.07) 63% 66%,transparent 67%)}
+  .c1-hero .fl{width:40px;height:40px;margin:0 auto 12px;display:block;position:relative;z-index:1}
+  .c1-hero .h{font-size:19px;font-weight:800;line-height:1.15;position:relative;z-index:1}
+  .c1-hero .sub{font-size:11.5px;color:rgba(255,255,255,.82);margin-top:6px;position:relative;z-index:1}
+  .c1-sheet{flex:1;background:#fff;margin-top:-14px;border-radius:18px 18px 0 0;padding:15px;display:flex;flex-direction:column;gap:9px;position:relative;z-index:2}
+  .c1-msg{align-self:flex-start;background:#f1f4f9;color:#16203C;border-radius:14px;border-bottom-left-radius:4px;padding:9px 12px;max-width:92%;font-size:12.5px}
+  .c1-chips{display:flex;gap:6px;flex-wrap:wrap}
+  .c1-chips span{font-size:11px;font-weight:600;color:var(--navy);border:1.4px solid var(--navy);border-radius:999px;padding:5px 11px}
+  .rec{margin-top:2px;border-radius:15px;padding:14px;color:#fff;background:linear-gradient(135deg,#7A3FB0,#A6428E)}
+  .rec .rec-b{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.85}
+  .rec .rec-t{font-size:14px;font-weight:800;margin-top:4px}
+  .rec .rec-r{font-size:26px;font-weight:800;margin:6px 0 0}
+  .rec .rec-r span{font-size:13px;opacity:.85}
+  .rec .rec-s{font-size:11px;opacity:.9;margin-top:3px}
+  .c1-cta{margin-top:auto;text-align:center;background:var(--orange);color:#3a2600;font-weight:800;font-size:13px;padding:11px;border-radius:12px}
 
-  .acctcard{background:linear-gradient(135deg,var(--bbk),var(--bbk-dk));color:#fff;border-radius:14px;padding:13px 14px}
-  .acctcard .ac-top{font-size:11px;opacity:.85}
-  .acctcard .ac-bal{font-size:24px;font-weight:800;margin:4px 0 8px}
-  .acctcard .ac-bal span{font-size:15px;opacity:.8}
-  .acctcard .ac-row{display:flex;justify-content:space-between;font-size:11.5px;opacity:.92;border-top:1px solid rgba(255,255,255,.25);padding-top:7px}
-  .acctcard .ac-tag{margin-top:8px;font-size:11px;background:rgba(255,255,255,.18);display:inline-block;padding:3px 9px;border-radius:999px}
+  /* Concept 2 · Arabic concierge widget over an app hint (light) */
+  .c2{background:#eef1f6}
+  .c2-appbg{position:absolute;inset:0;padding:16px}
+  .c2-appbg .abar{height:12px;border-radius:6px;background:#dde3ee;margin-bottom:11px;opacity:.8}
+  .c2-appbg .abar.w1{width:58%}.c2-appbg .abar.w2{width:84%}
+  .c2-appbg .abar.big{height:66px;border-radius:14px;background:linear-gradient(135deg,#1560BD,#0A2158);opacity:.30;margin:14px 0}
+  .c2-widget{position:absolute;left:14px;right:14px;top:66px;bottom:14px;background:#fff;border-radius:18px;box-shadow:0 20px 44px rgba(10,20,50,.30);display:flex;flex-direction:column;overflow:hidden}
+  .c2-head{background:var(--navy);color:#fff;padding:11px 13px;display:flex;align-items:center;gap:10px}
+  .c2-head .fl{width:30px;height:30px;background:#fff;border-radius:9px;padding:3px;flex:0 0 auto}
+  .c2-head .n{font-size:13.5px;font-weight:700}
+  .c2-head .s{font-size:10.5px;opacity:.8;display:flex;align-items:center;gap:5px;margin-top:1px}
+  .c2-head .s i{width:6px;height:6px;border-radius:50%;background:#38d39f;display:inline-block}
+  .c2-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f6f7fb}
+  .bb2{max-width:88%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.5}
+  .bb2.bot{align-self:flex-start;background:#fff;border:1px solid #e6e9f0;color:#16203C}
+  .bb2.user{align-self:flex-end;background:var(--navy);color:#fff}
+  .chips2{display:flex;flex-wrap:wrap;gap:6px}
+  .chips2 span{font-size:11px;font-weight:600;color:var(--navy);border:1.4px solid #c9d3e6;border-radius:999px;padding:5px 10px;background:#fff}
+  .c2-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #eceff5;background:#fff;color:#9aa3b5;font-size:12px}
+  .c2-input span{flex:1}
+  .c2-input .snd{width:30px;height:30px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .c2-input .snd svg{width:14px;height:14px}
 
-  .verify{align-self:center;font-size:11.5px;color:#8ff0c4;background:rgba(56,211,159,.12);border:1px solid rgba(56,211,159,.35);padding:5px 12px;border-radius:999px;font-weight:600}
-  .confirm{background:#221b28;border:1px solid #34293d;border-radius:14px;padding:13px}
-  .confirm .cf-h{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#a99ab5;font-weight:700}
-  .confirm .cf-r{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:#cbbfd6;margin-top:8px}
-  .confirm .cf-r b{color:#fff}
-  .confirm .cf-amt{font-size:20px;font-weight:800;color:#fff;margin:9px 0 2px}
-  .confirm .cf-btn{margin-top:10px;text-align:center;background:var(--gold);color:#1a1a1a;font-weight:700;font-size:12.5px;padding:9px;border-radius:9px}
+  /* Concept 3 · AI insight woven into the app Hub (white + orange grid) */
+  .c3{background:#fff}
+  .c3-top{padding:16px 16px 8px}
+  .c3-top .t{font-size:18px;font-weight:800;color:var(--navy)}
+  .c3-search{margin-top:10px;background:#f1f4f9;border-radius:11px;padding:9px 12px;color:#9aa3b5;font-size:12px;display:flex;align-items:center;gap:8px}
+  .c3-insight{margin:4px 14px 12px;border-radius:15px;padding:13px;background:linear-gradient(135deg,#0E4C9A,#0A2158);color:#fff}
+  .c3-insight .ig{display:flex;gap:9px}
+  .c3-insight .em{font-size:18px;line-height:1}
+  .c3-insight .tx{font-size:12px;line-height:1.42}
+  .c3-insight .tx b{color:var(--yellow)}
+  .c3-insight .btns{display:flex;gap:7px;margin-top:11px}
+  .c3-insight .prim{background:var(--orange);color:#3a2600;font-weight:700;font-size:11.5px;padding:7px 12px;border-radius:9px}
+  .c3-insight .ghost{border:1px solid rgba(255,255,255,.4);color:#fff;font-size:11.5px;padding:7px 12px;border-radius:9px}
+  .c3-gridlab{font-size:10.5px;font-weight:700;color:#9aa3b5;text-transform:uppercase;letter-spacing:.5px;padding:0 16px 9px}
+  .c3-grid{padding:0 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:13px 4px}
+  .c3-cell{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+  .c3-cell .ic{width:44px;height:44px;border-radius:14px;background:#FFF3E0;border:1px solid #FCE3BE;display:flex;align-items:center;justify-content:center}
+  .c3-cell .ic svg{width:20px;height:20px;stroke:var(--orange2);fill:none;stroke-width:1.9}
+  .c3-cell .lab{font-size:9.5px;color:#5b6577;line-height:1.2}
 
-  .prodrow{display:flex;gap:9px;overflow:hidden}
-  .prod{flex:0 0 118px;background:#fff;border:1px solid #ececf0;border-radius:13px;padding:11px}
-  .prod .p-t{font-size:12px;font-weight:700;color:#1a1a1a}
-  .prod .p-r{font-size:19px;font-weight:800;color:var(--bbk);margin:6px 0 0;line-height:1}
-  .prod .p-r span{font-size:9.5px;color:#8a8a8a;font-weight:600;margin-left:3px;display:block;margin-top:2px}
-  .prod .p-s{font-size:10px;color:#8a8a8a;margin:5px 0 9px;line-height:1.3}
-  .prod .p-btn{text-align:center;background:linear-gradient(135deg,var(--bbk),var(--bbk-dk));color:#fff;font-size:11.5px;font-weight:700;padding:7px;border-radius:8px}
-
-  .bxc-input{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;background:#fff;border-top:1px solid #ececf0;color:#9a97ad;font-size:12.5px}
-  .bxc.dark .bxc-input,.bxc-input.dk{background:#1c1620;border-top-color:#2a2230;color:#8a7f96}
-  .bxc-input .snd{width:30px;height:30px;border-radius:50%;background:var(--bbk);flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-  .bxc-input .snd svg{width:14px;height:14px}
-  .bxc[dir="rtl"] .bb.bot{border-bottom-left-radius:14px;border-bottom-right-radius:4px}
-  .bxc[dir="rtl"] .bb.user{border-bottom-right-radius:14px;border-bottom-left-radius:4px}
+  /* Concept 4 · Proactive FX + secure action (dark navy premium) */
+  .c4{color:#fff;background:radial-gradient(120% 80% at 82% 0%, #123a7e 0%, #0A2158 46%, #050f2e 100%)}
+  .c4-head{padding:15px 16px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .c4-head .fl{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:10px;padding:4px;flex:0 0 auto}
+  .c4-head .n{font-size:14px;font-weight:700}
+  .c4-head .s{font-size:10.5px;color:var(--orange);font-weight:600;margin-top:1px}
+  .c4-body{flex:1;padding:2px 16px 16px;display:flex;flex-direction:column;gap:11px}
+  .c4-push{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-left:3px solid var(--orange);border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.45}
+  .c4-push b{color:var(--yellow)}
+  .fx{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
+  .fx-row{display:flex;align-items:center;gap:10px;padding:11px 13px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .fx-row:last-child{border-bottom:0}
+  .fx-row .flag{font-size:17px}
+  .fx-row .cur{flex:1;font-weight:600;color:#cdd7ee}
+  .fx-row .rt{font-weight:800}
+  .fx-row .up{color:#38d39f;font-size:11px;font-weight:700}
+  .c4-verify{align-self:flex-start;font-size:11px;color:#8ff0c4;background:rgba(56,211,159,.14);border:1px solid rgba(56,211,159,.32);padding:5px 11px;border-radius:999px;font-weight:600}
+  .c4-cta{margin-top:auto;text-align:center;background:var(--orange);color:#3a2600;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
 
   /* ===== custom chat placeholder (web) ===== */
   .custom-launcher{position:fixed;right:22px;bottom:22px;z-index:80;width:60px;height:60px;border-radius:50%;
@@ -537,95 +570,130 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
   </main>
 </div>
 
+<!-- BBK flower logo (defined once, reused via <use>) -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+  <symbol id="bbkFlower" viewBox="0 0 100 100">
+    <g>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F5851F" transform="rotate(0 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F79020" transform="rotate(45 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FA9E1A" transform="rotate(90 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FCAE15" transform="rotate(135 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F5851F" transform="rotate(180 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F79020" transform="rotate(225 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FA9E1A" transform="rotate(270 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FCAE15" transform="rotate(315 50 50)"/>
+    </g>
+    <g transform="rotate(22.5 50 50)">
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(0 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(45 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(90 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(135 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(180 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(225 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(270 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(315 50 50)"/>
+    </g>
+  </symbol>
+</defs></svg>
+
 <!-- ===== BBK front-end chat concepts (static overlay over the dimmed dashboard) ===== -->
 <div class="bx-overlay">
   <div class="bx-intro">
-    <div class="bx-brand"><span class="bx-star">&#10022;</span> BBK</div>
+    <div class="bx-logo"><svg class="fl"><use href="#bbkFlower"/></svg><span class="wm">BBK</span></div>
     <div class="bx-ar">بنك البحرين والكويت</div>
     <h1>Front-end chat experiences</h1>
-    <p>Four ways BBK could bring an Ada AI agent to life in digital banking — creative uses of the Ada front-end API. Design concepts, not interactive.</p>
+    <p>Four very different ways BBK could bring an Ada AI agent to life in digital banking — creative concepts to spark ideas. Not interactive.</p>
   </div>
 
   <div class="bx-grid">
 
-    <!-- 1 · Concierge -->
+    <!-- 1 · AI-guided onboarding -->
     <figure class="bx-slot">
-      <div class="bxc">
-        <div class="bxc-head red"><div class="bxc-av">BBK</div><div class="bxc-ht"><div class="n">BBK Assistant</div><div class="s"><i></i> Online</div></div></div>
-        <div class="bxc-body">
-          <div class="bb bot">Good morning, Richard 👋 How can I help today?</div>
-          <div class="bx-chips"><span>Balance</span><span>Pay a bill</span><span>Transfer</span><span>Cards</span></div>
-          <div class="bb user">What's my balance?</div>
-          <div class="bb pad">
-            <div class="acctcard">
-              <div class="ac-top">Current Account ···· 8842</div>
-              <div class="ac-bal">BHD 4,230<span>.500</span></div>
-              <div class="ac-row"><span>Available</span><b>BHD 4,230.500</b></div>
-              <div class="ac-tag">↓ Salary +BHD 1,850.000 today</div>
-            </div>
-          </div>
+      <div class="card">
+        <div class="c1-hero">
+          <svg class="fl"><use href="#bbkFlower"/></svg>
+          <div class="h">Smarter banking,<br>guided by AI</div>
+          <div class="sub">Digitally driven. Expertly curated.</div>
         </div>
-        <div class="bxc-input"><span>Message BBK…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
+        <div class="c1-sheet">
+          <div class="c1-msg">Morning Richard 👋 What are you saving for?</div>
+          <div class="c1-chips"><span>A home</span><span>Travel</span><span>Rainy day</span></div>
+          <div class="rec">
+            <div class="rec-b">Recommended for you</div>
+            <div class="rec-t">Money Maker · Fixed Deposit</div>
+            <div class="rec-r">5.25%<span> p.a.</span></div>
+            <div class="rec-s">Open in minutes · min BHD 1,000</div>
+          </div>
+          <div class="c1-cta">Continue</div>
+        </div>
       </div>
-      <figcaption>Rich data cards &amp; quick replies</figcaption>
+      <figcaption>AI-guided onboarding</figcaption>
     </figure>
 
-    <!-- 2 · Arabic RTL -->
+    <!-- 2 · Arabic concierge widget (RTL) -->
     <figure class="bx-slot">
-      <div class="bxc" dir="rtl">
-        <div class="bxc-head red"><div class="bxc-av">BBK</div><div class="bxc-ht"><div class="n">مساعد BBK</div><div class="s"><i></i> متصل الآن</div></div></div>
-        <div class="bxc-body">
-          <div class="bb bot">مرحباً ريتشارد 👋 كيف يمكنني مساعدتك اليوم؟</div>
-          <div class="bx-chips"><span>تحويل أموال</span><span>بطاقاتي</span><span>كشف الحساب</span></div>
-          <div class="bb user">ما هو رصيد حسابي؟</div>
-          <div class="bb bot">رصيد حسابك الجاري هو <b>٤٬٢٣٠٫٥٠٠ د.ب</b></div>
-          <div class="bb user">شكراً</div>
-          <div class="bb bot">بكل سرور! 😊</div>
+      <div class="card c2">
+        <div class="c2-appbg">
+          <div class="abar w1"></div><div class="abar w2"></div>
+          <div class="abar big"></div>
+          <div class="abar w2"></div><div class="abar w1"></div><div class="abar w2"></div>
         </div>
-        <div class="bxc-input"><span>اكتب رسالة…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
+        <div class="c2-widget" dir="rtl">
+          <div class="c2-head"><svg class="fl"><use href="#bbkFlower"/></svg><div><div class="n">مساعد BBK</div><div class="s"><i></i> متصل الآن</div></div></div>
+          <div class="c2-body">
+            <div class="bb2 bot">مرحباً ريتشارد 👋 كيف يمكنني مساعدتك؟</div>
+            <div class="chips2"><span>تحويل</span><span>بطاقاتي</span><span>الرصيد</span></div>
+            <div class="bb2 user">ما هو رصيدي؟</div>
+            <div class="bb2 bot">رصيدك الحالي <b>٤٬٢٣٠٫٥٠٠ د.ب</b> 💜</div>
+          </div>
+          <div class="c2-input"><span>اكتب رسالة…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
+        </div>
       </div>
-      <figcaption>Arabic &amp; right-to-left (RTL)</figcaption>
+      <figcaption>Arabic concierge widget (RTL)</figcaption>
     </figure>
 
-    <!-- 3 · Secure actions (dark) -->
+    <!-- 3 · AI insight woven into the Hub -->
     <figure class="bx-slot">
-      <div class="bxc dark">
-        <div class="bxc-head dk"><div class="bxc-av gold">BBK</div><div class="bxc-ht"><div class="n">BBK Private</div><div class="s">🔒 Secured · encrypted</div></div></div>
-        <div class="bxc-body">
-          <div class="verify">✓ Verified with Face ID</div>
-          <div class="bb user">Transfer BHD 500 to Sara</div>
-          <div class="bb pad">
-            <div class="confirm">
-              <div class="cf-h">Confirm transfer</div>
-              <div class="cf-r"><span>From</span><b>Current ···· 8842</b></div>
-              <div class="cf-r"><span>To</span><b>Sara Ahmed</b></div>
-              <div class="cf-amt">BHD 500.000</div>
-              <div class="cf-btn">Confirm &amp; send</div>
-            </div>
-          </div>
-          <div class="bb bot ok">✅ Sent — BHD 500.000 to Sara Ahmed · Ref BBK-4471</div>
+      <div class="card c3">
+        <div class="c3-top">
+          <div class="t">Hub</div>
+          <div class="c3-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9aa3b5" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search</div>
         </div>
-        <div class="bxc-input dk"><span>Message…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
+        <div class="c3-insight">
+          <div class="ig"><div class="em">💡</div><div class="tx">You have <b>BHD 4,200</b> sitting idle. A 1-Year Fixed Deposit could earn you about <b>BHD 220</b> a year.</div></div>
+          <div class="btns"><span class="prim">Open deposit</span><span class="ghost">Not now</span></div>
+        </div>
+        <div class="c3-gridlab">Quick services</div>
+        <div class="c3-grid">
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><div class="lab">Add Money</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div><div class="lab">Transfer</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div class="lab">Cards</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15l-2-1-2 1-2-1-2 1-2-1-2 1z"/><path d="M9 8h6M9 12h6"/></svg></div><div class="lab">Pay bills</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M12 3l8 5H4z"/></svg></div><div class="lab">Deposits</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div><div class="lab">FX</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div><div class="lab">Statements</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></div><div class="lab">More</div></div>
+        </div>
       </div>
-      <figcaption>Authenticated secure actions</figcaption>
+      <figcaption>AI insight, woven into the app</figcaption>
     </figure>
 
-    <!-- 4 · Proactive product carousel -->
+    <!-- 4 · Proactive FX + secure action (dark) -->
     <figure class="bx-slot">
-      <div class="bxc">
-        <div class="bxc-head red"><div class="bxc-av">BBK</div><div class="bxc-ht"><div class="n">BBK Assistant</div><div class="s"><i></i> Online</div></div></div>
-        <div class="bxc-body">
-          <div class="bb bot">Your salary just landed 🎉 Want it to work harder? Here are 3 options:</div>
-          <div class="prodrow">
-            <div class="prod"><div class="p-t">Fixed Deposit</div><div class="p-r">5.25%<span>p.a.</span></div><div class="p-s">Min BHD 1,000 · 12 mo</div><div class="p-btn">Apply</div></div>
-            <div class="prod"><div class="p-t">Platinum Card</div><div class="p-r">2%<span>cashback</span></div><div class="p-s">No fee, year one</div><div class="p-btn">Apply</div></div>
-            <div class="prod"><div class="p-t">USD Account</div><div class="p-r">0.376<span>BHD/USD</span></div><div class="p-s">Hold &amp; spend USD</div><div class="p-btn">Open</div></div>
+      <div class="card c4">
+        <div class="c4-head"><svg class="fl"><use href="#bbkFlower"/></svg><div><div class="n">BBK Private</div><div class="s">🔔 Proactive · secured</div></div></div>
+        <div class="c4-body">
+          <div class="c4-push">GBP/BHD moved <b>0.8%</b> in your favour — a good moment to top up your travel wallet before your trip.</div>
+          <div class="fx">
+            <div class="fx-row"><span class="flag">🇬🇧</span><span class="cur">GBP</span><span class="rt">0.472</span><span class="up">▲</span></div>
+            <div class="fx-row"><span class="flag">🇺🇸</span><span class="cur">USD</span><span class="rt">0.376</span></div>
+            <div class="fx-row"><span class="flag">🇪🇺</span><span class="cur">EUR</span><span class="rt">0.408</span></div>
           </div>
-          <div class="bb bot">Tap any card to get started — about a minute.</div>
+          <div class="c4-verify">✓ Verified with Face ID</div>
+          <div class="c4-cta">Convert BHD 500 → GBP</div>
         </div>
-        <div class="bxc-input"><span>Message BBK…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
       </div>
-      <figcaption>Proactive product carousel</figcaption>
+      <figcaption>Proactive FX &amp; secure action</figcaption>
     </figure>
 
   </div>
