@@ -33,13 +33,13 @@
   /* ===== channel rail ===== */
   .rail{width:266px;flex-shrink:0;background:#211843;overflow-y:auto;padding:16px 12px 64px;display:flex;flex-direction:column;gap:4px}
   .rail-label{color:rgba(255,255,255,.4);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 10px 8px}
-  .ms-item{display:flex;align-items:center;gap:12px;padding:10px 11px;border-radius:12px;cursor:pointer;transition:background .15s;border:1px solid transparent}
+  .ms-item{display:flex;align-items:center;gap:13px;padding:11px 12px;border-radius:13px;cursor:pointer;transition:background .15s;border:1px solid transparent}
   .ms-item:hover{background:rgba(255,255,255,.06)}
   .ms-item.on{background:rgba(123,77,255,.18);border-color:rgba(123,77,255,.5)}
-  .ms-ico{width:36px;height:36px;border-radius:10px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-  .ms-ico svg{width:20px;height:20px}
+  .ms-ico{width:46px;height:46px;border-radius:13px;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+  .ms-ico svg{width:26px;height:26px}
   .ms-tt{flex:1}
-  .ms-tt .n{color:#fff;font-size:13.5px;font-weight:600}
+  .ms-tt .n{color:#fff;font-size:14px;font-weight:600}
   .ms-tt .d{color:rgba(255,255,255,.5);font-size:11px;margin-top:1px}
   .ms-item.on .ms-tt .d{color:#c7b6ff}
   .rail-foot{margin-top:auto;padding:14px 10px 6px;color:rgba(255,255,255,.45);font-size:11px;line-height:1.5;border-top:1px solid rgba(255,255,255,.08)}
@@ -204,28 +204,17 @@
       <div class="ms-tt"><div class="n">Facebook Messenger</div><div class="d">Meta · Page inbox</div></div>
     </div>
 
-    <div class="ms-item" data-ch="instagram" onclick="select('instagram')">
-      <div class="ms-ico t-ig"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff" stroke="none"/></svg></div>
-      <div class="ms-tt"><div class="n">Instagram</div><div class="d">DMs · Meta</div></div>
-    </div>
-
-    <div class="ms-item" data-ch="apple" onclick="select('apple')">
-      <div class="ms-ico t-apple"><svg viewBox="0 0 24 24" fill="#fff"><path d="M16 2c.1 1-.3 2-1 2.7-.6.7-1.7 1.3-2.6 1.2-.1-1 .4-2 1-2.6C14 2.5 15.1 2 16 2zm2.5 7.4c-1.4-.1-2.6.8-3.3.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.7.8-3.4 2.1-1.5 2.5-.4 6.2 1 8.3.7 1 1.5 2.1 2.6 2.1 1 0 1.4-.7 2.7-.7 1.2 0 1.6.7 2.7.6 1.1 0 1.8-1 2.5-2 .8-1.2 1.1-2.3 1.1-2.4 0 0-2.2-.8-2.2-3.3 0-2 1.7-3 1.8-3-1-1.4-2.5-1.6-3-1.6z"/></svg></div>
-      <div class="ms-tt"><div class="n">Apple Messages</div><div class="d">Messages for Business</div></div>
-    </div>
-
-    <div class="ms-item" data-ch="telegram" onclick="select('telegram')">
-      <div class="ms-ico t-tg"><svg viewBox="0 0 24 24" fill="#fff"><path d="M21.9 4.3 18.6 20c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-4.9L18 6.2c.4-.3-.1-.5-.6-.2L6.9 13 2.2 11.5c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/></svg></div>
-      <div class="ms-tt"><div class="n">Telegram</div><div class="d">Telegram Bot</div></div>
-    </div>
-
     <div class="ms-item" data-ch="x" onclick="select('x')">
       <div class="ms-ico t-x"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.5 3h3l-6.6 7.5L21.8 21h-6l-4.7-6.1L5.7 21H2.6l7-8L2.6 3h6.1l4.2 5.6L17.5 3zm-1 16h1.7L7.6 4.8H5.8L16.5 19z"/></svg></div>
       <div class="ms-tt"><div class="n">X (Twitter)</div><div class="d">Direct Messages</div></div>
     </div>
 
+    <div class="ms-item" data-ch="instagram" onclick="select('instagram')">
+      <div class="ms-ico t-ig"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff" stroke="none"/></svg></div>
+      <div class="ms-tt"><div class="n">Instagram</div><div class="d">DMs · Meta</div></div>
+    </div>
+
     <div class="rail-foot">
-      <b>Also supported</b> via Sunshine Conversations: LINE, Viber, WeChat, Kakao Talk.<br><br>
       <b>Not shown here:</b> Web &amp; in-app Chat and Voice.
     </div>
   </aside>
@@ -274,11 +263,11 @@
         <div class="cw">
           <div class="cw-head"><div class="cw-av">AB</div><div class="cw-ht"><div class="n">Ada Bank</div><div class="s">Text message · 60420</div></div></div>
           <div class="cw-body">
-            <div class="cw-date">Today 14:33</div>
-            <div class="b in">Ada Bank: Did you make a payment of <b>£85.00</b> to QuickMart at 14:32 today? Reply <b>YES</b> or <b>NO</b>.<span class="tm">14:33</span></div>
-            <div class="b out">NO<span class="tm">14:34</span></div>
-            <div class="b in">Thanks Richard — we've <b>blocked that transaction</b> and frozen your card ending 8820 as a precaution. A replacement is on its way (3–5 days). No further action needed.<span class="tm">14:34</span></div>
-            <div class="b out">Great, thank you<span class="tm">14:35</span></div>
+            <div class="cw-date">Today 11:02</div>
+            <div class="b out">I'd like to book a branch appointment<span class="tm">11:02</span></div>
+            <div class="b in">Happy to help, Richard. Here are the next available slots at your nearest branch (King's Road):<br>1) Tomorrow 10:00<br>2) Tomorrow 14:30<br>3) Friday 11:00<br>Reply with a number.<span class="tm">11:02</span></div>
+            <div class="b out">3<span class="tm">11:03</span></div>
+            <div class="b in">Booked ✅ Friday 11:00 at Ada Bank, King's Road. We've sent you a reminder. See you then!<span class="tm">11:03</span></div>
           </div>
           <div class="cw-input"><div class="box">Text message</div><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div></div>
         </div>
@@ -329,41 +318,6 @@
         </div>
       </div>
 
-      <!-- APPLE MESSAGES FOR BUSINESS -->
-      <div class="ms-panel apple" data-ch="apple">
-        <div class="cw">
-          <div class="cw-head"><div class="cw-av">a</div><div class="cw-ht"><div class="n">Ada Bank</div><div class="s">Messages for Business · iMessage</div></div></div>
-          <div class="cw-body">
-            <div class="b out">I'd like to book a branch appointment<span class="tm">11:02</span></div>
-            <div class="b in">Of course, Richard. Here are the next available slots at your nearest branch (King's Road):<span class="tm">11:02</span></div>
-            <div class="picker">
-              <div class="p-h">CHOOSE A TIME</div>
-              <div class="opt">Tomorrow · 10:00</div>
-              <div class="opt">Tomorrow · 14:30</div>
-              <div class="opt sel">Friday · 11:00 ✓</div>
-            </div>
-            <div class="b out">Friday 11:00<span class="tm">11:03</span></div>
-            <div class="b in">Booked ✅ Friday 11:00 at <b>Ada Bank, King's Road</b>. I've added it to your calendar and sent a reminder. See you then!<span class="tm">11:03</span></div>
-          </div>
-          <div class="cw-input"><div class="box">iMessage</div><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div></div>
-        </div>
-      </div>
-
-      <!-- TELEGRAM -->
-      <div class="ms-panel tg" data-ch="telegram">
-        <div class="cw">
-          <div class="cw-head"><div class="cw-av">a</div><div class="cw-ht"><div class="n">Ada Bank Bot</div><div class="s">bot</div></div></div>
-          <div class="cw-body">
-            <div class="cw-date">Today</div>
-            <div class="b out">/start — what can you do?<span class="tm">16:40</span></div>
-            <div class="b in">Hi Richard! 🤖 Right here in Telegram I can check balances, move money, freeze cards and open savings. What do you need?<span class="tm">16:40</span></div>
-            <div class="b out">Move £200 to my Savings Pot<span class="tm">16:41</span></div>
-            <div class="b in">Done ✅ Moved <b>£200.00</b> from Everyday Current to your Savings Pot. New Savings balance: <b>£3,441.19</b>.<span class="tm">16:41</span></div>
-          </div>
-          <div class="cw-input"><div class="box">Message</div><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
-        </div>
-      </div>
-
       <!-- X (TWITTER) -->
       <div class="ms-panel x" data-ch="x">
         <div class="cw">
@@ -396,8 +350,6 @@
     whatsapp:{name:"WhatsApp", tag:"WhatsApp Business · via Sunshine Conversations"},
     messenger:{name:"Facebook Messenger", tag:"Meta · connected to your Facebook Page"},
     instagram:{name:"Instagram", tag:"Instagram Direct Messages · Meta"},
-    apple:{name:"Apple Messages for Business", tag:"iMessage · from Maps, Safari & Spotlight"},
-    telegram:{name:"Telegram", tag:"Telegram Bot"},
     x:{name:"X (Twitter)", tag:"X Direct Messages · @AdaBanking"}
   };
   function select(ch){
