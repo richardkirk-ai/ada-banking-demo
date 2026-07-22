@@ -164,91 +164,108 @@
 
   @media(max-width:1080px){.stats-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
 
-  /* ===== Sabadell in-app chat concepts (blue + mint) ===== */
-  :root{--sab:#0071E3;--sab-2:#3E9BFF;--sab-dk:#0A2A66;--mint:#1FBE86;--mint-bg:#dcf3e8;--sab-ink:#0e1522}
+  /* ===== BBK front-end chat concepts (navy + orange) ===== */
+  :root{--navy:#0A2A6B;--navy2:#0E4C9A;--blue:#1560BD;--orange:#F5A623;--orange2:#F7941D;--yellow:#FDB913}
   .viewswitch{z-index:300}
   .bx-overlay{position:fixed;inset:0;z-index:200;overflow:auto;
-    background:radial-gradient(1100px 560px at 50% -14%, rgba(0,113,227,.44), transparent 60%), rgba(4,11,28,.86);
+    background:radial-gradient(1100px 560px at 50% -14%, rgba(21,96,189,.42), transparent 60%), rgba(6,14,36,.84);
     backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
     display:flex;flex-direction:column;align-items:center;padding:18px 24px 52px}
   .bx-intro{text-align:center;color:#fff;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
-  .bx-logo{display:flex;align-items:center;gap:10px}
-  .bx-logo .fl{width:36px;height:36px}
-  .bx-logo .wm{font-size:27px;font-weight:800;letter-spacing:-.5px;color:#fff}
+  .bx-logo{display:flex;align-items:center;gap:11px}
+  .bx-logo .fl{width:44px;height:44px}
+  .bx-logo .wm{font-size:30px;font-weight:800;letter-spacing:2px;color:#fff}
+  .bx-ar{font-size:14px;color:rgba(255,255,255,.8);margin-top:4px;direction:rtl}
   .bx-intro h1{font-size:20px;font-weight:800;margin:11px 0 5px}
-  .bx-intro p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5;max-width:730px}
+  .bx-intro p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5;max-width:720px}
   .bx-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%;max-width:1240px}
   .bx-slot{margin:0;display:flex;flex-direction:column;align-items:center;gap:11px}
   .bx-slot figcaption{color:#fff;font-size:12px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);padding:6px 13px;border-radius:999px;text-align:center}
+  .fl use{}
+
   .card{width:286px;height:470px;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fff;font-size:12.8px;box-shadow:0 28px 64px rgba(0,0,0,.5)}
 
-  /* C1 · onboarding co-pilot (blue hero + white sheet) */
-  .c1-hero{position:relative;padding:20px 18px 24px;color:#fff;text-align:center;flex:0 0 auto;background:linear-gradient(160deg,#3E9BFF 0%,#0071E3 45%,#0A2A66 100%)}
-  .c1-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(118deg,transparent 44%,rgba(255,255,255,.10) 45% 49%,transparent 50%)}
-  .c1-hero .fl{width:36px;height:36px;margin:0 auto 12px;display:block;position:relative;z-index:1}
-  .c1-hero .h{font-size:18px;font-weight:800;line-height:1.2;position:relative;z-index:1}
-  .c1-hero .sub{font-size:11.5px;color:rgba(255,255,255,.85);margin-top:6px;position:relative;z-index:1}
+  /* Concept 1 · AI-guided onboarding (blue gradient hero + white sheet) */
+  .c1-hero{position:relative;padding:20px 18px 24px;color:#fff;text-align:center;flex:0 0 auto;
+    background:linear-gradient(160deg,#1560BD 0%,#0E3C8C 45%,#0A2158 100%)}
+  .c1-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(118deg,transparent 42%,rgba(255,255,255,.10) 43% 47%,transparent 48%),linear-gradient(118deg,transparent 62%,rgba(255,255,255,.07) 63% 66%,transparent 67%)}
+  .c1-hero .fl{width:40px;height:40px;margin:0 auto 12px;display:block;position:relative;z-index:1}
+  .c1-hero .h{font-size:19px;font-weight:800;line-height:1.15;position:relative;z-index:1}
+  .c1-hero .sub{font-size:11.5px;color:rgba(255,255,255,.82);margin-top:6px;position:relative;z-index:1}
   .c1-sheet{flex:1;background:#fff;margin-top:-14px;border-radius:18px 18px 0 0;padding:15px;display:flex;flex-direction:column;gap:9px;position:relative;z-index:2}
-  .c1-msg{align-self:flex-start;background:#eef4fb;color:var(--sab-ink);border-radius:14px;border-bottom-left-radius:4px;padding:9px 12px;max-width:92%;font-size:12.5px}
+  .c1-msg{align-self:flex-start;background:#f1f4f9;color:#16203C;border-radius:14px;border-bottom-left-radius:4px;padding:9px 12px;max-width:92%;font-size:12.5px}
   .c1-chips{display:flex;gap:6px;flex-wrap:wrap}
-  .c1-chips span{font-size:11px;font-weight:600;color:var(--sab);border:1.4px solid var(--sab);border-radius:999px;padding:5px 11px}
-  .c1-cta{margin-top:auto;text-align:center;background:var(--sab);color:#fff;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
+  .c1-chips span{font-size:11px;font-weight:600;color:var(--navy);border:1.4px solid var(--navy);border-radius:999px;padding:5px 11px}
+  .rec{margin-top:2px;border-radius:15px;padding:14px;color:#fff;background:linear-gradient(135deg,#7A3FB0,#A6428E)}
+  .rec .rec-b{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.85}
+  .rec .rec-t{font-size:14px;font-weight:800;margin-top:4px}
+  .rec .rec-r{font-size:26px;font-weight:800;margin:6px 0 0}
+  .rec .rec-r span{font-size:13px;opacity:.85}
+  .rec .rec-s{font-size:11px;opacity:.9;margin-top:3px}
+  .c1-cta{margin-top:auto;text-align:center;background:var(--orange);color:#3a2600;font-weight:800;font-size:13px;padding:11px;border-radius:12px}
 
-  /* C2 · trilingual floating widget */
-  .c2{background:#eef2f7}
+  /* Concept 2 · Arabic concierge widget over an app hint (light) */
+  .c2{background:#eef1f6}
   .c2-appbg{position:absolute;inset:0;padding:16px}
-  .c2-appbg .abar{height:12px;border-radius:6px;background:#dbe2ec;margin-bottom:11px;opacity:.8}
+  .c2-appbg .abar{height:12px;border-radius:6px;background:#dde3ee;margin-bottom:11px;opacity:.8}
   .c2-appbg .abar.w1{width:58%}.c2-appbg .abar.w2{width:84%}
-  .c2-appbg .abar.big{height:64px;border-radius:14px;background:linear-gradient(135deg,#3E9BFF,#0A2A66);opacity:.32;margin:14px 0}
-  .c2-widget{position:absolute;left:14px;right:14px;top:56px;bottom:14px;background:#fff;border-radius:18px;box-shadow:0 20px 44px rgba(10,30,80,.30);display:flex;flex-direction:column;overflow:hidden}
-  .c2-head{background:var(--sab);color:#fff;padding:11px 13px;display:flex;align-items:center;gap:10px}
+  .c2-appbg .abar.big{height:66px;border-radius:14px;background:linear-gradient(135deg,#1560BD,#0A2158);opacity:.30;margin:14px 0}
+  .c2-widget{position:absolute;left:14px;right:14px;top:66px;bottom:14px;background:#fff;border-radius:18px;box-shadow:0 20px 44px rgba(10,20,50,.30);display:flex;flex-direction:column;overflow:hidden}
+  .c2-head{background:var(--navy);color:#fff;padding:11px 13px;display:flex;align-items:center;gap:10px}
   .c2-head .fl{width:30px;height:30px;background:#fff;border-radius:9px;padding:3px;flex:0 0 auto}
   .c2-head .n{font-size:13.5px;font-weight:700}
-  .c2-head .s{font-size:10.5px;opacity:.9;display:flex;align-items:center;gap:5px;margin-top:1px}
-  .c2-head .s i{width:6px;height:6px;border-radius:50%;background:#7CFFC4;display:inline-block}
-  .langbar{display:flex;gap:6px;padding:9px 12px;background:#f3f6fb;border-bottom:1px solid #e6ebf3}
-  .langbar span{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;color:#5b6580;background:#fff;border:1px solid #dbe2ec}
-  .langbar span.on{background:var(--sab);color:#fff;border-color:var(--sab)}
-  .c2-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f6f8fc}
+  .c2-head .s{font-size:10.5px;opacity:.8;display:flex;align-items:center;gap:5px;margin-top:1px}
+  .c2-head .s i{width:6px;height:6px;border-radius:50%;background:#38d39f;display:inline-block}
+  .c2-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f6f7fb}
   .bb2{max-width:88%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.5}
-  .bb2.bot{align-self:flex-start;background:#fff;border:1px solid #e6ebf3;color:var(--sab-ink)}
-  .bb2.user{align-self:flex-end;background:var(--sab);color:#fff}
-  .c2-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #e6ebf3;background:#fff;color:#9aa3b5;font-size:12px}
+  .bb2.bot{align-self:flex-start;background:#fff;border:1px solid #e6e9f0;color:#16203C}
+  .bb2.user{align-self:flex-end;background:var(--navy);color:#fff}
+  .chips2{display:flex;flex-wrap:wrap;gap:6px}
+  .chips2 span{font-size:11px;font-weight:600;color:var(--navy);border:1.4px solid #c9d3e6;border-radius:999px;padding:5px 10px;background:#fff}
+  .c2-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #eceff5;background:#fff;color:#9aa3b5;font-size:12px}
   .c2-input span{flex:1}
-  .c2-input .snd{width:30px;height:30px;border-radius:50%;background:var(--sab);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .c2-input .snd{width:30px;height:30px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .c2-input .snd svg{width:14px;height:14px}
 
-  /* C3 · proactive pay-by-instalments (white + mint) */
+  /* Concept 3 · AI insight woven into the app Hub (white + orange grid) */
   .c3{background:#fff}
-  .c3-top{padding:16px 16px 6px}
-  .c3-top .t{font-size:16px;font-weight:800;color:var(--sab-dk)}
-  .c3-alert{margin:4px 14px 12px;border-radius:14px;padding:12px;background:linear-gradient(135deg,#0071E3,#0A2A66);color:#fff}
-  .c3-alert .ig{display:flex;gap:9px}.c3-alert .em{font-size:18px;line-height:1}
-  .c3-alert .tx{font-size:12px;line-height:1.42}.c3-alert .tx b{color:#bfe0ff}
-  .c3-lab{font-size:10.5px;font-weight:700;color:#8a93a5;text-transform:uppercase;letter-spacing:.5px;padding:0 16px 8px}
-  .inst{margin:0 14px 9px;border:1.5px solid #e6ebf3;border-radius:13px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;background:#fff}
-  .inst.sel{border-color:var(--mint);background:var(--mint-bg)}
-  .inst .big{font-size:15px;font-weight:800;color:var(--sab-ink)}
-  .inst .tot{font-size:10.5px;color:#8a93a5;margin-top:2px}
-  .inst .tag{font-size:9px;font-weight:800;color:#0a7d4f;background:#c7efd9;border-radius:999px;padding:3px 8px}
-  .c3-split{margin:8px 14px 0;text-align:center;background:#0b0b0f;color:#fff;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
-  .c3-no{text-align:center;font-size:11.5px;color:#8a93a5;margin-top:9px}
+  .c3-top{padding:16px 16px 8px}
+  .c3-top .t{font-size:18px;font-weight:800;color:var(--navy)}
+  .c3-search{margin-top:10px;background:#f1f4f9;border-radius:11px;padding:9px 12px;color:#9aa3b5;font-size:12px;display:flex;align-items:center;gap:8px}
+  .c3-insight{margin:4px 14px 12px;border-radius:15px;padding:13px;background:linear-gradient(135deg,#0E4C9A,#0A2158);color:#fff}
+  .c3-insight .ig{display:flex;gap:9px}
+  .c3-insight .em{font-size:18px;line-height:1}
+  .c3-insight .tx{font-size:12px;line-height:1.42}
+  .c3-insight .tx b{color:var(--yellow)}
+  .c3-insight .btns{display:flex;gap:7px;margin-top:11px}
+  .c3-insight .prim{background:var(--orange);color:#3a2600;font-weight:700;font-size:11.5px;padding:7px 12px;border-radius:9px}
+  .c3-insight .ghost{border:1px solid rgba(255,255,255,.4);color:#fff;font-size:11.5px;padding:7px 12px;border-radius:9px}
+  .c3-gridlab{font-size:10.5px;font-weight:700;color:#9aa3b5;text-transform:uppercase;letter-spacing:.5px;padding:0 16px 9px}
+  .c3-grid{padding:0 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:13px 4px}
+  .c3-cell{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+  .c3-cell .ic{width:44px;height:44px;border-radius:14px;background:#FFF3E0;border:1px solid #FCE3BE;display:flex;align-items:center;justify-content:center}
+  .c3-cell .ic svg{width:20px;height:20px;stroke:var(--orange2);fill:none;stroke-width:1.9}
+  .c3-cell .lab{font-size:9.5px;color:#5b6577;line-height:1.2}
 
-  /* C4 · in-chat action (dark) */
-  .c4{color:#fff;background:radial-gradient(120% 80% at 82% 0%, #0e3f8f 0%, #0A2A66 46%, #050f2e 100%)}
+  /* Concept 4 · Proactive FX + secure action (dark navy premium) */
+  .c4{color:#fff;background:radial-gradient(120% 80% at 82% 0%, #123a7e 0%, #0A2158 46%, #050f2e 100%)}
   .c4-head{padding:15px 16px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
   .c4-head .fl{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:10px;padding:4px;flex:0 0 auto}
-  .c4-head .n{font-size:14px;font-weight:700}.c4-head .s{font-size:10.5px;color:#7cc0ff;font-weight:600;margin-top:1px}
-  .c4-body{flex:1;padding:2px 16px 16px;display:flex;flex-direction:column;gap:10px}
-  .c4 .bb{max-width:86%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.45}
-  .c4 .bb.user{align-self:flex-end;background:var(--sab);color:#fff;border-bottom-right-radius:4px}
-  .c4 .bb.bot{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-bottom-left-radius:4px}
-  .bizum{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:13px}
-  .bizum .h{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#9fb3d8;font-weight:700;display:flex;align-items:center;gap:6px}
-  .bizum .r{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;margin-top:8px;color:#cdd9f0}.bizum .r b{color:#fff}
-  .bizum .amt{font-size:22px;font-weight:800;margin:8px 0 2px}
-  .bizum .btn{margin-top:10px;text-align:center;background:var(--sab);color:#fff;font-weight:800;font-size:12.5px;padding:10px;border-radius:10px}
-  .c4 .bb.ok{background:rgba(31,190,134,.16)!important;border:1px solid rgba(31,190,134,.4)!important;color:#8ff0c4!important}
+  .c4-head .n{font-size:14px;font-weight:700}
+  .c4-head .s{font-size:10.5px;color:var(--orange);font-weight:600;margin-top:1px}
+  .c4-body{flex:1;padding:2px 16px 16px;display:flex;flex-direction:column;gap:11px}
+  .c4-push{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-left:3px solid var(--orange);border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.45}
+  .c4-push b{color:var(--yellow)}
+  .fx{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;overflow:hidden}
+  .fx-row{display:flex;align-items:center;gap:10px;padding:11px 13px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .fx-row:last-child{border-bottom:0}
+  .fx-row .flag{font-size:17px}
+  .fx-row .cur{flex:1;font-weight:600;color:#cdd7ee}
+  .fx-row .rt{font-weight:800}
+  .fx-row .up{color:#38d39f;font-size:11px;font-weight:700}
+  .c4-verify{align-self:flex-start;font-size:11px;color:#8ff0c4;background:rgba(56,211,159,.14);border:1px solid rgba(56,211,159,.32);padding:5px 11px;border-radius:999px;font-weight:600}
+  .c4-cta{margin-top:auto;text-align:center;background:var(--orange);color:#3a2600;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
 
   /* ===== custom chat placeholder (web) ===== */
   .custom-launcher{position:fixed;right:22px;bottom:22px;z-index:80;width:60px;height:60px;border-radius:50%;
@@ -553,95 +570,130 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
   </main>
 </div>
 
-<!-- Sabadell mark (defined once, reused via <use>) -->
+<!-- BBK flower logo (defined once, reused via <use>) -->
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
-  <symbol id="sabMark" viewBox="0 0 100 100">
-    <rect x="6" y="6" width="88" height="88" rx="26" fill="#0071E3"/>
-    <text x="51" y="73" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="800" fill="#fff" text-anchor="middle">b</text>
+  <symbol id="bbkFlower" viewBox="0 0 100 100">
+    <g>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F5851F" transform="rotate(0 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F79020" transform="rotate(45 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FA9E1A" transform="rotate(90 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FCAE15" transform="rotate(135 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F5851F" transform="rotate(180 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#F79020" transform="rotate(225 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FA9E1A" transform="rotate(270 50 50)"/>
+      <path d="M50 50 C59 33 59 16 50 4 C41 16 41 33 50 50Z" fill="#FCAE15" transform="rotate(315 50 50)"/>
+    </g>
+    <g transform="rotate(22.5 50 50)">
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(0 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(45 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(90 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(135 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(180 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(225 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFD21F" transform="rotate(270 50 50)"/>
+      <path d="M50 50 C56 40 56 31 50 23 C44 31 44 40 50 50Z" fill="#FFCB18" transform="rotate(315 50 50)"/>
+    </g>
   </symbol>
 </defs></svg>
 
-<!-- ===== Sabadell in-app chat concepts (static overlay over the dimmed dashboard) ===== -->
+<!-- ===== BBK front-end chat concepts (static overlay over the dimmed dashboard) ===== -->
 <div class="bx-overlay">
   <div class="bx-intro">
-    <div class="bx-logo"><svg class="fl"><use href="#sabMark"/></svg><span class="wm">Sabadell</span></div>
-    <h1>In-app chat experiences</h1>
-    <p>Four ways Ada could live inside the Banco Sabadell app — guiding onboarding, answering in every language, spotting the right moment, and taking action in-conversation. Design concepts, not interactive.</p>
+    <div class="bx-logo"><svg class="fl"><use href="#bbkFlower"/></svg><span class="wm">BBK</span></div>
+    <div class="bx-ar">بنك البحرين والكويت</div>
+    <h1>Front-end chat experiences</h1>
+    <p>Four very different ways BBK could bring an Ada AI agent to life in digital banking — creative concepts to spark ideas. Not interactive.</p>
   </div>
 
   <div class="bx-grid">
 
-    <!-- 1 · onboarding co-pilot -->
+    <!-- 1 · AI-guided onboarding -->
     <figure class="bx-slot">
       <div class="card">
         <div class="c1-hero">
-          <svg class="fl"><use href="#sabMark"/></svg>
-          <div class="h">All the help you need,<br>as you open your account</div>
-          <div class="sub">In-flow guidance that reduces drop-off</div>
+          <svg class="fl"><use href="#bbkFlower"/></svg>
+          <div class="h">Smarter banking,<br>guided by AI</div>
+          <div class="sub">Digitally driven. Expertly curated.</div>
         </div>
         <div class="c1-sheet">
-          <div class="c1-msg">Hi Ricardo 👋 I'll stay with you as you open your Sabadell Online Account. Stuck on a step? Just ask.</div>
-          <div class="c1-chips"><span>What's the promotion?</span><span>Why this document?</span><span>How long does it take?</span></div>
-          <div class="c1-msg">Most people finish in under 10 minutes — I'll guide you the whole way.</div>
-          <div class="c1-cta">Continue my application</div>
+          <div class="c1-msg">Morning Richard 👋 What are you saving for?</div>
+          <div class="c1-chips"><span>A home</span><span>Travel</span><span>Rainy day</span></div>
+          <div class="rec">
+            <div class="rec-b">Recommended for you</div>
+            <div class="rec-t">Money Maker · Fixed Deposit</div>
+            <div class="rec-r">5.25%<span> p.a.</span></div>
+            <div class="rec-s">Open in minutes · min BHD 1,000</div>
+          </div>
+          <div class="c1-cta">Continue</div>
         </div>
       </div>
-      <figcaption>In-flow onboarding co-pilot</figcaption>
+      <figcaption>AI-guided onboarding</figcaption>
     </figure>
 
-    <!-- 2 · trilingual floating widget -->
+    <!-- 2 · Arabic concierge widget (RTL) -->
     <figure class="bx-slot">
       <div class="card c2">
-        <div class="c2-appbg"><div class="abar w1"></div><div class="abar w2"></div><div class="abar big"></div><div class="abar w2"></div><div class="abar w1"></div></div>
-        <div class="c2-widget">
-          <div class="c2-head"><svg class="fl"><use href="#sabMark"/></svg><div><div class="n">Asistente Sabadell</div><div class="s"><i></i> En línea</div></div></div>
-          <div class="langbar"><span class="on">Español</span><span>Català</span><span>English</span></div>
+        <div class="c2-appbg">
+          <div class="abar w1"></div><div class="abar w2"></div>
+          <div class="abar big"></div>
+          <div class="abar w2"></div><div class="abar w1"></div><div class="abar w2"></div>
+        </div>
+        <div class="c2-widget" dir="rtl">
+          <div class="c2-head"><svg class="fl"><use href="#bbkFlower"/></svg><div><div class="n">مساعد BBK</div><div class="s"><i></i> متصل الآن</div></div></div>
           <div class="c2-body">
-            <div class="bb2 bot">Hola Ricardo 👋 ¿En qué puedo ayudarte hoy?</div>
-            <div class="bb2 user">¿Cuál es mi saldo?</div>
-            <div class="bb2 bot">Tu saldo total es <b>5.467,19 €</b> en tus cuentas.</div>
-            <div class="bb2 user">Gràcies!</div>
-            <div class="bb2 bot">A tu disposición 😊</div>
+            <div class="bb2 bot">مرحباً ريتشارد 👋 كيف يمكنني مساعدتك؟</div>
+            <div class="chips2"><span>تحويل</span><span>بطاقاتي</span><span>الرصيد</span></div>
+            <div class="bb2 user">ما هو رصيدي؟</div>
+            <div class="bb2 bot">رصيدك الحالي <b>٤٬٢٣٠٫٥٠٠ د.ب</b> 💜</div>
           </div>
-          <div class="c2-input"><span>Escribe un mensaje…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
+          <div class="c2-input"><span>اكتب رسالة…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
         </div>
       </div>
-      <figcaption>Native Spanish · Català · English</figcaption>
+      <figcaption>Arabic concierge widget (RTL)</figcaption>
     </figure>
 
-    <!-- 3 · proactive pay-by-instalments -->
+    <!-- 3 · AI insight woven into the Hub -->
     <figure class="bx-slot">
       <div class="card c3">
-        <div class="c3-top"><div class="t">Recent purchase</div></div>
-        <div class="c3-alert"><div class="ig"><div class="em">💡</div><div class="tx">That <b>€900</b> purchase at El Corte Inglés is a big one — want to split it into easy monthly payments?</div></div></div>
-        <div class="c3-lab">Choose your instalments · indicative NIR 18%</div>
-        <div class="inst"><div><div class="big">€310 / mo</div><div class="tot">in 3 months · total €930</div></div></div>
-        <div class="inst sel"><div><div class="big">€157 / mo</div><div class="tot">in 6 months · total €942</div></div><span class="tag">Most chosen</span></div>
-        <div class="inst"><div><div class="big">€106 / mo</div><div class="tot">in 9 months · total €954</div></div></div>
-        <div class="c3-split">Split this purchase</div>
-        <div class="c3-no">I'm not interested</div>
-      </div>
-      <figcaption>Proactive: split a large purchase</figcaption>
-    </figure>
-
-    <!-- 4 · in-chat action (Bizum) -->
-    <figure class="bx-slot">
-      <div class="card c4">
-        <div class="c4-head"><svg class="fl"><use href="#sabMark"/></svg><div><div class="n">Sabadell Assistant</div><div class="s">🔒 Secure · in-app actions</div></div></div>
-        <div class="c4-body">
-          <div class="bb user">Send €20 to Ana with Bizum for dinner 🍽️</div>
-          <div class="bb bot">Of course — here's your Bizum, ready to send:</div>
-          <div class="bizum">
-            <div class="h">📲 Bizum</div>
-            <div class="r"><span>To</span><b>Ana G. · ···· 461</b></div>
-            <div class="r"><span>Concept</span><b>Dinner 🍽️</b></div>
-            <div class="amt">€20.00</div>
-            <div class="btn">Confirm &amp; send</div>
-          </div>
-          <div class="bb bot ok">✅ Sent — €20.00 to Ana G. · Bizum ref BZ-7741. Anything else?</div>
+        <div class="c3-top">
+          <div class="t">Hub</div>
+          <div class="c3-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9aa3b5" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search</div>
+        </div>
+        <div class="c3-insight">
+          <div class="ig"><div class="em">💡</div><div class="tx">You have <b>BHD 4,200</b> sitting idle. A 1-Year Fixed Deposit could earn you about <b>BHD 220</b> a year.</div></div>
+          <div class="btns"><span class="prim">Open deposit</span><span class="ghost">Not now</span></div>
+        </div>
+        <div class="c3-gridlab">Quick services</div>
+        <div class="c3-grid">
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg></div><div class="lab">Add Money</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div><div class="lab">Transfer</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></svg></div><div class="lab">Cards</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15l-2-1-2 1-2-1-2 1-2-1-2 1z"/><path d="M9 8h6M9 12h6"/></svg></div><div class="lab">Pay bills</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M12 3l8 5H4z"/></svg></div><div class="lab">Deposits</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></div><div class="lab">FX</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div><div class="lab">Statements</div></div>
+          <div class="c3-cell"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></div><div class="lab">More</div></div>
         </div>
       </div>
-      <figcaption>In-chat actions — Bizum &amp; SOS</figcaption>
+      <figcaption>AI insight, woven into the app</figcaption>
+    </figure>
+
+    <!-- 4 · Proactive FX + secure action (dark) -->
+    <figure class="bx-slot">
+      <div class="card c4">
+        <div class="c4-head"><svg class="fl"><use href="#bbkFlower"/></svg><div><div class="n">BBK Private</div><div class="s">🔔 Proactive · secured</div></div></div>
+        <div class="c4-body">
+          <div class="c4-push">GBP/BHD moved <b>0.8%</b> in your favour — a good moment to top up your travel wallet before your trip.</div>
+          <div class="fx">
+            <div class="fx-row"><span class="flag">🇬🇧</span><span class="cur">GBP</span><span class="rt">0.472</span><span class="up">▲</span></div>
+            <div class="fx-row"><span class="flag">🇺🇸</span><span class="cur">USD</span><span class="rt">0.376</span></div>
+            <div class="fx-row"><span class="flag">🇪🇺</span><span class="cur">EUR</span><span class="rt">0.408</span></div>
+          </div>
+          <div class="c4-verify">✓ Verified with Face ID</div>
+          <div class="c4-cta">Convert BHD 500 → GBP</div>
+        </div>
+      </div>
+      <figcaption>Proactive FX &amp; secure action</figcaption>
     </figure>
 
   </div>
@@ -656,7 +708,7 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
 </div>
 
 <script>
-  // This page shows static Sabadell front-end chat concept mockups (non-interactive).
+  // This page shows static BBK front-end chat concept mockups (non-interactive).
   // Dashboard controls behind the dimmed overlay are inert.
   function openCustomChat(){}
 </script>
