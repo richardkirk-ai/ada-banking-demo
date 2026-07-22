@@ -176,7 +176,7 @@
       <div class="scrim" id="scrim" onclick="closeChat()"></div>
       <div class="sheet" id="sheet">
         <div class="grab"></div>
-        <div class="shead"><div class="av">a</div><div class="t"><div class="n">Ada</div><div class="s"><i></i> Helping you open your account</div></div><button class="x" onclick="closeChat()">&times;</button></div>
+        <div class="shead"><div class="av">a</div><div class="t"><div class="n">Ada Bank</div><div class="s"><i></i> Helping you open your account</div></div><button class="x" onclick="closeChat()">&times;</button></div>
         <div class="sbody" id="sbody"></div>
         <div class="schips" id="schips"></div>
         <form class="sinput" onsubmit="onSend(event)"><input id="stext" placeholder="Ask Ada anything…" autocomplete="off"><button type="submit" aria-label="Send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></form>
@@ -322,7 +322,8 @@ function render(){
   document.getElementById('appbodyScroll');
   document.querySelector('.appbody').scrollTop=0;
 }
-function next(){ if(idx<STEPS.length-1){idx++;render();} }
+function next(){ if(idx<STEPS.length-1){idx++;render();resetChat();} }
+function resetChat(){ lastGreetStep=-1; var b=document.getElementById('sbody'); if(b)b.innerHTML=''; var c=document.getElementById('schips'); if(c)c.innerHTML=''; }
 function ungate(){var c=document.getElementById('cta');c.disabled=false;}
 
 // upload / liveness / sign simulations
