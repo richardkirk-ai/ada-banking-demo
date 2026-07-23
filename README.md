@@ -8,11 +8,23 @@ agent** `demo-rkirk-fintech` via the Ada Frontend Chat API (`embed2.js`).
 |------|------------|
 | [`index.html`](index.html) | **Web app** — retail online-banking dashboard. Uses the live Ada Web SDK: standard launcher bottom-right, `toggle`/`setMetaFields`, and fires the `triggerProactive({ messageKey: "your_money_could_be_working_harder" })` campaign on load. |
 | [`app.html`](app.html) | **Mobile app** — single-screen banking app in an iPhone frame. Self-contained: a **Support** icon (bottom-right of the menu) and a **proactive card** open a custom in-app chat sheet (¾ height, translucent backdrop). No external Ada window. |
-| [`custom.html`](custom.html) | **Custom** — BBK-branded showcase of four distinct front-end chat concepts (onboarding, Arabic RTL widget, embedded Hub insight, dark FX) over the dimmed dashboard. |
+| [`custom.html`](custom.html) | **Custom** — Banco Sabadell-branded showcase of four distinct front-end chat concepts (in-flow onboarding co-pilot, trilingual ES/CA/EN widget, proactive pay-by-instalments, in-chat Bizum action) over the dimmed dashboard. |
+| [`custom-bkk.html`](custom-bkk.html) | **Archived** — the earlier BKK-branded version of the Custom showcase, kept for reuse. Not in the view switcher. |
 | [`messaging.html`](messaging.html) | **Messaging** — omni-channel showcase (email, SMS, WhatsApp, Messenger, X, Instagram) with per-channel mock interactions. |
 | [`voice.html`](voice.html) | **Voice** — synced visual over a pre-treated recorded Ada Bank voice call (Fixed-Rate Savings). Playbook execution, knowledge retrieval, and API/system calls animate in time with `voice-call.wav`. Defaults to 1.2× with a skip-to-end build-out. |
 
-The view switcher (Web / Mobile / Custom) links the three pages.
+### Account-opening journey (web → mobile)
+
+A scripted "open an account" flow that starts on the web and continues on the phone, with a stage-aware Ada assistant on every step and an Onfido-style ID check. Two brand variants:
+
+| Page | What it is |
+|------|------------|
+| [`new-account.html`](new-account.html) | **Ada Bank (English, £)** — web landing: 4-step overview, £150 promo, QR + "Continue on your phone" → `onboarding.html`, scripted Ada helper. |
+| [`onboarding.html`](onboarding.html) | **Ada Bank (English, £)** — mobile PWA: 10-step onboarding (products → login → details → ID upload → liveness → profession → review → e-sign → done) with a floating stage-aware Ada chat. |
+| [`new-account-sabadell.html`](new-account-sabadell.html) | **Banco Sabadell (Spanish, €)** — Sabadell-blue re-skin of the web landing; €150 bono, links to `onboarding-sabadell.html`. |
+| [`onboarding-sabadell.html`](onboarding-sabadell.html) | **Banco Sabadell (Spanish, €)** — Sabadell-blue re-skin of the mobile onboarding flow; DNI/NIE/pasaporte, CNAE, fully Spanish assistant ("Asistente Sabadell"). |
+
+The view switcher (Web / Custom / Messaging / Mobile / Voice) links the five core pages. The account-opening pages are reached from the **New Account** link in the Web sidebar.
 
 ## How the Ada agent is wired
 

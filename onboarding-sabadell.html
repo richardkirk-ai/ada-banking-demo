@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banco Sabadell — Abre tu cuenta (móvil)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--brand:#0071E3;--brand-2:#3E9BFF;--brand-dk:#0A2A66;--navy:#0A2A66;--pos:#12B76A;--ink:#1A1730;--muted:#6c6885;--line:#ECE9F5;--bg:#f4f2fb}
+  html,body{height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+       background:radial-gradient(1100px 760px at 50% -8%, #eaf3ff 0%, #d6e8fb 48%, #c3dcf5 100%);
+       display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;color:var(--ink)}
+  .viewswitch{position:fixed;bottom:16px;left:16px;z-index:120;display:flex;gap:2px;background:#fff;border:1px solid #e7e4f2;border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(46,26,107,.14)}
+  .viewswitch a{font-size:12px;color:#6c6885;text-decoration:none;padding:6px 13px;border-radius:999px}
+  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
+  .hint{position:fixed;bottom:18px;right:18px;z-index:110;color:#6b6a86;font-size:12px;max-width:230px;text-align:right}
+  .hint b{color:var(--brand)}
+
+  .phone{position:relative;width:390px;height:min(844px,94vh);background:#000;border-radius:54px;padding:13px;
+         box-shadow:0 0 0 2px #2a2740,0 0 0 5px #14121f,0 30px 70px rgba(46,26,107,.34),0 8px 24px rgba(46,26,107,.22)}
+  .screen{position:relative;width:100%;height:100%;background:#fff;border-radius:42px;overflow:hidden;display:flex;flex-direction:column}
+  .island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:32px;background:#000;border-radius:20px;z-index:60}
+  .statusbar{display:flex;align-items:center;justify-content:space-between;padding:14px 26px 4px;font-size:13px;font-weight:600;flex:0 0 auto}
+  .statusbar .r{display:flex;align-items:center;gap:6px;font-size:11px}
+  .bat{display:inline-block;width:22px;height:11px;border:1px solid #999;border-radius:3px;position:relative}
+  .bat::after{content:"";position:absolute;left:1px;top:1px;bottom:1px;width:80%;background:#111;border-radius:1px}
+  /* browser chrome (this is a PWA running in the mobile browser) */
+  .urlbar{display:flex;align-items:center;gap:8px;margin:4px 12px 8px;background:#eeecf4;border-radius:11px;padding:8px 12px;font-size:12.5px;color:#6b6784;flex:0 0 auto}
+  .urlbar .lock{color:var(--pos)}
+  .urlbar .u{flex:1;text-align:center;color:#3a3550;font-weight:600}
+
+  /* app header inside PWA */
+  .apphead{flex:0 0 auto;padding:6px 16px 12px;border-bottom:1px solid var(--line)}
+  .approw{display:flex;align-items:center;gap:10px}
+  .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff}
+  .approw .lg{font-size:14px;font-weight:700}.approw .lg span{color:var(--muted);font-weight:400}
+  .approw .close{margin-left:auto;color:var(--muted);font-size:20px;text-decoration:none;line-height:1}
+  .prog{display:flex;align-items:center;gap:10px;margin-top:11px}
+  .ring{width:34px;height:34px;flex:0 0 auto;position:relative}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--brand)}
+  .prog .pt{font-size:13px;font-weight:700}
+  .prog .pt small{display:block;font-size:10.5px;color:var(--muted);font-weight:500}
+
+  .appbody{flex:1;overflow-y:auto;padding:16px 16px 90px}
+  .appbody::-webkit-scrollbar{display:none}
+  .step h2{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.2;margin-bottom:8px}
+  .step p.sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+
+  .check{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:13.5px;line-height:1.4}
+  .check .ok{width:20px;height:20px;border-radius:50%;background:rgba(18,183,106,.14);color:var(--pos);display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:12px;font-weight:800}
+  .check b{font-weight:700}
+  .needs{margin-top:14px;padding:13px;border-radius:12px;background:#faf8ff;border:1px solid var(--line)}
+  .needs .nh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+  .needs .ni{display:flex;gap:9px;align-items:center;font-size:12.5px;padding:4px 0}
+  .needs .ni svg{width:17px;height:17px;stroke:var(--brand);flex:0 0 auto}
+
+  .promo-mini{margin:0 0 14px;border-radius:12px;padding:11px 13px;background:linear-gradient(100deg,#efe9ff,#f6f2ff);border:1px solid #d8ccff;font-size:12px;color:#5b4b86}
+  .promo-mini b{color:var(--brand-navy,#1c1440)}
+
+  .opt{display:flex;align-items:center;gap:12px;border:1.6px solid var(--line);border-radius:13px;padding:13px;margin-bottom:10px;cursor:pointer}
+  .opt.sel{border-color:var(--brand);background:#faf8ff}
+  .opt .oi{width:38px;height:38px;border-radius:11px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
+  .opt .ot{flex:1}.opt .ot .n{font-size:13.5px;font-weight:700}.opt .ot .d{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .opt .tick{width:22px;height:22px;border-radius:50%;border:2px solid #cfc8e6;flex:0 0 auto;position:relative}
+  .opt.sel .tick{border-color:var(--brand);background:var(--brand)}
+  .opt.sel .tick::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800}
+
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .field .val{background:#f4f2fb;border:1px solid var(--line);border-radius:11px;padding:12px 13px;font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+  .field .val .edit{font-size:11px;color:var(--brand);font-weight:700}
+
+  /* upload / liveness */
+  .drop{border:2px dashed #c9bff0;border-radius:16px;padding:22px;text-align:center;background:#faf8ff}
+  .drop .di{width:48px;height:48px;border-radius:14px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:23px}
+  .drop .dt{font-size:14px;font-weight:700}
+  .drop .dd{font-size:11.5px;color:var(--muted);margin:4px 0 14px}
+  .drop .act{background:var(--brand);color:#fff;border:0;border-radius:11px;padding:11px 18px;font-size:13.5px;font-weight:700;cursor:pointer}
+  .drop.done{border-style:solid;border-color:rgba(18,183,106,.5);background:#f0fbf5}
+  .drop.done .di{background:rgba(18,183,106,.14);color:var(--pos)}
+  .kyc{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:12px;font-size:10.5px;color:var(--muted)}
+  .kyc .dot{width:6px;height:6px;border-radius:50%;background:var(--pos)}
+  .prgbar{height:6px;border-radius:6px;background:#e8e2f6;overflow:hidden;margin:12px 0 4px;display:none}
+  .prgbar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-2),var(--brand));transition:width .1s}
+  .liveorb{width:150px;height:150px;border-radius:50%;margin:6px auto 0;background:radial-gradient(circle at 50% 40%,#efe9ff,#e2d7fb);border:3px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden}
+  .liveorb.scan{border-color:var(--brand)}
+  .liveorb .ringpulse{position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--brand);opacity:0}
+  .liveorb.scan .ringpulse{animation:orb 1.1s infinite}
+  @keyframes orb{0%{transform:scale(.9);opacity:.7}100%{transform:scale(1.15);opacity:0}}
+  .liveorb.done{background:radial-gradient(circle at 50% 40%,#e7fbf1,#d2f5e3);border-color:var(--pos)}
+
+  .review .rrow{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .review .rrow .k{color:var(--muted)}.review .rrow .v{font-weight:700;text-align:right}
+  .signpad{border:1.6px solid var(--line);border-radius:14px;height:120px;display:flex;align-items:center;justify-content:center;background:#faf8ff;position:relative;overflow:hidden}
+  .signpad .ph{color:#b9b1d6;font-size:13px}
+  .signpad.signed{border-color:rgba(18,183,106,.5);background:#f0fbf5}
+  .signature{font-family:'Segoe Script','Bradley Hand',cursive;font-size:30px;color:var(--brand-navy,#1c1440);opacity:0;transition:opacity .5s}
+  .signpad.signed .signature{opacity:1}.signpad.signed .ph{display:none}
+
+  .success{text-align:center;padding-top:8px}
+  .success .big{width:74px;height:74px;border-radius:50%;background:rgba(18,183,106,.14);color:var(--pos);display:flex;align-items:center;justify-content:center;font-size:38px;margin:6px auto 12px}
+  .success h2{font-size:21px}
+  .success .card{margin-top:14px;border-radius:14px;padding:14px;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;text-align:left}
+  .success .card .l{font-size:11px;opacity:.85}.success .card .n{font-size:16px;font-weight:800;margin-top:2px}
+  .success .card .r{font-size:12px;opacity:.92;margin-top:8px;border-top:1px solid rgba(255,255,255,.25);padding-top:8px}
+
+  /* footer CTA */
+  .footcta{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 24px;background:linear-gradient(180deg,rgba(255,255,255,0),#fff 30%);flex:0 0 auto}
+  .cta{width:100%;background:var(--brand);color:#fff;border:0;border-radius:13px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
+  .cta:hover{background:var(--brand-dk)}
+  .cta[disabled]{background:#cfc7e6;cursor:not-allowed}
+
+  /* floating Ada + bottom-sheet chat */
+  .fab{position:absolute;right:16px;bottom:88px;z-index:70;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--brand));border:0;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,113,227,.5);cursor:pointer}
+  .fab svg{width:24px;height:24px}
+  .fab .badge{position:absolute;top:-3px;right:-3px;width:19px;height:19px;border-radius:50%;background:var(--pos);border:2px solid #fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .fab.hidden{opacity:0;pointer-events:none;transform:scale(.6)}
+
+  .scrim{position:absolute;inset:0;z-index:74;background:rgba(20,15,45,.4);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .3s}
+  .scrim.open{opacity:1;pointer-events:auto}
+  .sheet{position:absolute;left:0;right:0;bottom:0;height:76%;z-index:76;background:#fff;border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;
+         box-shadow:0 -16px 44px rgba(0,0,0,.3);transform:translateY(106%);transition:transform .38s cubic-bezier(.32,1.02,.4,1)}
+  .sheet.open{transform:none}
+  .grab{width:38px;height:5px;border-radius:3px;background:#e2ddf0;margin:9px auto 2px;flex:0 0 auto}
+  .shead{display:flex;align-items:center;gap:10px;padding:6px 15px 11px;border-bottom:1px solid var(--line);flex:0 0 auto}
+  .shead .av{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+  .shead .t{flex:1}.shead .t .n{font-size:13.5px;font-weight:700}.shead .t .s{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+  .shead .t .s i{width:6px;height:6px;border-radius:50%;background:#38d39f;display:inline-block}
+  .shead .x{background:#f1eef8;border:0;width:28px;height:28px;border-radius:50%;font-size:16px;color:#6b6784;cursor:pointer}
+  .sbody{flex:1;overflow-y:auto;padding:13px 14px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
+  .msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.45}
+  .bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .user{align-self:flex-end;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-bottom-right-radius:4px}
+  .typing{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;gap:4px}
+  .typing i{width:6px;height:6px;border-radius:50%;background:#b9aaff;animation:bl 1.2s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes bl{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  .schips{display:flex;flex-wrap:wrap;gap:7px;padding:8px 14px 2px;background:var(--bg);flex:0 0 auto}
+  .schip{background:#fff;border:1.5px solid var(--brand);color:var(--brand);border-radius:999px;padding:7px 11px;font-size:11.5px;font-weight:600;cursor:pointer}
+  .schip:hover{background:#f1eefb}
+  .sinput{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff;flex:0 0 auto}
+  .sinput input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:13px;outline:none;background:#faf8fe}
+  .sinput input:focus{border-color:var(--brand)}
+  .sinput button{background:var(--brand);border:0;color:#fff;border-radius:50%;width:38px;height:38px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+  <div class="viewswitch">
+    <a href="index.html">Web</a><a href="custom.html">Custom</a><a href="messaging.html">Messaging</a><a href="app.html">Mobile</a><a href="voice.html">Voice</a>
+  </div>
+  <div class="hint">El cliente lo abrió en su móvil · pulsa el botón <b>Ada</b> en cualquier paso &rarr;</div>
+
+  <div class="phone">
+    <div class="island"></div>
+    <div class="screen">
+      <div class="statusbar"><span>9:41</span><span class="r">&#9679;&#9679;&#9679; &#128246; <span class="bat"></span></span></div>
+      <div class="urlbar"><span class="lock">&#128274;</span><span class="u">bancsabadell.com/alta</span><span>&#8635;</span></div>
+
+      <div class="apphead">
+        <div class="approw"><div class="mark">b</div><div class="lg">Sabadell</div><a class="close" href="new-account-sabadell.html" title="Salir">&times;</a></div>
+        <div class="prog">
+          <div class="ring"><svg width="34" height="34"><circle cx="17" cy="17" r="14" fill="none" stroke="#ece9f5" stroke-width="4"/><circle id="ringP" cx="17" cy="17" r="14" fill="none" stroke="#0071E3" stroke-width="4" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="88"/></svg><div class="t" id="ringT">1/9</div></div>
+          <div class="pt" id="stepName">Empezamos<small id="stepSub">Abre tu cuenta Sabadell</small></div>
+        </div>
+      </div>
+
+      <div class="appbody"><div class="step" id="stepBody"></div></div>
+
+      <div class="footcta"><button class="cta" id="cta" onclick="next()">Continue</button></div>
+
+      <!-- floating Ada -->
+      <button class="fab" id="fab" onclick="openChat()" aria-label="Chatea con Ada"><span class="badge" id="fabBadge">1</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </button>
+      <div class="scrim" id="scrim" onclick="closeChat()"></div>
+      <div class="sheet" id="sheet">
+        <div class="grab"></div>
+        <div class="shead"><div class="av">b</div><div class="t"><div class="n">Asistente Sabadell</div><div class="s"><i></i> Te ayudo a abrir tu cuenta</div></div><button class="x" onclick="closeChat()">&times;</button></div>
+        <div class="sbody" id="sbody"></div>
+        <div class="schips" id="schips"></div>
+        <form class="sinput" onsubmit="onSend(event)"><input id="stext" placeholder="Escríbeme tu pregunta…" autocomplete="off"><button type="submit" aria-label="Send"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></form>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ================= STEPS =================
+var STEPS=[
+ {name:"Empezamos",sub:"Antes de comenzar",cta:"Estoy listo",html:
+   "<h2>Antes de empezar</h2><p class='sub'>Abrir tu cuenta lleva unos 10 minutos. Comprueba que cumples lo siguiente.</p>"+
+   "<div class='check'><span class='ok'>✓</span><div>Eres <b>mayor de 18</b> y resides en España</div></div>"+
+   "<div class='check'><span class='ok'>✓</span><div>Tributas en <b>España</b> y no eres persona estadounidense</div></div>"+
+   "<div class='check'><span class='ok'>✓</span><div>Eres <b>nuevo</b> cliente de Banco Sabadell</div></div>"+
+   "<div class='needs'><div class='nh'>Ten esto a mano</div>"+
+   "<div class='ni'><svg viewBox='0 0 24 24' fill='none' stroke-width='2'><rect x='3' y='4' width='18' height='16' rx='2'/><circle cx='9' cy='10' r='2'/></svg> Tu DNI, NIE o pasaporte</div>"+
+   "<div class='ni'><svg viewBox='0 0 24 24' fill='none' stroke-width='2'><rect x='7' y='2' width='10' height='20' rx='2'/></svg> Este móvil, con su cámara</div>"+
+   "<div class='ni'><svg viewBox='0 0 24 24' fill='none' stroke-width='2'><circle cx='12' cy='12' r='4'/><path d='M12 2v2M12 20v2M2 12h2M20 12h2'/></svg> Buena luz para la verificación del documento</div></div>"},
+
+ {name:"Elige cuenta",sub:"Paso 2 · tus productos",cta:"Continuar",html:
+   "<h2>Elige tu cuenta</h2><p class='sub'>Empieza con la Cuenta Online sin comisiones. Añade extras ahora o después.</p>"+
+   "<div class='promo-mini'>🎁 <b>Bono de bienvenida de 150 €</b> — domicilia una nómina de 1.000 €+ en 60 días.</div>"+
+   "<div class='opt sel'><div class='oi'>💳</div><div class='ot'><div class='n'>Cuenta Online</div><div class='d'>Sin comisiones · tarjeta de débito gratis</div></div><div class='tick'></div></div>"+
+   "<div class='opt sel'><div class='oi'>💠</div><div class='ot'><div class='n'>Tarjeta de Crédito Sabadell</div><div class='d'>Opcional · sujeta a aprobación</div></div><div class='tick'></div></div>"+
+   "<div class='opt'><div class='oi'>📈</div><div class='ot'><div class='n'>Cuenta de Valores</div><div class='d'>Opcional · añádela después</div></div><div class='tick'></div></div>"},
+
+ {name:"Crea tu acceso",sub:"Paso 3 · tu acceso",cta:"Continuar",html:
+   "<h2>Crea tu acceso</h2><p class='sub'>Los usarás para entrar en Banco Sabadell.</p>"+
+   "<div class='field'><label>Email (usuario)</label><div class='val'>ricardo.martin@gmail.com <span class='edit'>Editar</span></div></div>"+
+   "<div class='field'><label>Clave</label><div class='val'>•••••••• <span class='edit'>Mostrar</span></div></div>"+
+   "<div class='field'><label>Confirma la clave</label><div class='val'>••••••••</div></div>"+
+   "<p class='sub' style='margin-top:2px'>¿Ya empezaste? Puedes retomarlo cuando quieras desde el enlace que te enviamos por email.</p>"},
+
+ {name:"Tus datos",sub:"Paso 4 · sobre ti",cta:"Continuar",html:
+   "<h2>Tus datos</h2><p class='sub'>Esto verifica tu identidad y cumple la normativa bancaria.</p>"+
+   "<div class='field'><label>Nombre completo</label><div class='val'>Ricardo Martín</div></div>"+
+   "<div class='field'><label>Fecha de nacimiento</label><div class='val'>12 de abril de 1987</div></div>"+
+   "<div class='field'><label>Domicilio</label><div class='val'>Calle de Alcalá 48, 28014 Madrid</div></div>"+
+   "<div class='field'><label>País de residencia fiscal</label><div class='val'>España</div></div>"+
+   "<div class='field'><label>Móvil</label><div class='val'>+34 612 34 56 78</div></div>"},
+
+ {name:"Verifica identidad",sub:"Paso 5 · tu documento",cta:"Continuar",gate:true,html:
+   "<h2>Verifica tu identidad</h2><p class='sub'>Sube una foto nítida de tu DNI, NIE o pasaporte.</p>"+
+   "<div class='drop' id='drop'><div class='di' id='dropIc'>🪪</div><div class='dt' id='dropT'>DNI, NIE o pasaporte</div><div class='dd' id='dropD'>Asegúrate de que se ven las cuatro esquinas y el texto es nítido.</div>"+
+   "<button class='act' id='dropBtn' onclick='doUpload()'>📷 Hacer foto</button>"+
+   "<div class='prgbar' id='prg'><i></i></div></div>"+
+   "<div class='kyc'><span class='dot'></span> Cifrado y verificado por nuestro proveedor de identidad regulado</div>"},
+
+ {name:"Prueba de vida",sub:"Paso 6 · eres tú",cta:"Continuar",gate:true,html:
+   "<h2>Selfie rápido</h2><p class='sub'>Un vídeo de 10 segundos confirma que eres tú de verdad, no una foto. Mira al círculo.</p>"+
+   "<div class='liveorb' id='orb'><div class='ringpulse'></div><span id='orbFace'>🙂</span></div>"+
+   "<div style='text-align:center;margin-top:14px'><button class='act' id='liveBtn' onclick='doLive()' style='background:#0071E3;color:#fff;border:0;border-radius:11px;padding:11px 18px;font-size:13.5px;font-weight:700;cursor:pointer'>Iniciar</button></div>"+
+   "<div class='kyc' style='margin-top:14px'><span class='dot'></span> Biometría procesada por nuestro proveedor de identidad y después eliminada</div>"},
+
+ {name:"Tu actividad",sub:"Paso 7 · profesión",cta:"Continuar",html:
+   "<h2>Tu profesión</h2><p class='sub'>La normativa exige conocer tu actividad y el origen de los fondos.</p>"+
+   "<div class='field'><label>Situación laboral</label><div class='val'>Empleado</div></div>"+
+   "<div class='field'><label>Ocupación</label><div class='val'>Ventas / Desarrollo de negocio</div></div>"+
+   "<div class='field'><label>Origen principal de los fondos</label><div class='val'>Nómina</div></div>"+
+   "<p class='sub' style='margin-top:2px'>¿Autónomo? Ada puede ayudarte a encontrar tu código de actividad (CNAE) en el chat.</p>"},
+
+ {name:"Revisar",sub:"Paso 8 · confirmar",cta:"Confirmar y continuar",html:
+   "<h2>Revisa y confirma</h2><p class='sub'>Comprueba que todo es correcto antes de firmar.</p>"+
+   "<div class='review'>"+
+   "<div class='rrow'><span class='k'>Cuenta</span><span class='v'>Cuenta Online + Tarjeta de Crédito</span></div>"+
+   "<div class='rrow'><span class='k'>Nombre</span><span class='v'>Ricardo Martín</span></div>"+
+   "<div class='rrow'><span class='k'>Identidad</span><span class='v' style='color:#12B76A'>Verificada ✓</span></div>"+
+   "<div class='rrow'><span class='k'>Residencia fiscal</span><span class='v'>España</span></div>"+
+   "<div class='rrow'><span class='k'>Promoción</span><span class='v'>Bono de 150 € aplicado</span></div>"+
+   "</div>"},
+
+ {name:"Firmar",sub:"Paso 9 · firma",cta:"Firmar y abrir cuenta",gate:true,html:
+   "<h2>Firma tu contrato</h2><p class='sub'>Firma abajo para abrir tu cuenta. Es vinculante, pero puedes cancelar en 14 días.</p>"+
+   "<div class='signpad' id='signpad' onclick='doSign()'><span class='ph'>Toca para firmar</span><span class='signature'>Ricardo Martín</span></div>"+
+   "<p class='sub' style='margin-top:12px'>Al firmar aceptas las Condiciones de la Cuenta, la Información de Comisiones y la Política de Privacidad.</p>"},
+
+ {name:"Todo listo",sub:"Cuenta abierta",cta:"",html:
+   "<div class='success'><div class='big'>✓</div><h2>¡Tu cuenta está abierta!</h2><p class='sub'>Bienvenido a Banco Sabadell, Ricardo. Tu cuenta y tu tarjeta están en camino.</p>"+
+   "<div class='card'><div class='l'>Cuenta Online</div><div class='n'>•••• 4471</div><div class='r'>🎁 Tu bono de bienvenida de 150 € está activo — domicilia una nómina de 1.000 €+ en 60 días para conseguirlo.</div></div></div>"}
+];
+
+// ============= per-stage chat (greeting + quick buttons) =============
+var CHAT=[
+ {g:"¡Hola, Ricardo! 👋 Soy el asistente de Sabadell. Antes de empezar, ten a mano tu documento y la cámara del móvil. ¿Quieres comprobar algo?",c:["¿Cumplo los requisitos?","¿Qué documentos necesito?","¿Por qué necesitáis mi DNI?","Recuérdame la oferta de 150 €"]},
+ {g:"La mayoría empieza con la Cuenta Online sin comisiones. Te explico si añadir tarjeta de crédito o cuenta de valores.",c:["¿Qué tarjetas puedo añadir?","¿Qué es la cuenta de valores?","¿Hay comisiones?","¿Cuál es la promoción de 150 €?"]},
+ {g:"Tu email es tu usuario y eliges una clave. ¿Dudas con algún campo?",c:["¿Qué vale como documento?","¿Es seguro?","¿Puedo continuar después?","¿La promoción otra vez?"]},
+ {g:"Ahora tus datos — esto te verifica y cumple la normativa. Pregúntame por qué pedimos cada cosa.",c:["¿Por qué mi domicilio?","¿Por qué mi residencia fiscal?","¿Cómo usáis mis datos?","¿Condiciones de la promoción?"]},
+ {g:"Toca subir tu documento. Haz una foto nítida — comprobaré que se lee antes de continuar. ¿Atascado?",c:["¿Por qué necesitáis este documento?","La foto no se acepta","¿Qué documentos valen?","¿Se guarda de forma segura?"]},
+ {g:"Ahora un breve vídeo selfie para confirmar que eres tú — unos 10 segundos. Ayuda tener buena luz.",c:["¿Por qué grabar un vídeo?","La cámara no funciona","¿Cómo protegéis mi biometría?","¿Cuánto tarda la verificación?"]},
+ {g:"Casi está — cuéntanos tu actividad. Si eres autónomo te ayudo a encontrar tu código CNAE.",c:["¿Por qué preguntáis mi trabajo?","¿Qué es un código CNAE?","Soy autónomo — ¿qué cambia?","¿Qué es el origen de fondos?"]},
+ {g:"Repasemos antes de firmar — te explico lo que no te resulte familiar.",c:["¿Puedo editar mis datos?","¿Qué pasa al confirmar?","¿Cuándo se aplica la promoción?","¿Hay periodo de desistimiento?"]},
+ {g:"Último paso — firma en el móvil. Es vinculante, pero puedes cancelar en 14 días.",c:["¿Cómo funciona la firma?","¿Qué estoy aceptando?","¿Puedo cancelar después?","¿Cuándo llega mi tarjeta?"]},
+ {g:"🎉 Tu cuenta está abierta y tu oferta de 150 € está activa. Te cuento cómo aprovecharla.",c:["¿Cómo consigo los 150 €?","¿Cuándo llega mi tarjeta?","¿Cómo domicilio mi nómina?","¿Qué puede hacer el asistente?"]}
+];
+
+// ============= scripted answer bank =============
+function answer(q){var s=q.toLowerCase();
+ if(/consig|reclam|c[oó]mo.*150|c[oó]mo.*bono/.test(s)) return "No tienes que hacer nada ahora — solo domicilia una nómina de <b>1.000 €+ en 60 días</b> y los <b>150 €</b> se abonan automáticamente en un plazo de 30 días. Te aviso si se acerca la fecha.";
+ if(/promo|150|bono|oferta/.test(s)) return "Tendrás un <b>bono de bienvenida de 150 €</b> al abrir la Cuenta Online y domiciliar una nómina de <b>1.000 €+ en 60 días</b>. Se abona en un plazo de 30 días tras cumplir las condiciones y al final te enseño cómo. Solo nuevos clientes, uno por persona, condiciones aplicables.";
+ if(/requisito|cumplo|elegib/.test(s)) return "Puedes abrirla si eres <b>mayor de 18</b>, <b>resides en España</b> y tributas aquí, no eres persona estadounidense y eres nuevo cliente de Sabadell. Cumples todo 👍";
+ if(/por qu[eé].*documento|por qu[eé].*identidad|\bdni\b|\bnie\b|pasaporte/.test(s)) return "Estamos obligados legalmente a confirmar tu identidad antes de abrir la cuenta (normativa KYC / prevención de blanqueo). Un documento oficial con foto permite a nuestro proveedor regulado comprobar que eres tú y te protege del fraude. Solo se usa para la verificación.";
+ if(/qu[eé].*documento|documentos valen|acepta|qu[eé].*vale/.test(s)) return "Sirve un <b>DNI</b>, <b>NIE</b> o <b>pasaporte</b> en vigor. Asegúrate de que el documento entra entero, está enfocado y sin reflejos.";
+ if(/no se acepta|falla|borros|reflejo|foto.*no|rechaz/.test(s)) return "Suele ser la luz o el enfoque. Pon el documento en una superficie oscura, evita reflejos, llena el encuadre y mantén el pulso. Si aún falla tras 3 intentos lo marco para que no te quedes atascado — no pierdes tu progreso.";
+ if(/editar|cambiar|corregir|equivoc/.test(s)) return "Sí — toca cualquier campo en la pantalla de revisión para cambiarlo antes de firmar. Nada es definitivo hasta que firmes el contrato.";
+ if(/v[ií]deo|selfie|prueba de vida|grabar/.test(s)) return "El breve vídeo es una <b>prueba de vida</b>: confirma que hay una persona real (no una foto ni un deepfake) y que tu cara coincide con tu documento. Dura unos 10 segundos y es la parte más segura del proceso.";
+ if(/c[aá]mara|no funciona|permiso/.test(s)) return "Comprueba que has permitido el acceso a la cámara para bancsabadell.com en tu navegador y vuelve a pulsar <b>Iniciar</b>. Con buena luz y el móvil a la altura de los ojos funciona mejor.";
+ if(/biometr/.test(s)) return "Tu biometría se procesa solo para comparar tu cara con tu documento, va cifrada en todo momento y se <b>elimina al terminar la verificación</b>. Solo se guarda el resultado (correcto/incorrecto).";
+ if(/segur|guarda|datos|privacidad|rgpd|proteg/.test(s)) return "Todo va cifrado en tránsito y en reposo. Tu documento y tu selfie los gestiona nuestro <b>proveedor de identidad regulado</b>, se usan solo para verificarte y la biometría se elimina tras la comprobación. Nunca te pido tu clave completa ni códigos de un solo uso.";
+ if(/cu[aá]nto|tarda|dura|instant/.test(s)) return "Las comprobaciones del documento y el selfie suelen ser <b>instantáneas o de un minuto</b>. Si hiciera falta una revisión manual, normalmente son unas pocas horas y te voy informando.";
+ if(/mi domicilio|tu domicilio|por qu[eé].*domicil|direcci[oó]n/.test(s)) return "Tu domicilio es un requisito normativo y es donde enviaremos tu tarjeta y comunicaciones. También ayuda a proteger tu cuenta del fraude.";
+ if(/fiscal|residencia|tribut/.test(s)) return "Los bancos deben registrar tu país de residencia fiscal (normativa CRS/FATCA). Para la mayoría de clientes en España es simplemente España.";
+ if(/continuar despu|retomar|m[aá]s tarde|pausa|volver luego/.test(s)) return "Sí — tu progreso se guarda. Puedes cerrar y retomar desde el enlace seguro que te enviamos por email, justo donde lo dejaste.";
+ if(/tarjeta.*a[ñn]ad|qu[eé] tarjeta|cr[eé]dito|d[eé]bito/.test(s)) return "Tu Cuenta Online incluye una <b>tarjeta de débito gratis</b>. Puedes añadir una <b>Tarjeta de Crédito Sabadell</b> (sujeta a aprobación) en esta misma solicitud, y una <b>cuenta de valores</b> ahora o después.";
+ if(/valores|inversi/.test(s)) return "La cuenta de valores te permite comprar y mantener inversiones junto a tu banca diaria. Es opcional — puedes omitirla ahora y abrirla en segundos desde la app.";
+ if(/comisi|coste|cargo|gratis|cu[aá]nto cuesta/.test(s)) return "La Cuenta Online <b>no tiene comisión mensual</b> y la tarjeta de débito es gratis. Siempre te aviso antes de añadir cualquier producto opcional con coste.";
+ if(/cnae|c[oó]digo.*activ|\bsic\b/.test(s)) return "El código CNAE clasifica tu actividad para los registros normativos. Si eres autónomo, dime a qué te dedicas y te sugiero el código correcto — no hace falta que lo busques.";
+ if(/aut[oó]nomo/.test(s)) return "Si eres autónomo anotamos tu actividad (CNAE) y la cuenta puede usarse profesionalmente. Solo añade una pregunta o dos — yo te guío.";
+ if(/origen.*fondo|fondos|de d[oó]nde.*dinero/.test(s)) return "El 'origen de los fondos' es de dónde procede el dinero que ingresarás — para la mayoría es su <b>nómina</b>. Es una pregunta normativa estándar.";
+ if(/trabajo|profesi[oó]n|ocupaci[oó]n/.test(s)) return "La normativa exige que los bancos conozcan la ocupación y el origen de los fondos, para prevenir el fraude y ofrecerte los productos adecuados.";
+ if(/al confirmar|qu[eé] pasa|despu[eé]s de confirmar|siguiente paso/.test(s)) return "Al confirmar, firmarás tu contrato en este móvil y tu cuenta se abre al instante. Tu tarjeta se envía en 3–5 días laborables.";
+ if(/desistimiento|cancel|14 d[ií]as|arrepent/.test(s)) return "Tienes un <b>periodo de desistimiento de 14 días</b>: puedes cerrar la cuenta en 14 días sin penalización. Solo pídemelo y me encargo.";
+ if(/firma|c[oó]mo funciona|vinculante|legal/.test(s)) return "La firma digital equivale legalmente a una manuscrita. Estás aceptando las Condiciones de la Cuenta, la Información de Comisiones y la Política de Privacidad — puedo resumirte cualquiera en lenguaje sencillo.";
+ if(/acept|condicion|contrato|t[eé]rminos/.test(s)) return "Estás aceptando abrir la cuenta según las Condiciones de la Cuenta, la Información de Comisiones (sin comisión mensual) y la Política de Privacidad. ¿Te doy lo esencial en una frase?";
+ if(/cu[aá]ndo.*tarjeta|llega.*tarjeta|entrega|recibo.*tarjeta/.test(s)) return "Tu tarjeta de débito se envía a tu domicilio y suele llegar en <b>3–5 días laborables</b>. También puedes añadirla a Apple/Google Pay al momento para pagar enseguida.";
+ if(/n[oó]mina|domicili|ingreso/.test(s)) return "En la app ve a <b>tu cuenta → domiciliar nómina</b>, o comparte tu nuevo IBAN con tu empresa/RRHH. Eso también te da derecho al bono de 150 €.";
+ if(/qu[eé] puede|puedo hacer|ayudar con|explora|qu[eé] hace/.test(s)) return "En el día a día puedo consultar saldos, mover dinero, bloquear tarjetas, explicarte un cargo o abrir nuevos productos — por chat o voz, 24/7.";
+ return "Buena pregunta. Puedo ayudarte con la promoción, por qué pedimos cada dato, tus documentos y la verificación de identidad, la seguridad o lo que pasa después. ¿Qué te vendría mejor?";
+}
+
+// ============= engine =============
+var idx=0, seen=[], body, chips, lastGreetStep=-1;
+function fmtCta(h){return h;}
+function render(){
+  var st=STEPS[idx];
+  document.getElementById('stepBody').innerHTML=st.html;
+  document.getElementById('stepName').innerHTML=st.name+"<small>"+st.sub+"</small>";
+  document.getElementById('ringT').textContent=(idx+1)+"/"+STEPS.length;
+  var off=88-(88*((idx+1)/STEPS.length)); document.getElementById('ringP').setAttribute('stroke-dashoffset',off);
+  var cta=document.getElementById('cta');
+  if(!st.cta){cta.style.display='none';}
+  else{cta.style.display='';cta.innerHTML=st.cta;cta.disabled=!!st.gate; if(st.gate)cta.dataset.gated="1"; else delete cta.dataset.gated;}
+  document.getElementById('appbodyScroll');
+  document.querySelector('.appbody').scrollTop=0;
+}
+function next(){ if(idx<STEPS.length-1){idx++;render();resetChat();} }
+function resetChat(){ lastGreetStep=-1; var b=document.getElementById('sbody'); if(b)b.innerHTML=''; var c=document.getElementById('schips'); if(c)c.innerHTML=''; }
+function ungate(){var c=document.getElementById('cta');c.disabled=false;}
+
+// upload / liveness / sign simulations
+function doUpload(){var d=document.getElementById('drop'),b=document.getElementById('dropBtn'),p=document.getElementById('prg'),bar=p.querySelector('i');
+  b.style.display='none';p.style.display='block';var w=0;var t=setInterval(function(){w+=8;bar.style.width=w+'%';if(w>=100){clearInterval(t);
+    d.classList.add('done');document.getElementById('dropIc').textContent='✓';document.getElementById('dropT').textContent='Document received';document.getElementById('dropD').textContent='Passport · verified by our identity partner';p.style.display='none';ungate();}},90);}
+function doLive(){var o=document.getElementById('orb'),b=document.getElementById('liveBtn');b.style.display='none';o.classList.add('scan');
+  setTimeout(function(){o.classList.remove('scan');o.classList.add('done');document.getElementById('orbFace').textContent='✓';ungate();},2600);}
+function doSign(){var s=document.getElementById('signpad');s.classList.add('signed');ungate();}
+
+// chat
+function openChat(){document.getElementById('scrim').classList.add('open');document.getElementById('sheet').classList.add('open');
+  document.getElementById('fab').classList.add('hidden');document.getElementById('fabBadge').style.display='none';
+  body=document.getElementById('sbody');chips=document.getElementById('schips');
+  if(lastGreetStep!==idx){lastGreetStep=idx;setTimeout(function(){greet(idx);},250);}}
+function closeChat(){document.getElementById('scrim').classList.remove('open');document.getElementById('sheet').classList.remove('open');document.getElementById('fab').classList.remove('hidden');}
+function add(cls,html){var d=document.createElement('div');d.className='msg '+cls;d.innerHTML=html;body.appendChild(d);body.scrollTop=body.scrollHeight;}
+function typing(){var d=document.createElement('div');d.className='typing';d.innerHTML='<i></i><i></i><i></i>';body.appendChild(d);body.scrollTop=body.scrollHeight;return d;}
+function botAfter(delay,html,cb){var t=typing();setTimeout(function(){t.remove();add('bot',html);if(cb)cb();},delay);}
+function setChips(list){chips.innerHTML='';list.forEach(function(c){var b=document.createElement('button');b.className='schip';b.textContent=c;b.onclick=function(){ask(c);};chips.appendChild(b);});}
+function greet(i){add('bot',CHAT[i].g);setChips(CHAT[i].c);}
+function ask(q){add('user',q);chips.innerHTML='';botAfter(950,answer(q),function(){setChips(CHAT[idx].c);});}
+function onSend(e){e.preventDefault();var i=document.getElementById('stext'),t=i.value.trim();if(!t)return;i.value='';ask(t);}
+
+render();
+</script>
+</body>
+</html>
