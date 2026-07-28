@@ -190,7 +190,7 @@ var STEPS=[
  {name:"Getting started",sub:"Before you begin",cta:"I'm ready",html:
    "<h2>Before you start</h2><p class='sub'>Opening your account takes about 10 minutes. Make sure the below applies to you.</p>"+
    "<div class='check'><span class='ok'>✓</span><div>You are <b>over 18</b> and a UK resident</div></div>"+
-   "<div class='check'><span class='ok'>✓</span><div>You pay tax in the <b>UK</b> and aren't a US person</div></div>"+
+   "<div class='check'><span class='ok'>✓</span><div>You pay tax in the <b>UK</b></div></div>"+
    "<div class='check'><span class='ok'>✓</span><div>You're a <b>new</b> Ada Bank customer</div></div>"+
    "<div class='needs'><div class='nh'>Have these ready</div>"+
    "<div class='ni'><svg viewBox='0 0 24 24' fill='none' stroke-width='2'><rect x='3' y='4' width='18' height='16' rx='2'/><circle cx='9' cy='10' r='2'/></svg> Your passport or driving licence</div>"+
@@ -276,7 +276,7 @@ var CHAT=[
 // ============= scripted answer bank =============
 function answer(q){var s=q.toLowerCase();
  if(/promo|£150|150|bonus|offer/.test(s)) return "You'll get a <b>£150 welcome bonus</b> when you open the online account and pay in a salary of <b>£1,000+ within 60 days</b>. It lands within 30 days of qualifying and I'll show you exactly how to claim it at the end. New customers only, one per person, T&Cs apply.";
- if(/eligible|18|resident|qualify/.test(s)) return "You're eligible if you're <b>18+</b>, a <b>UK resident</b> who pays UK tax, not a US person, and new to Ada Bank. You tick all of these 👍";
+ if(/eligible|18|resident|qualify/.test(s)) return "You're eligible if you're <b>18+</b>, a <b>UK resident</b> who pays UK tax, and new to Ada Bank. You tick all of these 👍";
  if(/why.*document|document.*need|why.*passport|need.*id|why is this document/.test(s)) return "We're legally required to confirm your identity before opening an account (KYC / anti-money-laundering rules). A government photo ID lets our regulated partner check you're really you — it protects you from fraud too. It's used only for verification.";
  if(/accept|which doc|what doc|kind of id|use as id|what can i use/.test(s)) return "A valid <b>passport</b> or <b>UK photo driving licence</b> works best. Make sure the whole document is in frame, in focus, and glare-free.";
  if(/photo.*fail|fail|blurry|won.?t accept|not work.*photo|reject/.test(s)) return "Usually it's lighting or focus. Lay the ID flat on a dark surface, avoid glare, fill the frame, and hold steady. If it still fails after 3 tries I'll flag it so you're not stuck — you won't lose your progress.";
