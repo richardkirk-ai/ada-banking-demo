@@ -226,21 +226,8 @@ var STEPS=[
    "<div class='prgbar' id='prg'><i></i></div></div>"+
    "<div class='kyc'><span class='dot'></span> Encrypted &amp; checked by our regulated identity partner</div>"},
 
- {name:"Liveness check",sub:"Step 6 · it's really you",cta:"Continue",gate:true,html:
-   "<h2>Quick selfie check</h2><p class='sub'>A 10-second video confirms it's really you — not a photo. Look at the circle.</p>"+
-   "<div class='liveorb' id='orb'><div class='ringpulse'></div><span id='orbFace'>🙂</span></div>"+
-   "<div style='text-align:center;margin-top:14px'><button class='act' id='liveBtn' onclick='doLive()' style='background:#5B2CE0;color:#fff;border:0;border-radius:11px;padding:11px 18px;font-size:13.5px;font-weight:700;cursor:pointer'>Start check</button></div>"+
-   "<div class='kyc' style='margin-top:14px'><span class='dot'></span> Biometrics processed by our identity partner, then deleted</div>"},
-
- {name:"Your work",sub:"Step 7 · profession",cta:"Continue",html:
-   "<h2>Your profession</h2><p class='sub'>Regulations require us to understand your work and source of funds.</p>"+
-   "<div class='field'><label>Employment status</label><div class='val'>Employed</div></div>"+
-   "<div class='field'><label>Occupation</label><div class='val'>Sales / Business Development</div></div>"+
-   "<div class='field'><label>Main source of funds</label><div class='val'>Salary</div></div>"+
-   "<p class='sub' style='margin-top:2px'>Self-employed? Ada can help you find your activity (SIC/CNAE) code in chat.</p>"},
-
- {name:"Review",sub:"Step 8 · confirm",cta:"Confirm &amp; continue",html:
-   "<h2>Review &amp; confirm</h2><p class='sub'>Please check everything is correct before you sign.</p>"+
+ {name:"Review",sub:"Step 6 · confirm",cta:"Confirm &amp; open account",html:
+   "<h2>Review &amp; confirm</h2><p class='sub'>Please check everything is correct, then open your account.</p>"+
    "<div class='review'>"+
    "<div class='rrow'><span class='k'>Account</span><span class='v'>Online Current + Credit Card</span></div>"+
    "<div class='rrow'><span class='k'>Name</span><span class='v'>Richard Kirk</span></div>"+
@@ -248,11 +235,6 @@ var STEPS=[
    "<div class='rrow'><span class='k'>Tax residence</span><span class='v'>United Kingdom</span></div>"+
    "<div class='rrow'><span class='k'>Promotion</span><span class='v'>£150 bonus applied</span></div>"+
    "</div>"},
-
- {name:"Sign",sub:"Step 9 · signature",cta:"Sign &amp; open account",gate:true,html:
-   "<h2>Sign your contract</h2><p class='sub'>Sign below to open your account. It's legally binding, but you can cancel within 14 days.</p>"+
-   "<div class='signpad' id='signpad' onclick='doSign()'><span class='ph'>Tap to sign</span><span class='signature'>Richard Kirk</span></div>"+
-   "<p class='sub' style='margin-top:12px'>By signing you agree to the Account Terms, the Fee Information and the Privacy Notice.</p>"},
 
  {name:"All done",sub:"Account opened",cta:"",html:
    "<div class='success'><div class='big'>✓</div><h2>Your account is open!</h2><p class='sub'>Welcome to Ada Bank, Richard. Your account and card are on the way.</p>"+
@@ -266,10 +248,7 @@ var CHAT=[
  {g:"Your email is your username and you choose a passcode. Not sure about a field?",c:["What can I use as ID?","Is this secure?","Can I resume later?","What's the promotion again?"]},
  {g:"Just your details now — this verifies you and meets regulations. Ask me why we need anything.",c:["Why do you need my address?","Why my tax residency?","How is my data used?","Promotion conditions?"]},
  {g:"Time to upload your ID. Snap a clear photo — I'll check it's readable before you continue. Stuck?",c:["Why is this document needed?","My photo keeps failing","Which documents are accepted?","Is my document stored securely?"]},
- {g:"Now a quick selfie video to confirm it's really you — about 10 seconds. Good lighting helps.",c:["Why do I need to record a video?","The camera isn't working","How is my biometric data protected?","How long does verification take?"]},
- {g:"Almost there — tell us about your work. If you're self-employed I'll help find your activity code.",c:["Why do you ask about my job?","What's a CNAE / SIC code?","I'm self-employed — what changes?","What is 'source of funds'?"]},
- {g:"Let's review before you sign — I can explain anything that looks unfamiliar.",c:["Can I edit my details?","What happens after I confirm?","When does the promotion apply?","Is there a cooling-off period?"]},
- {g:"Final step — sign on your phone. It's binding, but you can cancel within 14 days.",c:["How does the e-signature work?","What am I agreeing to?","Can I cancel later?","When will my card arrive?"]},
+ {g:"Let's review before you open your account — I can explain anything that looks unfamiliar.",c:["Can I edit my details?","What happens after I confirm?","When does the promotion apply?","Is there a cooling-off period?"]},
  {g:"🎉 Your account is open and your £150 offer is active. Here's how to make the most of it.",c:["How do I claim the £150?","When does my card arrive?","How do I set up my salary?","What can Ada Bank do?"]}
 ];
 
@@ -295,8 +274,8 @@ function answer(q){var s=q.toLowerCase();
  if(/self.?employed|self employed/.test(s)) return "If you're self-employed we'll note your business activity (SIC/CNAE) and the account can be used professionally. It only adds a question or two — I'll guide you.";
  if(/source of funds|money from|where.*money/.test(s)) return "'Source of funds' just means where the money you'll pay in comes from — for most people that's their <b>salary</b>. It's a standard regulatory question.";
  if(/job|work|profession|occupation|why.*job/.test(s)) return "Regulations require banks to understand customers' occupation and source of funds, to prevent financial crime and to tailor the right products to you.";
- if(/edit|change|wrong|correct/.test(s)) return "Yes — tap any field on the review screen to change it before you sign. Nothing is final until you sign the contract.";
- if(/after.*confirm|what happens|next step/.test(s)) return "After you confirm, you'll sign your contract on this phone and your account opens instantly. Your card is posted within 3–5 working days.";
+ if(/edit|change|wrong|correct/.test(s)) return "Yes — tap any field on the review screen to change it before you confirm. Nothing is final until you open the account.";
+ if(/after.*confirm|what happens|next step/.test(s)) return "After you confirm, your account opens instantly. Your card is posted within 3–5 working days.";
  if(/cooling|cancel|14 day|change my mind/.test(s)) return "You have a <b>14-day cooling-off period</b> — you can close the account within 14 days with no penalty. Just ask me and I'll handle it.";
  if(/sign|signature|e-sign|legally/.test(s)) return "The digital signature is legally equivalent to a handwritten one. You're agreeing to the Account Terms, Fee Information and Privacy Notice — I can summarise any of those in plain English.";
  if(/agree|terms|contract/.test(s)) return "You're agreeing to open the account under the Account Terms, the Fee Information (no monthly fee), and the Privacy Notice. Want the key points in a sentence?";
