@@ -4,12 +4,11 @@
    so a page can never show two switchers. */
 (function () {
   var PAGES = [
-    ["index.html",     "Web"],
-    ["custom.html",    "Front-End API"],
-    ["messaging.html", "Messaging"],
-    ["app.html",       "Mobile"],
-    ["voice.html",     "Voice"],
-    ["mcp.html",       "MCP"]
+    ["index.html",    "Web"],
+    ["channels.html", "Channels"],
+    ["app.html",      "Mobile"],
+    ["voice.html",    "Voice"],
+    ["mcp.html",      "MCP"]
   ];
   function render() {
     document.querySelectorAll(".viewswitch").forEach(function (n) { n.remove(); });

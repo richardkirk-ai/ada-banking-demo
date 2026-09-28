@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="site.css">
-<title>Ada Banking — Messaging (omni-channel)</title>
+<title>Ada Bank — Channels (omni-channel)</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   
@@ -233,6 +233,54 @@
   .ws-art .ti{font-size:13px;font-weight:600;color:var(--brand-navy)}
   .ws-art .ti span{display:block;font-size:11.5px;color:var(--muted);font-weight:400;margin-top:1px}
   .ws-art .go{margin-left:auto;color:var(--brand);font-weight:700;font-size:16px}
+
+  /* ===== animated email thread ===== */
+  .email-wrap{width:100%;max-width:640px;display:flex;flex-direction:column}
+  .email-hdr{text-align:center;margin-bottom:22px}
+  .email-hdr h2{font-size:19px;font-weight:800;color:var(--brand-navy);margin-bottom:6px;letter-spacing:-.3px}
+  .email-hdr .meta{font-size:11.5px;color:var(--muted);display:flex;justify-content:center;flex-wrap:wrap;gap:6px 16px}
+  .email-hdr .meta span{display:flex;align-items:center;gap:5px}
+  .em{display:flex;flex-direction:column;max-width:88%;margin-bottom:22px;opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}
+  .em.visible{opacity:1;transform:none}
+  .em.from-customer{align-self:flex-start;margin-right:auto}
+  .em.from-ada{align-self:flex-end;margin-left:auto}
+  .em-card{border-radius:14px;overflow:hidden;box-shadow:0 6px 22px rgba(30,15,70,.12);background:#fff;border:1px solid var(--line)}
+  .em.from-ada .em-card{border-color:#d8ccff}
+  .ab-email-header{background:linear-gradient(135deg,var(--brand-2) 0%,var(--brand) 55%,var(--brand-navy) 100%);padding:14px 18px;display:flex;align-items:center;gap:13px;position:relative;overflow:hidden}
+  .ab-email-header::before{content:'';position:absolute;top:-30px;right:-20px;width:120px;height:120px;border-radius:50%;border:2px solid rgba(255,255,255,.16)}
+  .ab-logo-circle{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;color:#fff;font-weight:800;font-size:20px}
+  .ab-header-wm{z-index:1}
+  .ab-header-brand{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.4px;line-height:1}
+  .ab-header-sub{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-top:3px}
+  .ab-header-support{margin-left:auto;font-size:10px;color:rgba(255,255,255,.85);font-weight:600;text-align:right;z-index:1;line-height:1.5}
+  .em-hdr{padding:11px 16px;display:flex;align-items:center;gap:10px;background:#faf9fe;border-bottom:1px solid var(--line)}
+  .em.from-ada .em-hdr{background:#f6f2ff}
+  .em-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+  .em-av.user{background:var(--brand-navy);color:#fff}
+  .em-av.ada{background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff}
+  .em-sender{flex:1}
+  .em-from-name{font-size:12.5px;font-weight:700;color:var(--brand-navy)}
+  .em-from-addr{font-size:10.5px;color:var(--muted)}
+  .em-ts{font-size:10.5px;color:var(--muted);white-space:nowrap}
+  .em-body{padding:15px 18px;font-size:13px;line-height:1.62;color:#2b2840}
+  .em-body p{margin-bottom:10px}.em-body p:last-child{margin-bottom:0}
+  .em-body b{color:var(--brand-navy);font-weight:700}
+  .em-chip{display:inline-flex;align-items:center;gap:7px;background:#f4f2fb;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:12.5px;color:var(--brand-navy);font-weight:600;margin:2px 0}
+  .em-tags{padding:0 18px 14px;display:flex;flex-wrap:wrap;gap:6px}
+  .em-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+  .em-tag.intent{background:#e8f1fb;color:#2e6db4;border:1px solid #c7ddf3}
+  .em-tag.kb{background:#EFE9FF;color:var(--brand);border:1px solid #d8ccff}
+  .em-tag.resolved{background:#eafaf1;color:#1a9e5f;border:1px solid #bff0d4}
+  .em-label{font-size:10px;color:var(--muted);margin-top:6px;padding:0 4px}
+  .em.from-ada .em-label{text-align:right}
+  .typing-bubble{display:none;align-self:flex-end;margin-left:auto;margin-bottom:16px;padding:12px 18px;background:#fff;border:1px solid #d8ccff;border-radius:12px;align-items:center;gap:8px;font-size:11px;color:var(--muted);opacity:0;transition:opacity .3s}
+  .typing-bubble.show{display:flex;opacity:1}
+  @keyframes emTypeDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+  .typing-bubble i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brand);animation:emTypeDot 1.2s infinite}
+  .typing-bubble i:nth-child(3){animation-delay:.2s}.typing-bubble i:nth-child(4){animation-delay:.4s}
+  .replay-btn{align-self:center;margin-top:4px;padding:9px 22px;background:#fff;border:1px solid var(--brand);border-radius:20px;color:var(--brand);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;display:none;font-family:inherit}
+  .replay-btn:hover{background:#f1eefb}
+  .replay-btn.show{display:block}
 </style>
 </head>
 <body>
@@ -240,7 +288,7 @@
 <div class="top">
   <div class="mark">a</div>
   <div class="logo">ada<span> banking</span></div>
-  <div class="crumb">· Messaging</div>
+  <div class="crumb">· Channels</div>
   <div class="badge">Omni-channel · one agent, every channel</div>
 </div>
 
@@ -356,34 +404,57 @@ POST https://demo-rkirk-fintech.ada.support<span class="kw">/api/v2/conversation
         </div>
       </div>
 
-      <!-- EMAIL -->
+      <!-- EMAIL (animated inbound → Ada reply thread) -->
       <div class="ms-panel wide" data-ch="email">
-        <div class="mail">
-          <div class="mail-sub">Copy of my June statement</div>
-          <div class="mail-tag">Ada replied in 46 seconds</div>
-          <div class="mail-msg">
-            <div class="mail-hd">
-              <div class="mail-av">RK</div>
-              <div class="mail-who"><div class="nm">Richard Kirk</div><div class="ad">richard.kirk@gmail.com → support@adabank.com</div></div>
-              <div class="mail-time">Today, 09:02</div>
-            </div>
-            <div class="mail-body"><p>Hi, could you send me a copy of my June statement for my Everyday Current account? I need it for a mortgage application. Thanks, Richard</p></div>
+        <div class="email-wrap">
+          <div class="email-hdr">
+            <h2>Copy of my June statement</h2>
+            <div class="meta"><span>📥 support@adabank.com</span><span>⚡ Ada replied in 46s</span><span>✓ Auto-resolved</span></div>
           </div>
-          <div class="mail-msg">
-            <div class="mail-hd">
-              <div class="mail-av ada">a</div>
-              <div class="mail-who"><div class="nm">Ada Bank Customer Care</div><div class="ad">support@adabank.com → richard.kirk@gmail.com</div></div>
-              <div class="mail-time">Today, 09:03</div>
+
+          <div class="em from-customer" id="em1">
+            <div class="em-card">
+              <div class="em-hdr">
+                <div class="em-av user">RK</div>
+                <div class="em-sender"><div class="em-from-name">Richard Kirk</div><div class="em-from-addr">richard.kirk@gmail.com → support@adabank.com</div></div>
+                <div class="em-ts">09:02</div>
+              </div>
+              <div class="em-body"><p>Hi, could you send me a copy of my <b>June statement</b> for my Everyday Current account? I need it for a mortgage application. Thanks, Richard</p></div>
             </div>
-            <div class="mail-body">
-              <p>Hi Richard,</p>
-              <p>Thanks for getting in touch — happy to help. I've matched your email to your Everyday Current account (••••&nbsp;4471) and generated your <b>June 2026 statement</b>.</p>
-              <div class="mail-chip">📄 Statement_Jun2026_ADA-4471.pdf · 118&nbsp;KB</div>
-              <p>You can also download it any time from <b>Statements</b> in the app. For a mortgage application, lenders usually ask for the last 3 months — just reply and I'll send April and May too.</p>
-              <p>Is there anything else I can help with?</p>
-              <div class="mail-sig">Best wishes,<br><b>Ada</b> — Ada Bank Customer Care<br>Available 24/7 · <b>adabank.com/help</b></div>
-            </div>
+            <div class="em-label">Inbound email</div>
           </div>
+
+          <div class="typing-bubble" id="emType"><b style="color:var(--brand)">Ada</b> is drafting a reply <i></i><i></i><i></i></div>
+
+          <div class="em from-ada" id="em2">
+            <div class="em-card">
+              <div class="ab-email-header">
+                <div class="ab-logo-circle">a</div>
+                <div class="ab-header-wm"><div class="ab-header-brand">Ada Bank</div><div class="ab-header-sub">Customer Care · Powered by Ada</div></div>
+                <div class="ab-header-support">Available 24/7<br>adabank.com/help</div>
+              </div>
+              <div class="em-hdr">
+                <div class="em-av ada">a</div>
+                <div class="em-sender"><div class="em-from-name">Ada Bank Customer Care</div><div class="em-from-addr">support@adabank.com → richard.kirk@gmail.com</div></div>
+                <div class="em-ts">09:03</div>
+              </div>
+              <div class="em-body">
+                <p>Hi Richard,</p>
+                <p>Happy to help. I've matched your email to your <b>Everyday Current account (•••• 4471)</b> and generated your <b>June 2026 statement</b>:</p>
+                <div class="em-chip">📄 Statement_Jun2026_ADA-4471.pdf · 118&nbsp;KB</div>
+                <p>You can also download it any time from <b>Statements</b> in the app. For a mortgage, lenders usually ask for the last 3 months — reply and I'll send April and May too.</p>
+                <p>Is there anything else I can help with?</p>
+              </div>
+              <div class="em-tags">
+                <span class="em-tag intent">◆ Intent · Statement request</span>
+                <span class="em-tag kb">📚 KB · Statements &amp; documents</span>
+                <span class="em-tag resolved">✓ Auto-resolved</span>
+              </div>
+            </div>
+            <div class="em-label">Ada reply · sent from support@adabank.com</div>
+          </div>
+
+          <button class="replay-btn" id="emReplay" onclick="startEmailAnim()">↻ Replay</button>
         </div>
       </div>
 
@@ -512,6 +583,33 @@ POST https://demo-rkirk-fintech.ada.support<span class="kw">/api/v2/conversation
     document.getElementById('stageName').textContent = CH[ch].name;
     document.getElementById('stageTag').textContent = CH[ch].tag;
     if(ch==='websearch') wsRun();
+    if(ch==='email') startEmailAnim();
+  }
+
+  // Email — animated inbound → Ada-reply thread (reveal on a timed schedule)
+  var emTimers=[];
+  var EM_SCHEDULE=[
+    {id:'em1',a:'show',d:250},
+    {id:'emType',a:'show',d:1150},
+    {id:'emType',a:'hide',d:2650},
+    {id:'em2',a:'show',d:2700},
+    {id:'emReplay',a:'show',d:3600}
+  ];
+  function resetEmailAnim(){
+    emTimers.forEach(function(t){clearTimeout(t);}); emTimers=[];
+    document.querySelectorAll('[data-ch="email"] .em').forEach(function(e){e.classList.remove('visible');});
+    var t=document.getElementById('emType'); if(t)t.classList.remove('show');
+    var r=document.getElementById('emReplay'); if(r)r.classList.remove('show');
+  }
+  function startEmailAnim(){
+    resetEmailAnim();
+    EM_SCHEDULE.forEach(function(st){
+      emTimers.push(setTimeout(function(){
+        var e=document.getElementById(st.id); if(!e) return;
+        if(st.a==='show'){ e.classList.add(e.classList.contains('em')?'visible':'show'); e.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+        else { e.classList.remove('show'); }
+      }, st.d));
+    });
   }
 
   // Web Search — Ada types an AI answer from the KB, then reveals the source articles

@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="site.css">
 <title>Ada Bank — Voice AI (live call visual)</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{--panel:#141320;--panel2:#1a1928;--line2:#33314a;--dim:#6b6784;--brand2:#5B2CE0;--ai:#8f6bff;--user:#2ee0b0;--api:#f5a623;--ok:#2ec27e;--know:#42b7ff}
+  :root{
+    --bg:#0a0912;--panel:#141320;--panel2:#1a1928;--line:#282639;--line2:#33314a;
+    --ink:#f3f1fb;--muted:#918da8;--dim:#6b6784;
+    --brand:#7B4DFF;--brand2:#5B2CE0;--ai:#8f6bff;--user:#2ee0b0;
+    --api:#f5a623;--ok:#2ec27e;--know:#42b7ff;
+  }
   html,body{height:100%}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:
        radial-gradient(1200px 700px at 80% -10%, #241452 0%, transparent 55%),
@@ -147,6 +151,10 @@
   .skip svg{width:14px;height:14px}
 
   /* view switcher */
+  .viewswitch{position:fixed;top:12px;right:18px;z-index:20;display:flex;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .viewswitch a{font-size:12px;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px}
+  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
+
   @media(max-width:1200px){.vgrid{grid-template-columns:300px 1fr 320px}}
 </style>
 </head>
@@ -216,6 +224,14 @@
   </div>
   <button class="skip" id="skip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4l10 8-10 8zM19 5v14"/></svg> Skip to end</button>
 </footer>
+
+<div class="viewswitch">
+  <a href="index.html">Web</a>
+  <a href="channels.html">Channels</a>
+  <a href="app.html">Mobile</a>
+  <a class="on" href="voice.html">Voice</a>
+  <a href="mcp.html">MCP</a>
+</div>
 
 <audio id="a" src="voice-call.wav" preload="auto"></audio>
 
@@ -448,6 +464,5 @@ document.addEventListener('keydown',function(e){
 
 sync(0);
 </script>
-  <script src="nav.js" defer></script>
 </body>
 </html>
