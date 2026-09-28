@@ -3,23 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="site.css">
 <title>Ada Banking — Messaging (omni-channel)</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --brand:#5B2CE0;--brand-2:#7B4DFF;--brand-dk:#2E1A6B;--brand-navy:#1c1440;
-    --bg:#F5F4FB;--white:#fff;--ink:#1A1730;--muted:#6c6885;--line:#E7E4F2;
-    --wa:#25D366;--wa-dk:#075E54;--wa-bg:#e5ddd5;
-    --msgr:#0084FF;--ig1:#feda75;--ig2:#d62976;--ig3:#4f5bd5;
-    --tg:#229ED9;--sms:#34C759;--imsg:#0A84FF;--x:#000;
-  }
+  
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
   /* view switcher */
-  .viewswitch{position:fixed;bottom:16px;left:16px;z-index:60;display:flex;gap:2px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(40,20,90,.12)}
-  .viewswitch a{font-size:12px;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px}
-  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
-
   /* top bar */
   .top{background:var(--brand-navy);height:56px;display:flex;align-items:center;gap:12px;padding:0 22px;flex-shrink:0}
   .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff}
@@ -218,6 +209,30 @@
   .voice .vbtn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#EFE9FF;color:var(--brand-dk)}
   .voice .vbtn svg{width:19px;height:19px}
   .voice .vbtn.end{background:#E5484D;color:#fff}
+  /* web search (Ada-powered help centre) */
+  .t-search{background:linear-gradient(135deg,var(--brand-2),var(--brand))}
+  .ws-wrap{max-width:640px;width:100%}
+  .ws-bar{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;box-shadow:0 4px 14px rgba(30,15,70,.06)}
+  .ws-bar svg{width:18px;height:18px;color:var(--muted);flex:0 0 auto}
+  .ws-bar .q{flex:1;font-size:15px;color:var(--ink);font-weight:600}
+  .ws-bar .k{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;white-space:nowrap}
+  .ws-ai{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 12px 34px rgba(30,15,70,.10)}
+  .ws-ai-head{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid var(--line);background:linear-gradient(100deg,#efe9ff,#f6f2ff)}
+  .ws-ai-head .av{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+  .ws-ai-head .t{font-size:13px;font-weight:700;color:var(--brand-navy)}
+  .ws-ai-head .b{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--brand);background:#fff;border:1px solid #d8ccff;border-radius:999px;padding:3px 10px}
+  .ws-ans{padding:16px 18px;font-size:14px;line-height:1.62;color:#2b2840;min-height:104px}
+  .ws-ans .cursor{display:inline-block;width:8px;height:15px;background:var(--brand);vertical-align:-2px;margin-left:1px;animation:wsblink 1s step-end infinite}
+  @keyframes wsblink{50%{opacity:0}}
+  .ws-src{border-top:1px solid var(--line);padding:12px 18px 16px}
+  .ws-src .h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+  .ws-art{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line);opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s}
+  .ws-art:last-child{border-bottom:none}
+  .ws-art.show{opacity:1;transform:none}
+  .ws-art .ic{width:30px;height:30px;border-radius:8px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:15px}
+  .ws-art .ti{font-size:13px;font-weight:600;color:var(--brand-navy)}
+  .ws-art .ti span{display:block;font-size:11.5px;color:var(--muted);font-weight:400;margin-top:1px}
+  .ws-art .go{margin-left:auto;color:var(--brand);font-weight:700;font-size:16px}
 </style>
 </head>
 <body>
@@ -234,7 +249,12 @@
   <aside class="rail">
     <div class="rail-label">Channels</div>
 
-    <div class="ms-item on" data-ch="webform" onclick="select('webform')">
+    <div class="ms-item on" data-ch="websearch" onclick="select('websearch')">
+      <div class="ms-ico t-search"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+      <div class="ms-tt"><div class="n">Web Search</div><div class="d">Help centre · AI answer</div></div>
+    </div>
+
+    <div class="ms-item" data-ch="webform" onclick="select('webform')">
       <div class="ms-ico t-web"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></div>
       <div class="ms-tt"><div class="n">Web Contact Form</div><div class="d">Help centre → Email API</div></div>
     </div>
@@ -275,20 +295,41 @@
     </div>
 
     <div class="rail-foot">
-      <b>One agent, every channel.</b> The same knowledge, playbooks and actions answer on the web form, email, social, SMS and the phone — no rebuild per channel. Live web &amp; in-app Chat are on the <b>Web</b> and <b>Mobile</b> tabs.
+      <b>One agent, every channel.</b> The same knowledge, playbooks and actions answer on web search, the web form, email, social, SMS and the phone — no rebuild per channel. Live web &amp; in-app Chat are on the <b>Web</b> and <b>Mobile</b> tabs.
     </div>
   </aside>
 
   <!-- ===== stage ===== -->
   <main class="stage">
     <div class="stagehead">
-      <div class="h" id="stageName">Web Contact Form</div>
-      <div class="t" id="stageTag">Help-centre contact form → Ada Email API → reply from support@adabank.com</div>
+      <div class="h" id="stageName">Web Search</div>
+      <div class="t" id="stageTag">Help-centre search powered by Ada — an AI answer from the knowledge base, with links to the matching articles</div>
     </div>
     <div class="canvas">
 
+      <!-- WEB SEARCH (Ada-powered help centre) -->
+      <div class="ms-panel wide show" data-ch="websearch">
+        <div class="ws-wrap">
+          <div class="ws-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <div class="q">How do I freeze or replace my card?</div>
+            <span class="k">↵ Ask Ada</span>
+          </div>
+          <div class="ws-ai">
+            <div class="ws-ai-head"><div class="av">a</div><div class="t">Ada — AI answer</div><div class="b">✨ Ada Bank Help Centre</div></div>
+            <div class="ws-ans" id="wsAns"></div>
+            <div class="ws-src">
+              <div class="h">Sources</div>
+              <div class="ws-art"><div class="ic">🔒</div><div class="ti">Freezing and unfreezing your card<span>Cards &amp; payments · 2 min read</span></div><div class="go">›</div></div>
+              <div class="ws-art"><div class="ic">🚫</div><div class="ti">Reporting a lost or stolen card<span>Security · 3 min read</span></div><div class="go">›</div></div>
+              <div class="ws-art"><div class="ic">💳</div><div class="ti">Ordering a replacement card<span>Cards &amp; payments · 2 min read</span></div><div class="go">›</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- WEB CONTACT FORM -->
-      <div class="ms-panel wide show" data-ch="webform">
+      <div class="ms-panel wide" data-ch="webform">
         <div class="form-card">
           <div class="form-top"><div class="mark">a</div><div><div class="n">Ada Bank · Help centre — Contact us</div><div class="s">We usually reply within a few minutes</div></div></div>
           <div class="form-in">
@@ -453,16 +494,9 @@ POST https://demo-rkirk-fintech.ada.support<span class="kw">/api/v2/conversation
   </main>
 </div>
 
-<div class="viewswitch">
-  <a href="index.html">Web</a>
-  <a href="custom.html">Custom</a>
-  <a class="on" href="messaging.html">Messaging</a>
-  <a href="app.html">Mobile</a>
-  <a href="voice.html">Voice</a>
-</div>
-
 <script>
   var CH = {
+    websearch:{name:"Web Search", tag:"Help-centre search powered by Ada — an AI answer from the knowledge base, with links to the matching articles"},
     webform:{name:"Web Contact Form", tag:"Help-centre contact form → Ada Email API → reply from support@adabank.com"},
     email:{name:"Email", tag:"Asynchronous · Ada replies from support@adabank.com — in reply to the web form"},
     sms:{name:"SMS / Text", tag:"Short code 60420 · delivered via Twilio"},
@@ -477,7 +511,29 @@ POST https://demo-rkirk-fintech.ada.support<span class="kw">/api/v2/conversation
     document.querySelectorAll('.ms-panel').forEach(function(p){ p.classList.toggle('show', p.dataset.ch===ch); });
     document.getElementById('stageName').textContent = CH[ch].name;
     document.getElementById('stageTag').textContent = CH[ch].tag;
+    if(ch==='websearch') wsRun();
   }
+
+  // Web Search — Ada types an AI answer from the KB, then reveals the source articles
+  var WS_HTML="You can freeze your card instantly in the app — go to <b>Cards → select the card → Freeze</b>. That blocks new payments straight away (including Apple/Google Pay), and you can unfreeze whenever you like. If your card is <b>lost or stolen</b>, choose <b>Report lost or stolen</b> instead: we'll cancel it and post a replacement, which arrives in <b>3–5 working days</b>. Your Direct Debits and standing orders keep running throughout.";
+  var WS_PLAIN=WS_HTML.replace(/<[^>]+>/g,"");
+  var wsTimer=null;
+  function wsRun(){
+    var el=document.getElementById('wsAns'); if(!el) return;
+    if(wsTimer){clearTimeout(wsTimer);wsTimer=null;}
+    document.querySelectorAll('.ws-art').forEach(function(a){a.classList.remove('show');});
+    el.innerHTML='<span></span><span class="cursor"></span>';
+    var span=el.firstChild, i=0;
+    (function tick(){
+      span.textContent=WS_PLAIN.slice(0,i);
+      if(i<WS_PLAIN.length){ i+=2; wsTimer=setTimeout(tick,14); }
+      else{ el.innerHTML=WS_HTML;
+        document.querySelectorAll('.ws-art').forEach(function(a,k){ setTimeout(function(){a.classList.add('show');}, 200*(k+1)); });
+      }
+    })();
+  }
+  wsRun();
 </script>
+  <script src="nav.js" defer></script>
 </body>
 </html>

@@ -3,22 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ada Banking — Online Banking</title>
+<link rel="stylesheet" href="site.css">
+<title>Ada Bank — Front-End API</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  :root{
-    --brand:#5B2CE0; --brand-2:#7B4DFF; --brand-dk:#2E1A6B; --brand-navy:#1c1440;
-    --pos:#12B76A; --neg:#E5484D; --warn:#E08600;
-    --bg:#F5F4FB; --white:#fff; --ink:#1A1730; --muted:#6c6885; --line:#E7E4F2;
-    --sidebar-w:236px;
-  }
+  /* page-specific NON-brand tokens only — all brand tokens come from site.css */
+  :root{ --sidebar-w:236px; }
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
        background:var(--bg);color:var(--ink);font-size:14px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-
-  /* view switcher */
-  .viewswitch{position:fixed;bottom:16px;left:16px;z-index:60;display:flex;gap:2px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(40,20,90,.12)}
-  .viewswitch a{font-size:12px;color:var(--muted);text-decoration:none;padding:6px 13px;border-radius:999px}
-  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
 
   /* top nav */
   .top-nav{background:var(--brand-navy);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;flex-shrink:0;z-index:100;box-shadow:0 2px 10px rgba(20,10,50,.3)}
@@ -80,7 +72,6 @@
   .chip-green{background:#E5F8EF;color:var(--pos)}
   .chip-amber{background:#FDF1DC;color:var(--warn)}
   .chip-violet{background:#EFE9FF;color:var(--brand)}
-  /* mini progress */
   .goalbar{height:7px;border-radius:5px;background:#ece8f7;margin-top:10px;overflow:hidden}
   .goalbar > i{display:block;height:100%;width:65%;background:linear-gradient(90deg,var(--brand-2),var(--brand))}
 
@@ -137,175 +128,173 @@
   .ask-ada{color:var(--brand);cursor:pointer;font-weight:600}
   .ask-ada:hover{text-decoration:underline}
 
-  /* developer / frontend-api callout */
-  .dev-callout{margin-top:16px;background:#1c1440;border-radius:12px;overflow:hidden;border:1px solid #2c2258}
-  .dev-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer}
+  @media(max-width:1080px){.stats-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+
+  /* ===== Front-End API gallery overlay (over the dimmed dashboard) ===== */
+  .bx-overlay{position:fixed;inset:0;z-index:200;overflow:auto;
+    background:radial-gradient(1100px 560px at 50% -14%, rgba(123,77,255,.44), transparent 60%), rgba(10,6,30,.88);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    display:flex;flex-direction:column;align-items:center;padding:20px 24px 60px}
+  .bx-intro{text-align:center;color:#fff;margin-bottom:18px;display:flex;flex-direction:column;align-items:center}
+  .bx-logo{display:flex;align-items:center;gap:10px}
+  .bx-logo .fl{width:36px;height:36px}
+  .bx-logo .wm{font-size:26px;font-weight:800;letter-spacing:-.5px;color:#fff}
+  .bx-logo .wm span{font-weight:400;color:rgba(255,255,255,.6)}
+  .bx-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:#c7b6ff;margin:14px 0 4px}
+  .bx-intro h1{font-size:22px;font-weight:800;margin:2px 0 6px}
+  .bx-intro p{font-size:13px;color:rgba(255,255,255,.74);line-height:1.55;max-width:760px}
+  .bx-intro p .hl{color:#c7b6ff;font-weight:700}
+  .bx-grid{display:grid;grid-template-columns:repeat(3,286px);gap:20px 18px;justify-content:center;margin-top:6px}
+  .bx-slot{margin:0;display:flex;flex-direction:column;align-items:center;gap:11px}
+  .bx-slot figcaption{color:#fff;font-size:12px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);padding:6px 13px;border-radius:999px;text-align:center;line-height:1.35}
+  .bx-slot figcaption b{display:block;font-weight:800;font-size:12.5px;margin-bottom:1px}
+  .bx-slot figcaption em{font-style:normal;color:rgba(255,255,255,.66);font-weight:500}
+  .card{width:286px;height:470px;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fff;font-size:12.8px;box-shadow:0 28px 64px rgba(0,0,0,.5)}
+  @media(max-width:1000px){.bx-grid{grid-template-columns:repeat(2,286px)}}
+  @media(max-width:660px){.bx-grid{grid-template-columns:286px}}
+
+  /* generic phone chrome + bubbles reused across cards */
+  .ph-status{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:11px;font-weight:700;color:inherit;flex:0 0 auto}
+  .ph-status .dots{display:flex;gap:3px}.ph-status .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;display:block}
+  .bb{max-width:86%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.45}
+  .bb.bot{align-self:flex-start;background:#f1eefb;color:var(--ink);border-bottom-left-radius:4px}
+  .bb.user{align-self:flex-end;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-bottom-right-radius:4px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chips span{font-size:11px;font-weight:600;color:var(--brand);border:1.4px solid var(--brand);border-radius:999px;padding:5px 11px;background:#fff}
+  .inputbar{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff;color:#9aa3b5;font-size:12px}
+  .inputbar span{flex:1}
+  .inputbar .snd{width:30px;height:30px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .inputbar .snd svg{width:14px;height:14px}
+
+  /* ---- FE1 · bottom-sheet (¾ height over the app) ---- */
+  .fe1{background:#eef2f7}
+  .fe1-appbg{position:absolute;inset:0;padding:16px}
+  .fe1-appbg .abar{height:12px;border-radius:6px;background:#dbe2ec;margin-bottom:11px;opacity:.85}
+  .fe1-appbg .abar.w1{width:58%}.fe1-appbg .abar.w2{width:84%}
+  .fe1-appbg .abar.big{height:70px;border-radius:14px;background:linear-gradient(135deg,var(--brand-2),var(--deep));opacity:.34;margin:14px 0}
+  .fe1-scrim{position:absolute;inset:0;background:rgba(20,10,50,.42)}
+  .fe1-sheet{position:absolute;left:0;right:0;bottom:0;height:76%;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -14px 40px rgba(20,10,50,.3);display:flex;flex-direction:column;overflow:hidden}
+  .fe1-grab{width:38px;height:5px;border-radius:3px;background:#d9d4ec;margin:9px auto 4px;flex:0 0 auto}
+  .fe1-head{display:flex;align-items:center;gap:10px;padding:6px 15px 12px;border-bottom:1px solid var(--line)}
+  .fe1-head .av{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex:0 0 auto}
+  .fe1-head .n{font-size:13.5px;font-weight:700;color:var(--brand-navy)}
+  .fe1-head .s{font-size:10.5px;color:var(--pos);font-weight:600;display:flex;align-items:center;gap:5px;margin-top:1px}
+  .fe1-head .s i{width:6px;height:6px;border-radius:50%;background:var(--pos);display:inline-block}
+  .fe1-body{flex:1;padding:13px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+  .fe1-conf{align-self:stretch;background:#f6fbf8;border:1px solid #cdeedd;border-radius:14px;padding:12px}
+  .fe1-conf .h{font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--pos)}
+  .fe1-conf .r{display:flex;justify-content:space-between;font-size:12px;margin-top:7px;color:#4a4760}.fe1-conf .r b{color:var(--brand-navy)}
+
+  /* ---- FE2 · full-screen takeover (immersive) ---- */
+  .fe2{color:#fff;background:radial-gradient(120% 80% at 82% 0%, #5B2CE0 0%, #2E1A6B 46%, #140a30 100%)}
+  .fe2-top{display:flex;align-items:center;gap:11px;padding:6px 16px 12px;flex:0 0 auto}
+  .fe2-top .bk{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
+  .fe2-top .n{font-size:14px;font-weight:800}.fe2-top .s{font-size:10.5px;color:#c7b6ff;font-weight:600;margin-top:1px}
+  .fe2-hero{padding:4px 18px 14px;flex:0 0 auto}
+  .fe2-hero .big{font-size:19px;font-weight:800;line-height:1.25}
+  .fe2-hero .subl{font-size:11.5px;color:rgba(255,255,255,.75);margin-top:6px}
+  .fe2-body{flex:1;padding:2px 16px 14px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+  .fe2 .bb.bot{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff}
+  .fe2-txn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px}
+  .fe2-txn .r{display:flex;justify-content:space-between;font-size:12px;margin-top:6px;color:#d7d1f5}.fe2-txn .r:first-child{margin-top:0}.fe2-txn .r b{color:#fff}
+  .fe2-txn .amt{font-size:22px;font-weight:800;margin:6px 0 2px}
+  .fe2-acts{display:flex;gap:8px;margin-top:2px}
+  .fe2-acts .a{flex:1;text-align:center;font-size:11.5px;font-weight:700;padding:10px;border-radius:11px}
+  .fe2-acts .prim{background:#fff;color:var(--brand)}
+  .fe2-acts .ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22)}
+
+  /* ---- FE3 · floating launcher + compact popover ---- */
+  .fe3{background:#eef2f7}
+  .fe3-appbg{position:absolute;inset:0;padding:16px}
+  .fe3-appbg .abar{height:12px;border-radius:6px;background:#dbe2ec;margin-bottom:11px;opacity:.85}
+  .fe3-appbg .abar.w1{width:52%}.fe3-appbg .abar.w2{width:80%}
+  .fe3-appbg .abar.big{height:96px;border-radius:16px;background:linear-gradient(135deg,var(--brand-2),var(--deep));opacity:.3;margin:14px 0}
+  .fe3-pop{position:absolute;right:16px;bottom:86px;width:214px;background:#fff;border-radius:16px 16px 6px 16px;box-shadow:0 18px 40px rgba(20,10,50,.32);overflow:hidden}
+  .fe3-pop .ph{background:var(--brand-navy);color:#fff;padding:9px 12px;display:flex;align-items:center;gap:8px}
+  .fe3-pop .ph .av{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex:0 0 auto}
+  .fe3-pop .ph .n{font-size:12px;font-weight:700}
+  .fe3-pop .pb{padding:11px;display:flex;flex-direction:column;gap:7px;background:var(--bg)}
+  .fe3-pop .bb{max-width:100%;font-size:11.8px;padding:8px 10px}
+  .fe3-bubble{position:absolute;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px rgba(91,44,224,.55)}
+  .fe3-bubble svg{width:26px;height:26px}
+  .fe3-bubble .b{position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:var(--neg);border:2px solid #eef2f7;color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+  /* ---- FE4 · inline / in-context (embedded in Payments page) ---- */
+  .fe4{background:#fff}
+  .fe4-top{padding:6px 16px 10px;flex:0 0 auto}
+  .fe4-top .t{font-size:16px;font-weight:800;color:var(--brand-navy)}
+  .fe4-top .s{font-size:11px;color:var(--muted);margin-top:2px}
+  .fe4-scroll{flex:1;overflow:hidden;padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+  .fe4-tile{border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px}
+  .fe4-tile .ic{width:32px;height:32px;border-radius:9px;background:#EFE9FF;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
+  .fe4-tile .nm{font-weight:700;font-size:12.5px;color:var(--brand-navy)}
+  .fe4-tile .mt{font-size:10.5px;color:var(--muted);margin-top:1px}
+  .fe4-tile .val{margin-left:auto;font-weight:800;font-size:12.5px;color:var(--brand-navy)}
+  .fe4-embed{border:1.5px solid #e0d8fb;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#faf8ff,#fff)}
+  .fe4-embed .eh{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid #ece6fb}
+  .fe4-embed .eh .av{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex:0 0 auto}
+  .fe4-embed .eh .n{font-size:12px;font-weight:800;color:var(--brand-navy)}
+  .fe4-embed .eh .tag{margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--brand);background:#EFE9FF;border-radius:999px;padding:3px 8px}
+  .fe4-embed .eb{padding:11px 12px;display:flex;flex-direction:column;gap:8px}
+  .fe4-embed .bb{max-width:92%;font-size:11.8px}
+  .fe4-embed .mini{display:flex;gap:6px}
+  .fe4-embed .mini span{font-size:10.5px;font-weight:600;color:var(--brand);border:1.3px solid var(--brand);border-radius:999px;padding:4px 9px;background:#fff}
+
+  /* ---- FE5 · rich record cards (bond carousel) ---- */
+  .fe5{background:var(--bg)}
+  .fe5-head{background:var(--brand-navy);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .fe5-head .av{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto}
+  .fe5-head .n{font-size:13.5px;font-weight:700}
+  .fe5-head .s{font-size:10.5px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px;margin-top:1px}
+  .fe5-head .s i{width:6px;height:6px;border-radius:50%;background:var(--pos);display:inline-block}
+  .fe5-body{flex:1;padding:12px 12px 6px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+  .fe5-cards{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px}
+  .fe5-cards::-webkit-scrollbar{height:0}
+  .fe5-card{flex:0 0 156px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(40,20,90,.06)}
+  .fe5-card .term{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.5px}
+  .fe5-card .nm{font-size:12.5px;font-weight:700;color:var(--brand-navy);margin-top:1px}
+  .fe5-card .rate{font-size:24px;font-weight:800;color:var(--brand-navy);margin:8px 0 0;line-height:1}
+  .fe5-card .rate span{font-size:10.5px;font-weight:600;color:var(--muted);margin-left:3px}
+  .fe5-card .sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+  .fe5-card ul{list-style:none;margin:9px 0 11px;padding:0;flex:1}
+  .fe5-card li{font-size:10px;color:#4a4760;padding:2px 0 2px 14px;position:relative;line-height:1.35}
+  .fe5-card li::before{content:"\2713";position:absolute;left:0;color:var(--pos);font-weight:700}
+  .fe5-card .b{background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-radius:9px;padding:8px;font-size:11.5px;font-weight:700;text-align:center}
+
+  /* ---- FE6 · multimodal (file/image upload + quick actions) ---- */
+  .fe6{background:var(--bg)}
+  .fe6-head{background:var(--brand-navy);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .fe6-head .av{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto}
+  .fe6-head .n{font-size:13.5px;font-weight:700}
+  .fe6-head .s{font-size:10.5px;color:rgba(255,255,255,.7);margin-top:1px}
+  .fe6-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+  .fe6-file{align-self:flex-end;max-width:78%;background:#fff;border:1px solid var(--line);border-radius:14px;border-bottom-right-radius:4px;padding:9px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 8px rgba(40,20,90,.06)}
+  .fe6-file .thumb{width:36px;height:44px;border-radius:6px;background:linear-gradient(160deg,#efe9ff,#d9ccff);display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 auto}
+  .fe6-file .fn{font-size:11.5px;font-weight:700;color:var(--brand-navy)}
+  .fe6-file .fs{font-size:10px;color:var(--muted);margin-top:1px}
+  .fe6-actions{display:flex;flex-direction:column;gap:6px}
+  .fe6-actions .qa{background:#fff;border:1.4px solid var(--brand);color:var(--brand);border-radius:11px;padding:9px 11px;font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .fe6-actions .qa .e{font-size:14px}
+  .fe6-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff;color:#9aa3b5;font-size:12px;flex:0 0 auto}
+  .fe6-input .att{display:flex;gap:8px;color:var(--brand)}
+  .fe6-input .att svg{width:18px;height:18px}
+  .fe6-input span{flex:1}
+  .fe6-input .snd{width:30px;height:30px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .fe6-input .snd svg{width:14px;height:14px}
+
+  /* ===== SE note (reuses dev-callout style, sits on the overlay) ===== */
+  .dev-callout{margin-top:26px;width:100%;max-width:920px;background:#140a30;border-radius:14px;overflow:hidden;border:1px solid #2c2258}
+  .dev-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer}
   .dev-head .dt{color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
   .dev-head .dt .tag{background:linear-gradient(135deg,var(--brand-2),var(--brand));font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700}
   .dev-head .chev{color:#8f88bf;transition:transform .2s}
   .dev-callout.open .chev{transform:rotate(180deg)}
-  .dev-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
-  .dev-callout.open .dev-body{max-height:640px}
-  .dev-body pre{margin:0;padding:14px 16px 18px;color:#d7d1f5;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;line-height:1.6;overflow-x:auto}
+  .dev-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .dev-callout.open .dev-body{max-height:720px}
+  .dev-body pre{margin:0;padding:14px 16px 18px;color:#d7d1f5;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;line-height:1.65;overflow-x:auto;white-space:pre-wrap}
   .dev-body .cmt{color:#7d76b0}
   .dev-body .kw{color:#c7b6ff}
   .dev-body .str{color:#8ce0b8}
-
-  /* proactive toast (bottom-right) */
-  .toast{position:fixed;right:22px;bottom:66px;z-index:70;width:320px;background:#fff;border-radius:14px;box-shadow:0 18px 44px rgba(30,15,70,.28);border:1px solid #ece8f7;
-         padding:14px 15px;display:flex;gap:11px;align-items:flex-start;transform:translateY(24px);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.34,1.3,.5,1),opacity .3s}
-  .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
-  .toast .tav{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
-  .toast .tt{flex:1}
-  .toast .tn{font-size:12px;font-weight:700;color:var(--brand-dk)}
-  .toast .tm{font-size:13px;color:#37335a;line-height:1.4;margin-top:2px}
-  .toast .tcta{margin-top:9px;background:var(--brand);color:#fff;border:0;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
-  .toast .tx-close{position:absolute;top:9px;right:11px;background:none;border:0;color:#b6b3c7;cursor:pointer;font-size:16px;line-height:1}
-
-  @media(max-width:1080px){.stats-row{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
-
-  /* ===== Sabadell in-app chat concepts (blue + mint) ===== */
-  :root{--sab:#0071E3;--sab-2:#3E9BFF;--sab-dk:#0A2A66;--mint:#1FBE86;--mint-bg:#dcf3e8;--sab-ink:#0e1522}
-  .viewswitch{z-index:300}
-  .bx-overlay{position:fixed;inset:0;z-index:200;overflow:auto;
-    background:radial-gradient(1100px 560px at 50% -14%, rgba(0,113,227,.44), transparent 60%), rgba(4,11,28,.86);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-    display:flex;flex-direction:column;align-items:center;padding:18px 24px 52px}
-  .bx-intro{text-align:center;color:#fff;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
-  .bx-logo{display:flex;align-items:center;gap:10px}
-  .bx-logo .fl{width:36px;height:36px}
-  .bx-logo .wm{font-size:27px;font-weight:800;letter-spacing:-.5px;color:#fff}
-  .bx-intro h1{font-size:20px;font-weight:800;margin:11px 0 5px}
-  .bx-intro p{font-size:13px;color:rgba(255,255,255,.72);line-height:1.5;max-width:730px}
-  .bx-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%;max-width:1240px}
-  .bx-slot{margin:0;display:flex;flex-direction:column;align-items:center;gap:11px}
-  .bx-slot figcaption{color:#fff;font-size:12px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);padding:6px 13px;border-radius:999px;text-align:center}
-  .card{width:286px;height:470px;border-radius:24px;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fff;font-size:12.8px;box-shadow:0 28px 64px rgba(0,0,0,.5)}
-
-  /* C1 · onboarding co-pilot (blue hero + white sheet) */
-  .c1-hero{position:relative;padding:20px 18px 24px;color:#fff;text-align:center;flex:0 0 auto;background:linear-gradient(160deg,#3E9BFF 0%,#0071E3 45%,#0A2A66 100%)}
-  .c1-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(118deg,transparent 44%,rgba(255,255,255,.10) 45% 49%,transparent 50%)}
-  .c1-hero .fl{width:36px;height:36px;margin:0 auto 12px;display:block;position:relative;z-index:1}
-  .c1-hero .h{font-size:18px;font-weight:800;line-height:1.2;position:relative;z-index:1}
-  .c1-hero .sub{font-size:11.5px;color:rgba(255,255,255,.85);margin-top:6px;position:relative;z-index:1}
-  .c1-sheet{flex:1;background:#fff;margin-top:-14px;border-radius:18px 18px 0 0;padding:15px;display:flex;flex-direction:column;gap:9px;position:relative;z-index:2}
-  .c1-msg{align-self:flex-start;background:#eef4fb;color:var(--sab-ink);border-radius:14px;border-bottom-left-radius:4px;padding:9px 12px;max-width:92%;font-size:12.5px}
-  .c1-chips{display:flex;gap:6px;flex-wrap:wrap}
-  .c1-chips span{font-size:11px;font-weight:600;color:var(--sab);border:1.4px solid var(--sab);border-radius:999px;padding:5px 11px}
-  .c1-cta{margin-top:auto;text-align:center;background:var(--sab);color:#fff;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
-
-  /* C2 · trilingual floating widget */
-  .c2{background:#eef2f7}
-  .c2-appbg{position:absolute;inset:0;padding:16px}
-  .c2-appbg .abar{height:12px;border-radius:6px;background:#dbe2ec;margin-bottom:11px;opacity:.8}
-  .c2-appbg .abar.w1{width:58%}.c2-appbg .abar.w2{width:84%}
-  .c2-appbg .abar.big{height:64px;border-radius:14px;background:linear-gradient(135deg,#3E9BFF,#0A2A66);opacity:.32;margin:14px 0}
-  .c2-widget{position:absolute;left:14px;right:14px;top:56px;bottom:14px;background:#fff;border-radius:18px;box-shadow:0 20px 44px rgba(10,30,80,.30);display:flex;flex-direction:column;overflow:hidden}
-  .c2-head{background:var(--sab);color:#fff;padding:11px 13px;display:flex;align-items:center;gap:10px}
-  .c2-head .fl{width:30px;height:30px;background:#fff;border-radius:9px;padding:3px;flex:0 0 auto}
-  .c2-head .n{font-size:13.5px;font-weight:700}
-  .c2-head .s{font-size:10.5px;opacity:.9;display:flex;align-items:center;gap:5px;margin-top:1px}
-  .c2-head .s i{width:6px;height:6px;border-radius:50%;background:#7CFFC4;display:inline-block}
-  .langbar{display:flex;gap:6px;padding:9px 12px;background:#f3f6fb;border-bottom:1px solid #e6ebf3}
-  .langbar span{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;color:#5b6580;background:#fff;border:1px solid #dbe2ec}
-  .langbar span.on{background:var(--sab);color:#fff;border-color:var(--sab)}
-  .c2-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f6f8fc}
-  .bb2{max-width:88%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.5}
-  .bb2.bot{align-self:flex-start;background:#fff;border:1px solid #e6ebf3;color:var(--sab-ink)}
-  .bb2.user{align-self:flex-end;background:var(--sab);color:#fff}
-  .c2-input{display:flex;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid #e6ebf3;background:#fff;color:#9aa3b5;font-size:12px}
-  .c2-input span{flex:1}
-  .c2-input .snd{width:30px;height:30px;border-radius:50%;background:var(--sab);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-  .c2-input .snd svg{width:14px;height:14px}
-
-  /* C3 · proactive pay-by-instalments (white + mint) */
-  .c3{background:#fff}
-  .c3-top{padding:16px 16px 6px}
-  .c3-top .t{font-size:16px;font-weight:800;color:var(--sab-dk)}
-  .c3-alert{margin:4px 14px 12px;border-radius:14px;padding:12px;background:linear-gradient(135deg,#0071E3,#0A2A66);color:#fff}
-  .c3-alert .ig{display:flex;gap:9px}.c3-alert .em{font-size:18px;line-height:1}
-  .c3-alert .tx{font-size:12px;line-height:1.42}.c3-alert .tx b{color:#bfe0ff}
-  .c3-lab{font-size:10.5px;font-weight:700;color:#8a93a5;text-transform:uppercase;letter-spacing:.5px;padding:0 16px 8px}
-  .inst{margin:0 14px 9px;border:1.5px solid #e6ebf3;border-radius:13px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;background:#fff}
-  .inst.sel{border-color:var(--mint);background:var(--mint-bg)}
-  .inst .big{font-size:15px;font-weight:800;color:var(--sab-ink)}
-  .inst .tot{font-size:10.5px;color:#8a93a5;margin-top:2px}
-  .inst .tag{font-size:9px;font-weight:800;color:#0a7d4f;background:#c7efd9;border-radius:999px;padding:3px 8px}
-  .c3-split{margin:8px 14px 0;text-align:center;background:#0b0b0f;color:#fff;font-weight:800;font-size:13px;padding:12px;border-radius:12px}
-  .c3-no{text-align:center;font-size:11.5px;color:#8a93a5;margin-top:9px}
-
-  /* C4 · in-chat action (dark) */
-  .c4{color:#fff;background:radial-gradient(120% 80% at 82% 0%, #0e3f8f 0%, #0A2A66 46%, #050f2e 100%)}
-  .c4-head{padding:15px 16px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
-  .c4-head .fl{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:10px;padding:4px;flex:0 0 auto}
-  .c4-head .n{font-size:14px;font-weight:700}.c4-head .s{font-size:10.5px;color:#7cc0ff;font-weight:600;margin-top:1px}
-  .c4-body{flex:1;padding:2px 16px 16px;display:flex;flex-direction:column;gap:10px}
-  .c4 .bb{max-width:86%;padding:9px 12px;border-radius:14px;font-size:12.5px;line-height:1.45}
-  .c4 .bb.user{align-self:flex-end;background:var(--sab);color:#fff;border-bottom-right-radius:4px}
-  .c4 .bb.bot{align-self:flex-start;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-bottom-left-radius:4px}
-  .bizum{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:13px}
-  .bizum .h{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#9fb3d8;font-weight:700;display:flex;align-items:center;gap:6px}
-  .bizum .r{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;margin-top:8px;color:#cdd9f0}.bizum .r b{color:#fff}
-  .bizum .amt{font-size:22px;font-weight:800;margin:8px 0 2px}
-  .bizum .btn{margin-top:10px;text-align:center;background:var(--sab);color:#fff;font-weight:800;font-size:12.5px;padding:10px;border-radius:10px}
-  .c4 .bb.ok{background:rgba(31,190,134,.16)!important;border:1px solid rgba(31,190,134,.4)!important;color:#8ff0c4!important}
-
-  /* ===== custom chat placeholder (web) ===== */
-  .custom-launcher{position:fixed;right:22px;bottom:22px;z-index:80;width:60px;height:60px;border-radius:50%;
-                   background:linear-gradient(135deg,var(--brand-2),var(--brand));border:0;cursor:pointer;
-                   display:flex;align-items:center;justify-content:center;color:#fff;
-                   box-shadow:0 10px 26px rgba(91,44,224,.5);transition:transform .15s,opacity .2s}
-  .custom-launcher:hover{transform:translateY(-2px)}
-  .custom-launcher.hidden{opacity:0;pointer-events:none;transform:scale(.6)}
-  .custom-launcher svg{width:26px;height:26px}
-
-  .custom-chat{position:fixed;right:22px;bottom:22px;z-index:81;width:380px;max-width:calc(100vw - 44px);
-               height:560px;max-height:calc(100vh - 44px);
-               background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;
-               display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(30,15,70,.34);
-               transform:translateY(20px) scale(.98);opacity:0;pointer-events:none;transform-origin:bottom right;
-               transition:transform .28s cubic-bezier(.32,1.02,.4,1),opacity .22s}
-  .custom-chat.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
-  .cc-head{background:var(--brand-navy);padding:15px 16px;display:flex;align-items:center;gap:11px;flex:0 0 auto}
-  .cc-head .cc-av{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand-2),var(--brand));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:16px}
-  .cc-head .cc-t{flex:1;color:#fff}
-  .cc-head .cc-t .n1{font-size:14px;font-weight:700}
-  .cc-head .cc-t .n2{font-size:11.5px;color:rgba(255,255,255,.62);display:flex;align-items:center;gap:5px;margin-top:1px}
-  .cc-head .cc-t .n2 i{width:7px;height:7px;border-radius:50%;background:#12B76A;display:inline-block}
-  .cc-head .cc-x{background:rgba(255,255,255,.14);border:0;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;line-height:1;flex:0 0 auto}
-  .cc-head .cc-x:hover{background:rgba(255,255,255,.26)}
-  .cc-body{flex:1;overflow-y:auto;padding:14px 14px 6px;display:flex;flex-direction:column;gap:9px;background:var(--bg)}
-  .cc-body::-webkit-scrollbar{width:0}
-  .ccmsg{max-width:86%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.45}
-  .ccbot{align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
-  .ccuser{align-self:flex-end;background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border-bottom-right-radius:4px}
-  .cctyping{align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;gap:4px}
-  .cctyping span{width:6px;height:6px;border-radius:50%;background:#b9aaff;animation:ccblink 1.2s infinite}
-  .cctyping span:nth-child(2){animation-delay:.2s}.cctyping span:nth-child(3){animation-delay:.4s}
-  @keyframes ccblink{0%,60%,100%{opacity:.3}30%{opacity:1}}
-  .ccblock{align-self:stretch;margin:2px 0}
-  .cccards{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-  .cccards::-webkit-scrollbar{height:0}
-  .cccard{flex:0 0 166px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;flex-direction:column;box-shadow:0 2px 8px rgba(40,20,90,.05)}
-  .cccard .sc-term{font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.5px}
-  .cccard .sc-name{font-size:13px;font-weight:700;color:var(--brand-navy);margin-top:1px}
-  .cccard .sc-rate{font-size:25px;font-weight:800;color:var(--brand-navy);margin:8px 0 0;line-height:1}
-  .cccard .sc-rate span{font-size:11px;font-weight:600;color:var(--muted);margin-left:4px}
-  .cccard .sc-sub{font-size:11px;color:var(--muted);margin-top:3px}
-  .cccard ul{list-style:none;margin:10px 0 12px;padding:0;flex:1}
-  .cccard li{font-size:10.5px;color:#4a4760;padding:2px 0 2px 15px;position:relative;line-height:1.35}
-  .cccard li::before{content:"\2713";position:absolute;left:0;color:var(--pos);font-weight:700}
-  .cccard .sc-btn{background:linear-gradient(135deg,var(--brand-2),var(--brand));color:#fff;border:0;border-radius:9px;padding:9px;font-size:12.5px;font-weight:700;cursor:pointer;width:100%}
-  .cccard .sc-btn:hover{filter:brightness(1.06)}
-  .cc-chips{display:flex;flex-wrap:wrap;gap:7px;padding:6px 14px 2px;flex:0 0 auto;background:var(--bg)}
-  .cc-chip{background:#fff;border:1.5px solid var(--brand);color:var(--brand);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}
-  .cc-chip:hover{background:#f1eefb}
-  .cc-input{display:flex;gap:8px;padding:11px 12px;border-top:1px solid var(--line);flex:0 0 auto;background:#fff}
-  .cc-input input{flex:1;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:13.5px;outline:none;background:#faf8fe;color:var(--ink)}
-  .cc-input input:focus{border-color:var(--brand)}
-  .cc-input button{background:var(--brand);border:0;color:#fff;border-radius:50%;width:40px;height:40px;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-  .cc-input button:hover{background:var(--brand-dk)}
-  .cc-foot{text-align:center;font-size:10.5px;color:var(--muted);padding:7px;background:#FBFAFE;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -314,7 +303,7 @@
 <nav class="top-nav">
   <div class="nav-left">
     <div class="mark">a</div>
-    <div class="logo-text">ada<span> banking</span></div>
+    <div class="logo-text">ada<span> bank</span></div>
   </div>
   <div class="nav-right">
     <button class="nav-icon-btn">
@@ -325,10 +314,10 @@
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Messages <span class="notif-badge">1</span>
     </button>
-    <button class="ada-nav-btn" id="adaNavBtn" onclick="openCustomChat()">
+    <button class="ada-nav-btn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="12" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>
       Ask Ada
-      <span class="ada-nav-badge" id="adaNavBadge">1</span>
+      <span class="ada-nav-badge">1</span>
     </button>
     <div class="user-pill">
       <div class="user-avatar">RK</div>
@@ -372,7 +361,7 @@
       Insights
     </div>
     <div class="sidebar-label" style="margin-top:8px">Support</div>
-    <div class="sidebar-item" onclick="openCustomChat()">
+    <div class="sidebar-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       Ada Assistant
       <span class="sidebar-badge violet">1</span>
@@ -383,24 +372,22 @@
     </div>
   </aside>
 
-  <!-- CONTENT -->
+  <!-- CONTENT (context behind the dimmed overlay) -->
   <main class="content">
     <div class="page-header">
       <div>
         <div class="page-title">Good morning, Richard</div>
-        <div class="page-subtitle">Ada Banking · Personal overview · Monday, 13 July 2026</div>
+        <div class="page-subtitle">Ada Bank · Personal overview · Monday, 13 July 2026</div>
       </div>
       <div class="last-login">Last login: <strong>12 Jul 2026, 21:04</strong> &nbsp;|&nbsp; London, UK</div>
     </div>
 
-    <!-- PROACTIVE BANNER (built from a notification event) -->
     <div class="proactive-banner">
       <div class="pb-mark">a</div>
       <div class="pb-text"><strong>Ada spotted something:</strong> your <strong>StreamFlix</strong> subscription rose 40% this month (£12.99 → £17.99). Want me to review your recurring payments and flag anything unusual?</div>
-      <button class="pb-cta" onclick="openCustomChat()">Review with Ada</button>
+      <button class="pb-cta">Review with Ada</button>
     </div>
 
-    <!-- STAT CARDS -->
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-label">Total balance</div>
@@ -428,9 +415,7 @@
       </div>
     </div>
 
-    <!-- TWO COLUMN -->
     <div class="two-col">
-      <!-- LEFT: recent transactions -->
       <div>
         <div class="panel">
           <div class="panel-header">
@@ -444,7 +429,7 @@
                 <td><div class="tx-merchant"><div class="tx-ic">🎬</div><div><div class="tx-name">StreamFlix</div><div class="tx-meta">Subscription · Today, 08:12</div></div></div></td>
                 <td><span class="pill pill-violet">Flagged by Ada</span></td>
                 <td class="amt-out">−£17.99</td>
-                <td><button class="btn-sm" onclick="openCustomChat()">Ask ›</button></td>
+                <td><button class="btn-sm">Ask ›</button></td>
               </tr>
               <tr>
                 <td><div class="tx-merchant"><div class="tx-ic">☕</div><div><div class="tx-name">Blackbird Coffee</div><div class="tx-meta">Card · Today, 07:48</div></div></div></td>
@@ -473,33 +458,8 @@
             </tbody>
           </table>
         </div>
-
-        <!-- DEV / FRONTEND API CALLOUT -->
-        <div class="dev-callout" id="devCallout">
-          <div class="dev-head" onclick="document.getElementById('devCallout').classList.toggle('open')">
-            <div class="dt"><span class="tag">SE</span> Custom chat frontend — no Ada Web SDK (scripted)</div>
-            <div class="chev">▾</div>
-          </div>
-          <div class="dev-body">
-<pre><span class="cmt">// This page loads NO static.ada.support/embed2.js — it's a</span>
-<span class="cmt">// fully custom chat UI with a scripted conversation engine.</span>
-
-<span class="cmt">// 1 · Open our custom panel from any UI element</span>
-button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
-
-<span class="cmt">// 2 · Scripted replies drive the demo today:</span>
-<span class="kw">ccAfter</span>(delay, <span class="str">"bot message"</span>, next);   <span class="cmt">// typing + reply</span>
-<span class="kw">ccOpen</span>(bond, amount);              <span class="cmt">// live savings calc vs 1%</span>
-
-<span class="cmt">// 3 · Going LIVE with the Ada Conversations API needs a</span>
-<span class="cmt">//     backend relay (server-to-server API + webhook replies;</span>
-<span class="cmt">//     no browser CORS). Swap ccAfter()'s scripted text for a</span>
-<span class="cmt">//     fetch() to that relay — the UI layer stays identical.</span></pre>
-          </div>
-        </div>
       </div>
 
-      <!-- RIGHT: accounts + notifications -->
       <div style="display:flex;flex-direction:column;gap:16px">
         <div class="panel">
           <div class="panel-header"><span class="panel-title">Accounts</span><span class="panel-action">Manage ›</span></div>
@@ -530,7 +490,7 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
           <div class="alert-item">
             <div class="alert-dot dot-violet"></div>
             <div><div class="alert-text"><strong>Subscription increase:</strong> StreamFlix went up 40% this month.</div>
-            <div class="alert-time">Today · 08:14 — <span class="ask-ada" onclick="openCustomChat()">Ask Ada ›</span></div></div>
+            <div class="alert-time">Today · 08:14</div></div>
           </div>
           <div class="alert-item">
             <div class="alert-dot dot-amber"></div>
@@ -540,7 +500,7 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
           <div class="alert-item">
             <div class="alert-dot dot-red"></div>
             <div><div class="alert-text"><strong>Low balance forecast:</strong> your rent may leave the Current account below £200 next week.</div>
-            <div class="alert-time">Today · 07:30 — <span class="ask-ada" onclick="openCustomChat()">Plan with Ada ›</span></div></div>
+            <div class="alert-time">Today · 07:30</div></div>
           </div>
           <div class="alert-item">
             <div class="alert-dot dot-violet"></div>
@@ -553,112 +513,208 @@ button.onclick = () =&gt; <span class="kw">openCustomChat</span>();
   </main>
 </div>
 
-<!-- Sabadell mark (defined once, reused via <use>) -->
+<!-- Ada Bank mark (defined once, reused via <use>) -->
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
-  <symbol id="sabMark" viewBox="0 0 100 100">
-    <rect x="6" y="6" width="88" height="88" rx="26" fill="#0071E3"/>
-    <text x="51" y="73" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="800" fill="#fff" text-anchor="middle">b</text>
+  <symbol id="adaMark" viewBox="0 0 100 100">
+    <rect x="6" y="6" width="88" height="88" rx="26" fill="#5B2CE0"/>
+    <text x="51" y="73" font-family="Arial,Helvetica,sans-serif" font-size="64" font-weight="800" fill="#fff" text-anchor="middle">a</text>
   </symbol>
 </defs></svg>
 
-<!-- ===== Sabadell in-app chat concepts (static overlay over the dimmed dashboard) ===== -->
+<!-- ===== Front-End API gallery (static overlay over the dimmed dashboard) ===== -->
 <div class="bx-overlay">
   <div class="bx-intro">
-    <div class="bx-logo"><svg class="fl"><use href="#sabMark"/></svg><span class="wm">Sabadell</span></div>
-    <h1>In-app chat experiences</h1>
-    <p>Four ways Ada could live inside the Banco Sabadell app — guiding onboarding, answering in every language, spotting the right moment, and taking action in-conversation. Design concepts, not interactive.</p>
+    <div class="bx-logo"><svg class="fl"><use href="#adaMark"/></svg><span class="wm">ada<span> bank</span></span></div>
+    <div class="bx-eyebrow">Front-End API · embed2.js (headless)</div>
+    <h1>Front-End API — design your own chat</h1>
+    <p>Six chat experiences, <span class="hl">one Ada agent</span>. Every card below is the exact same headless Ada AI Agent, surfaced through the <span class="hl">Front-End API (embed2.js)</span> — your team owns the entire UI layer, so the conversation can look and behave however your brand demands. Same reasoning, knowledge and actions underneath; a different design on top. Static design concepts, not interactive.</p>
   </div>
 
   <div class="bx-grid">
 
-    <!-- 1 · onboarding co-pilot -->
+    <!-- 1 · Bottom-sheet -->
     <figure class="bx-slot">
-      <div class="card">
-        <div class="c1-hero">
-          <svg class="fl"><use href="#sabMark"/></svg>
-          <div class="h">All the help you need,<br>as you open your account</div>
-          <div class="sub">In-flow guidance that reduces drop-off</div>
-        </div>
-        <div class="c1-sheet">
-          <div class="c1-msg">Hi Ricardo 👋 I'll stay with you as you open your Sabadell Online Account. Stuck on a step? Just ask.</div>
-          <div class="c1-chips"><span>What's the promotion?</span><span>Why this document?</span><span>How long does it take?</span></div>
-          <div class="c1-msg">Most people finish in under 10 minutes — I'll guide you the whole way.</div>
-          <div class="c1-cta">Continue my application</div>
-        </div>
-      </div>
-      <figcaption>In-flow onboarding co-pilot</figcaption>
-    </figure>
-
-    <!-- 2 · trilingual floating widget -->
-    <figure class="bx-slot">
-      <div class="card c2">
-        <div class="c2-appbg"><div class="abar w1"></div><div class="abar w2"></div><div class="abar big"></div><div class="abar w2"></div><div class="abar w1"></div></div>
-        <div class="c2-widget">
-          <div class="c2-head"><svg class="fl"><use href="#sabMark"/></svg><div><div class="n">Asistente Sabadell</div><div class="s"><i></i> En línea</div></div></div>
-          <div class="langbar"><span class="on">Español</span><span>Català</span><span>English</span></div>
-          <div class="c2-body">
-            <div class="bb2 bot">Hola Ricardo 👋 ¿En qué puedo ayudarte hoy?</div>
-            <div class="bb2 user">¿Cuál es mi saldo?</div>
-            <div class="bb2 bot">Tu saldo total es <b>5.467,19 €</b> en tus cuentas.</div>
-            <div class="bb2 user">Gràcies!</div>
-            <div class="bb2 bot">A tu disposición 😊</div>
+      <div class="card fe1">
+        <div class="fe1-appbg"><div class="abar w2"></div><div class="abar w1"></div><div class="abar big"></div><div class="abar w2"></div><div class="abar w1"></div></div>
+        <div class="fe1-scrim"></div>
+        <div class="fe1-sheet">
+          <div class="fe1-grab"></div>
+          <div class="fe1-head">
+            <div class="av">a</div>
+            <div><div class="n">Ada Assistant</div><div class="s"><i></i> Secure · in-app</div></div>
           </div>
-          <div class="c2-input"><span>Escribe un mensaje…</span><div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div></div>
-        </div>
-      </div>
-      <figcaption>Native Spanish · Català · English</figcaption>
-    </figure>
-
-    <!-- 3 · proactive pay-by-instalments -->
-    <figure class="bx-slot">
-      <div class="card c3">
-        <div class="c3-top"><div class="t">Recent purchase</div></div>
-        <div class="c3-alert"><div class="ig"><div class="em">💡</div><div class="tx">That <b>€900</b> purchase at El Corte Inglés is a big one — want to split it into easy monthly payments?</div></div></div>
-        <div class="c3-lab">Choose your instalments · indicative NIR 18%</div>
-        <div class="inst"><div><div class="big">€310 / mo</div><div class="tot">in 3 months · total €930</div></div></div>
-        <div class="inst sel"><div><div class="big">€157 / mo</div><div class="tot">in 6 months · total €942</div></div><span class="tag">Most chosen</span></div>
-        <div class="inst"><div><div class="big">€106 / mo</div><div class="tot">in 9 months · total €954</div></div></div>
-        <div class="c3-split">Split this purchase</div>
-        <div class="c3-no">I'm not interested</div>
-      </div>
-      <figcaption>Proactive: split a large purchase</figcaption>
-    </figure>
-
-    <!-- 4 · in-chat action (Bizum) -->
-    <figure class="bx-slot">
-      <div class="card c4">
-        <div class="c4-head"><svg class="fl"><use href="#sabMark"/></svg><div><div class="n">Sabadell Assistant</div><div class="s">🔒 Secure · in-app actions</div></div></div>
-        <div class="c4-body">
-          <div class="bb user">Send €20 to Ana with Bizum for dinner 🍽️</div>
-          <div class="bb bot">Of course — here's your Bizum, ready to send:</div>
-          <div class="bizum">
-            <div class="h">📲 Bizum</div>
-            <div class="r"><span>To</span><b>Ana G. · ···· 461</b></div>
-            <div class="r"><span>Concept</span><b>Dinner 🍽️</b></div>
-            <div class="amt">€20.00</div>
-            <div class="btn">Confirm &amp; send</div>
+          <div class="fe1-body">
+            <div class="bb user">Freeze my debit card — I've misplaced it 😬</div>
+            <div class="bb bot">No problem, Richard. I can freeze your <b>Everyday Current •••• 4471</b> instantly. You can unfreeze it any time.</div>
+            <div class="fe1-conf">
+              <div class="h">✓ Card frozen</div>
+              <div class="r"><span>Card</span><b>Everyday Current •••• 4471</b></div>
+              <div class="r"><span>Status</span><b>Temporarily frozen</b></div>
+            </div>
+            <div class="bb bot">Done — no new payments will go through. Shall I order a replacement to your London address?</div>
           </div>
-          <div class="bb bot ok">✅ Sent — €20.00 to Ana G. · Bizum ref BZ-7741. Anything else?</div>
         </div>
       </div>
-      <figcaption>In-chat actions — Bizum &amp; SOS</figcaption>
+      <figcaption><b>Bottom-sheet</b><em>¾-height sheet over the app</em></figcaption>
+    </figure>
+
+    <!-- 2 · Full-screen takeover -->
+    <figure class="bx-slot">
+      <div class="card fe2">
+        <div class="ph-status"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="fe2-top"><div class="bk">‹</div><div><div class="n">Dispute a transaction</div><div class="s">Ada · resolving now</div></div></div>
+        <div class="fe2-hero"><div class="big">Let's sort this<br>payment out</div><div class="subl">I'll walk you through it, step by step.</div></div>
+        <div class="fe2-body">
+          <div class="bb user">I don't recognise this £129.00 charge</div>
+          <div class="fe2-txn">
+            <div class="r"><span>Merchant</span><b>NORDIC-TECH LTD</b></div>
+            <div class="r"><span>Date</span><b>Today · 06:52</b></div>
+            <div class="amt">−£129.00</div>
+          </div>
+          <div class="bb bot">Thanks — I've flagged it as disputed and paused the payment. Was this you, or should I raise a fraud case?</div>
+          <div class="fe2-acts"><div class="a prim">Raise fraud case</div><div class="a ghost">It was me</div></div>
+        </div>
+      </div>
+      <figcaption><b>Full-screen takeover</b><em>Immersive edge-to-edge flow</em></figcaption>
+    </figure>
+
+    <!-- 3 · Floating launcher -->
+    <figure class="bx-slot">
+      <div class="card fe3">
+        <div class="ph-status" style="color:var(--brand-navy)"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="fe3-appbg"><div class="abar w2"></div><div class="abar w1"></div><div class="abar big"></div><div class="abar w2"></div><div class="abar w1"></div><div class="abar w2"></div></div>
+        <div class="fe3-pop">
+          <div class="ph"><div class="av">a</div><div class="n">Ada</div></div>
+          <div class="pb">
+            <div class="bb user">What's my balance?</div>
+            <div class="bb bot">Your <b>Everyday Current</b> balance is <b>£18,751.53</b> (£18,566.53 available).</div>
+          </div>
+        </div>
+        <div class="fe3-bubble">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="b">1</span>
+        </div>
+      </div>
+      <figcaption><b>Floating launcher</b><em>Bubble + compact popover</em></figcaption>
+    </figure>
+
+    <!-- 4 · Inline / in-context -->
+    <figure class="bx-slot">
+      <div class="card fe4">
+        <div class="ph-status" style="color:var(--brand-navy)"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+        <div class="fe4-top"><div class="t">Payments &amp; Transfers</div><div class="s">Everyday Current •••• 4471</div></div>
+        <div class="fe4-scroll">
+          <div class="fe4-tile"><div class="ic">🏠</div><div><div class="nm">Rent — Foxton Lettings</div><div class="mt">Standing order · 10th</div></div><div class="val">£1,450</div></div>
+          <div class="fe4-tile"><div class="ic">⚡</div><div><div class="nm">OVO Energy</div><div class="mt">Direct debit · 15th</div></div><div class="val">£96.40</div></div>
+          <div class="fe4-embed">
+            <div class="eh"><div class="av">a</div><div class="n">Ada</div><div class="tag">In-page assistant</div></div>
+            <div class="eb">
+              <div class="bb bot">Want me to check if any of these direct debits look higher than usual this month?</div>
+              <div class="bb user">Yes please</div>
+              <div class="bb bot">OVO Energy is up <b>£14</b> vs your 3-month average. Everything else looks normal.</div>
+              <div class="mini"><span>Review OVO</span><span>Set an alert</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>Inline / in-context</b><em>Embedded inside the page</em></figcaption>
+    </figure>
+
+    <!-- 5 · Rich record cards -->
+    <figure class="bx-slot">
+      <div class="card fe5">
+        <div class="fe5-head"><div class="av">a</div><div><div class="n">Ada Assistant</div><div class="s"><i></i> Savings &amp; Goals</div></div></div>
+        <div class="fe5-body">
+          <div class="bb user">Show me your fixed-rate bonds</div>
+          <div class="bb bot">Here are three Fixed-Rate Bonds you're eligible for — swipe to compare:</div>
+          <div class="fe5-cards">
+            <div class="fe5-card">
+              <div class="term">1-Year</div>
+              <div class="nm">Fixed-Rate Bond</div>
+              <div class="rate">4.55<span>% AER</span></div>
+              <div class="sub">Min £1,000</div>
+              <ul><li>Guaranteed rate</li><li>Interest at maturity</li></ul>
+              <div class="b">Open bond</div>
+            </div>
+            <div class="fe5-card">
+              <div class="term">2-Year</div>
+              <div class="nm">Fixed-Rate Bond</div>
+              <div class="rate">4.70<span>% AER</span></div>
+              <div class="sub">Min £1,000</div>
+              <ul><li>Higher rate</li><li>Locked 24 months</li></ul>
+              <div class="b">Open bond</div>
+            </div>
+            <div class="fe5-card">
+              <div class="term">3-Year</div>
+              <div class="nm">Fixed-Rate Bond</div>
+              <div class="rate">4.80<span>% AER</span></div>
+              <div class="sub">Min £1,000</div>
+              <ul><li>Best rate</li><li>Locked 36 months</li></ul>
+              <div class="b">Open bond</div>
+            </div>
+          </div>
+          <div class="bb bot">On £3,000 in the 2-Year bond you'd earn about <b>£288</b> in interest.</div>
+        </div>
+      </div>
+      <figcaption><b>Rich record cards</b><em>Interactive product carousel</em></figcaption>
+    </figure>
+
+    <!-- 6 · Multimodal -->
+    <figure class="bx-slot">
+      <div class="card fe6">
+        <div class="fe6-head"><div class="av">a</div><div><div class="n">Ada Assistant</div><div class="s">Attach a document to your case</div></div></div>
+        <div class="fe6-body">
+          <div class="bb user">I need to dispute a charge — here's my payslip as proof of income</div>
+          <div class="fe6-file"><div class="thumb">📄</div><div><div class="fn">Payslip_Jul2026.pdf</div><div class="fs">248 KB · uploaded</div></div></div>
+          <div class="bb bot">Got it — I've attached your payslip to case <b>#DR-40219</b>. I can see your net pay of £3,120. What would you like to do next?</div>
+          <div class="fe6-actions">
+            <div class="qa"><span class="e">📸</span> Upload the receipt too</div>
+            <div class="qa"><span class="e">✍️</span> Add a note to my case</div>
+          </div>
+        </div>
+        <div class="fe6-input">
+          <div class="att">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <span>Message or attach…</span>
+          <div class="snd"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+        </div>
+      </div>
+      <figcaption><b>Multimodal</b><em>File / image upload + quick actions</em></figcaption>
     </figure>
 
   </div>
+
+  <!-- SE NOTE -->
+  <div class="dev-callout" id="devCallout">
+    <div class="dev-head" onclick="document.getElementById('devCallout').classList.toggle('open')">
+      <div class="dt"><span class="tag">SE</span> One agent, six UIs — how the Front-End API works</div>
+      <div class="chev">▾</div>
+    </div>
+    <div class="dev-body">
+<pre><span class="cmt">// All six cards above are the SAME Ada agent. The Front-End API</span>
+<span class="cmt">// (embed2.js) is HEADLESS — Ada gives you the conversation engine,</span>
+<span class="cmt">// your team renders 100% of the UI. Only the design layer differs.</span>
+
+<span class="kw">import</span> AdaEmbed <span class="kw">from</span> <span class="str">"@ada-support/embed2"</span>;
+
+<span class="kw">await</span> AdaEmbed.<span class="kw">start</span>({
+  handle: <span class="str">"ada-bank"</span>,        <span class="cmt">// one agent behind every UI</span>
+  toggleCallback: openMyChat, <span class="cmt">// bottom-sheet / full-screen / bubble…</span>
+  adaReadyCallback: render    <span class="cmt">// you draw the bubbles, cards & inputs</span>
+});
+
+<span class="cmt">// Bottom-sheet, full-screen, floating launcher, inline panel,</span>
+<span class="cmt">// record cards and multimodal upload are all just YOUR markup</span>
+<span class="cmt">// around the same reasoning, knowledge and Actions underneath.</span>
+
+<span class="cmt">// LIVE in this demo, the identical agent runs in the Mobile</span>
+<span class="cmt">// channel — see the "Mobile" tab. Swap the UI, keep the brain.</span></pre>
+    </div>
+  </div>
 </div>
 
-<div class="viewswitch">
-  <a href="index.html">Web</a>
-  <a class="on" href="custom.html">Custom</a>
-  <a href="messaging.html">Messaging</a>
-  <a href="app.html">Mobile</a>
-  <a href="voice.html">Voice</a>
-</div>
-
-<script>
-  // This page shows static Sabadell front-end chat concept mockups (non-interactive).
-  // Dashboard controls behind the dimmed overlay are inert.
-  function openCustomChat(){}
-</script>
+<script src="nav.js" defer></script>
 </body>
 </html>

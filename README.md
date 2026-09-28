@@ -1,47 +1,63 @@
-# Ada Banking — demo mockup
+# Ada Bank — demo mockup
 
-A fictional retail bank ("Ada Banking") used to demonstrate Ada's chat AI agent in a
-realistic banking front-end. Two self-contained pages, both wiring the **live Ada
-agent** `demo-rkirk-fintech` via the Ada Frontend Chat API (`embed2.js`).
+A fictional UK retail bank ("Ada Bank", violet brand) used to demonstrate Ada's AI agent
+across every channel in a realistic banking front-end. The web dashboard wires the **live
+Ada agent** `demo-rkirk-fintech` via the Ada Frontend Chat API (`embed2.js`); the other
+pages are self-contained scripted / conceptual visuals.
 
-| Page | What it is |
-|------|------------|
-| [`index.html`](index.html) | **Web app** — retail online-banking dashboard. Uses the live Ada Web SDK: standard launcher bottom-right, `toggle`/`setMetaFields`, and fires the `triggerProactive({ messageKey: "your_money_could_be_working_harder" })` campaign on load. |
-| [`app.html`](app.html) | **Mobile app** — single-screen banking app in an iPhone frame. Self-contained: a **Support** icon (bottom-right of the menu) and a **proactive card** open a custom in-app chat sheet (¾ height, translucent backdrop). No external Ada window. |
-| [`custom.html`](custom.html) | **Custom** — Banco Sabadell-branded showcase of four distinct front-end chat concepts (in-flow onboarding co-pilot, trilingual ES/CA/EN widget, proactive pay-by-instalments, in-chat Bizum action) over the dimmed dashboard. |
-| [`custom-bkk.html`](custom-bkk.html) | **Archived** — the earlier BKK-branded version of the Custom showcase, kept for reuse. Not in the view switcher. |
-| [`messaging.html`](messaging.html) | **Messaging** — omni-channel showcase (email, SMS, WhatsApp, Messenger, X, Instagram) with per-channel mock interactions. |
-| [`voice.html`](voice.html) | **Voice** — synced visual over a pre-treated recorded Ada Bank voice call (Fixed-Rate Savings). Playbook execution, knowledge retrieval, and API/system calls animate in time with `voice-call.wav`. Defaults to 1.2× with a skip-to-end build-out. |
+This is the **vanilla Ada Bank base** — the clean starting point to fork and re-skin for a
+new customer. Client-specific variants (Sabadell, BKK) live in [`archive/`](archive/).
+
+## Core pages (view switcher)
+
+| Page | What it is | Agent |
+|------|------------|-------|
+| [`index.html`](index.html) | **Web** — retail online-banking dashboard. Standard Ada Web SDK launcher + `triggerProactive` campaign on load. | live (`embed2.js`) |
+| [`custom.html`](custom.html) | **Front-End API** — a gallery of chat-window *design options* you can build with Ada's Front-End API (bottom-sheet, full-screen, floating launcher, inline, rich record cards, multimodal). Same one agent, many on-brand UIs. | conceptual |
+| [`messaging.html`](messaging.html) | **Messaging** — omni-channel showcase: **Web Search** (AI answer from the KB + article links) · **Web Contact Form** (→ Email API) · Email · SMS · WhatsApp · Messenger · X · Instagram · **Voice**. | animated examples |
+| [`app.html`](app.html) | **Mobile** — single-screen banking app in an iPhone frame with a scripted in-app chat sheet (fixed-rate-bond storyline). No external Ada window. | scripted |
+| [`voice.html`](voice.html) | **Voice** — synced visual over a recorded Ada Bank voice call (Fixed-Rate Savings), timed to `voice-call.wav`. | recorded audio |
+| [`mcp.html`](mcp.html) | **MCP** — animated 3-column diagram: Ada Bank systems → Claude/ChatGPT/Copilot → Ada config, with a Connect→Query→Update→Test loop. | conceptual |
 
 ### Account-opening journey (web → mobile)
 
-A scripted "open an account" flow that starts on the web and continues on the phone, with a stage-aware Ada assistant on every step and an Onfido-style ID check. Two brand variants:
+A scripted "open an account" flow that starts on the web and continues on the phone, with a
+stage-aware Ada assistant on every step and an Onfido-style ID check.
 
 | Page | What it is |
 |------|------------|
-| [`new-account.html`](new-account.html) | **Ada Bank (English, £)** — web landing: 4-step overview, £150 promo, QR + "Continue on your phone" → `onboarding.html`, scripted Ada helper. |
-| [`onboarding.html`](onboarding.html) | **Ada Bank (English, £)** — mobile PWA: 10-step onboarding (products → login → details → ID upload → liveness → profession → review → e-sign → done) with a floating stage-aware Ada chat. |
-| [`new-account-sabadell.html`](new-account-sabadell.html) | **Banco Sabadell (Spanish, €)** — Sabadell-blue re-skin of the web landing; €150 bono, links to `onboarding-sabadell.html`. |
-| [`onboarding-sabadell.html`](onboarding-sabadell.html) | **Banco Sabadell (Spanish, €)** — Sabadell-blue re-skin of the mobile onboarding flow; DNI/NIE/pasaporte, CNAE, fully Spanish assistant ("Asistente Sabadell"). |
+| [`new-account.html`](new-account.html) | Web landing: 4-step overview, £150 promo, QR + "Continue on your phone" → `onboarding.html`. |
+| [`onboarding.html`](onboarding.html) | Mobile PWA: 7-step onboarding (requirements → account → login → details → ID upload → review → done) with a floating stage-aware Ada chat. |
 
-The view switcher (Web / Custom / Messaging / Mobile / Voice) links the five core pages. The account-opening pages are reached from the **New Account** link in the Web sidebar.
+Reached from the **New Account** link in the Web sidebar.
 
-## How the Ada agent is wired
+## Shared assets (single source of truth)
+
+| File | Purpose |
+|------|---------|
+| [`site.css`](site.css) | All design tokens (`--brand`, `--brand-dark`, `--deep`, `--accent`, `--ground`, `--gray`, neutrals, channel palette) + the view-switcher styles. **Re-skin the whole site by editing the brand tokens here.** Every page links it first. |
+| [`nav.js`](nav.js) | Renders the bottom-left view switcher once, marks the active page. Pages no longer hard-code it. |
+| [`logo.svg`](logo.svg) | Ada Bank mark. |
+
+## Archived brand variants
+
+[`archive/`](archive/) holds complete client-specific builds kept for re-demo (out of the
+live nav): `archive/sabadell/` (Banco Sabadell — Spanish, Bizum, ES/CA/EN, full account-opening
+flow) and `archive/bkk/` (the earlier BKK Custom showcase). See [`archive/README.md`](archive/README.md)
+to restore one.
+
+## How the live Ada agent is wired (`index.html`)
 
 ```html
 <script id="__ada" data-handle="demo-rkirk-fintech" data-lazy
         src="https://static.ada.support/embed2.js"></script>
 ```
 
-- `data-lazy` stops the widget auto-opening — the app's own UI opens it.
-- The default Ada launcher button is hidden with CSS (`#ada-button-frame{display:none}`).
-- Any button (nav "Ask Ada", proactive card/toast, table row, sidebar) calls
-  `window.adaEmbed.toggle()` to open the live chat.
-- `metaFields` (name / segment / channel) are passed so the agent is personalised.
+- `data-lazy` stops the widget auto-opening — the app's own UI opens it via `adaEmbed.toggle()`.
+- `metaFields` (name / segment / channel) personalise the agent.
 
-> **Note:** the live agent behind `demo-rkirk-fintech` is *Peachy / Peach Payments*
-> (merchant payments support). The "Ada Banking" retail skin is the container; repoint
-> `data-handle` to a retail-bank agent to make live answers match the front-end.
+> **Note:** the live agent behind `demo-rkirk-fintech` also hosts the Ada Bank Fixed-Rate
+> Savings playbook + KB. Repoint `data-handle` to a customer's demo agent when forking.
 
 ## Run locally
 
@@ -51,5 +67,5 @@ python3 serve.py     # http://localhost:8000
 
 ## Hosting
 
-Served via GitHub Pages from `main`. The `.nojekyll` file keeps Pages from processing
-the site through Jekyll.
+Served via GitHub Pages from `main`. The `.nojekyll` file keeps Pages from processing the
+site through Jekyll.

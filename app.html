@@ -3,23 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="site.css">
 <title>Ada Banking · Mobile app</title>
 <style>
-  :root{
-    --brand:#5B2CE0; --brand-2:#7B4DFF; --brand-dk:#2E1A6B;
-    --ink:#14121F; --muted:#8b88a0; --line:#242235;
-    --appbg:#0c0b14; --card:#16141f; --card-2:#1c1a28;
-    --text:#f5f4fb; --pos:#22c58b; --neg:#ff6b6b; --warn:#f5a623;
-  }
+  :root{--appbg:#0c0b14;--card:#16141f;--card-2:#1c1a28;--text:#f5f4fb}
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
        background:radial-gradient(1100px 760px at 50% -8%, #f5f1ff 0%, #e9e1fb 48%, #dcd3f4 100%);
        display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;color:var(--text)}
 
-  .viewswitch{position:fixed;bottom:16px;left:16px;z-index:95;display:flex;gap:2px;background:#fff;border:1px solid #e7e4f2;border-radius:999px;padding:3px;box-shadow:0 4px 14px rgba(46,26,107,.14)}
-  .viewswitch a{font-size:12px;color:#6c6885;text-decoration:none;padding:6px 13px;border-radius:999px}
-  .viewswitch a.on{background:var(--brand);color:#fff;font-weight:600}
   .hint{position:fixed;bottom:18px;right:18px;z-index:90;color:#6b6a86;font-size:12px;max-width:220px;text-align:right}
   .hint b{color:var(--brand)}
 
@@ -199,13 +192,6 @@
 </style>
 </head>
 <body>
-  <div class="viewswitch">
-    <a href="index.html">Web</a>
-    <a href="custom.html">Custom</a>
-    <a href="messaging.html">Messaging</a>
-    <a class="on" href="app.html">Mobile</a>
-    <a href="voice.html">Voice</a>
-  </div>
   <div class="hint">A proactive appears after 8s · tap it or <b>Support</b> (bottom-right) to open the in-app chat &rarr;</div>
 
   <div class="phone">
@@ -482,5 +468,6 @@
     });
   }
 </script>
+  <script src="nav.js" defer></script>
 </body>
 </html>
