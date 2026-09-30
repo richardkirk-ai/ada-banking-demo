@@ -8,11 +8,15 @@
     ["channels.html", "Channels"],
     ["app.html",      "Mobile"],
     ["voice.html",    "Voice"],
-    ["mcp.html",      "MCP"]
+    ["mcp.html",      "MCP"],
+    ["kbc.html",      "KBC"]
   ];
-  // Voice lives on its own AdaCities slug (audio too large for the multi-file site);
-  // on AdaCities the Voice tab points there, elsewhere it's the local voice.html.
-  var VOICE_ADACITIES = "https://richard-kirk.adacities.com/ada-bank-voice/";
+  // Voice and KBC live on their own AdaCities slugs (audio too large for the
+  // multi-file site); on AdaCities those tabs point there, elsewhere local files.
+  var ADA_SLUGS = {
+    "voice.html": "https://richard-kirk.adacities.com/ada-bank-voice/",
+    "kbc.html":   "https://richard-kirk.adacities.com/ada-bank-kbc/"
+  };
   function render() {
     document.querySelectorAll(".viewswitch").forEach(function (n) { n.remove(); });
     var cur = (location.pathname.split("/").pop() || "index.html").toLowerCase();
@@ -22,7 +26,7 @@
     nav.className = "viewswitch";
     PAGES.forEach(function (p) {
       var a = document.createElement("a");
-      a.href = (p[0] === "voice.html" && onAda) ? VOICE_ADACITIES : p[0];
+      a.href = (onAda && ADA_SLUGS[p[0]]) ? ADA_SLUGS[p[0]] : p[0];
       a.textContent = p[1];
       if (p[0].toLowerCase() === cur) a.className = "on";
       nav.appendChild(a);
